@@ -1,0 +1,115 @@
+{
+  "heroStations": [
+    {
+      "address": "Capacity: %80",
+      "id": "montaloma-herostation",
+      "lat": 37.421073,
+      "lng": -122.088407,
+      "name": "Monta Loma HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Capacity: %10",
+      "id": "stanford-herostation",
+      "lat": 37.427113,
+      "lng": -122.180687,
+      "name": "Stanford HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Capacity: %25",
+      "id": "paloalto-herostation",
+      "lat": 37.446437,
+      "lng": -122.129984,
+      "name": "Palo Alto HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Capacity: %65",
+      "id": "losaltos-herostation",
+      "lat": 37.389254,
+      "lng": -122.120857,
+      "name": "Los Altos HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Fully empty",
+      "id": "loyola-herostation",
+      "lat": 37.362838,
+      "lng": -122.107754,
+      "name": "Loyola HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Capacity: %30",
+      "id": "eastpaloalto-herostation",
+      "lat": 37.472696,
+      "lng": -122.132818,
+      "name": "East Palo Alto HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Almost full",
+      "id": "mountainview-herostation",
+      "lat": 37.390376,
+      "lng": -122.084651,
+      "name": "Mountain View HeroStation",
+      "region": "north-america"
+    },
+    {
+      "address": "Capacity: %70",
+      "id": "altamesa-herostation",
+      "lat": 37.395930,
+      "lng": -122.142670,
+      "name": "Alta Mesa HeroStation",
+      "region": "north-america"
+    }
+  ],
+  "regions": [
+    {
+      "coords": {
+        "lat": 2.9660291,
+        "lng": 1.3271339
+      },
+      "id": "africa-middle-east",
+      "name": "Afrika ve Orta Doğu",
+      "zoom": 3.0
+    },
+    {
+      "coords": {
+        "lat": 0.0524811,
+        "lng": 127.6560787
+      },
+      "id": "asia-pacific",
+      "name": "Asya Pasifik",
+      "zoom": 3.0
+    },
+    {
+      "coords": {
+        "lat": 46.1352815,
+        "lng": 7.4033438
+      },
+      "id": "europe",
+      "name": "Avrupa",
+      "zoom": 4.0
+    },
+    {
+      "coords": {
+        "lat": -17.5554497,
+        "lng": -99.2316195
+      },
+      "id": "latin-america",
+      "name": "Latin Amerika",
+      "zoom": 3.0
+    },
+    {
+      "coords": {
+        "lat": 45.7128252,
+        "lng": -97.1547448
+      },
+      "id": "north-america",
+      "name": "Kuzey Amerika",
+      "zoom": 4.0
+    }
+  ]
+}
