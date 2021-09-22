@@ -48,8 +48,8 @@ android {
         applicationId "com.we.werecyclemobile"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 4
-        versionName "4"
+        versionCode 1
+        versionName "1"
     }
 
     signingConfigs {

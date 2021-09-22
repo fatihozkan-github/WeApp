@@ -1,5 +1,6 @@
 import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
 import 'package:WE/Screens/BottomNavigation/Map/map_view.dart';
+import 'package:WE/Screens/BottomNavigation/Offers/new_prize_page.dart';
 import 'package:WE/Screens/BottomNavigation/Offers/prizes.dart';
 import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
@@ -51,7 +52,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     ProfileDrawer(),
     MapView(),
     QRScanPage(),
-    PrizePage(),
+    NewPrizePage(),
     ProfilePage()
   ];
 
@@ -59,45 +60,55 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        body: _pageOptions[selectedPage],
-        bottomNavigationBar: ConvexAppBar(
-          items: [
-            TabItem(
-                icon:
-                    Image.asset("assets/Images/BottomNavigation/homeIcon.png")),
-            TabItem(
-                icon: Image.asset(
-              "assets/Images/BottomNavigation/mapIcon.png",
-              color: kThirdColor,
-            )),
-            TabItem(
-                icon: Image.asset("assets/Images/BottomNavigation/qrIcon.png",
-                    color: kThirdColor)),
-            TabItem(
-                icon: Image.asset(
-              "assets/Images/BottomNavigation/privilege.png",
-              color: kThirdColor,
-            )),
-            TabItem(
-                activeIcon: Icon(
-                  Icons.account_circle_rounded,
-                  color: Colors.white,
-                  size: 64,
-                ),
-                icon: Icon(
-                  Icons.account_circle_rounded,
-                  color: Colors.white,
-                )),
-          ],
-          activeColor: kPrimaryColor,
-          backgroundColor: kPrimaryColor,
-          initialActiveIndex: 0,
-          onTap: (int i) {
-            setState(() {
-              selectedPage = i;
-            });
-          },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'WE',
+        theme: ThemeData(
+          canvasColor: kSecondaryColor,
+          fontFamily: "Montserrat_Alternates",
+          primaryColor: kPrimaryColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Scaffold(
+          body: _pageOptions[selectedPage],
+          bottomNavigationBar: ConvexAppBar(
+            items: [
+              TabItem(
+                  icon: Image.asset(
+                      "assets/Images/BottomNavigation/homeIcon.png")),
+              TabItem(
+                  icon: Image.asset(
+                "assets/Images/BottomNavigation/mapIcon.png",
+                color: kThirdColor,
+              )),
+              TabItem(
+                  icon: Image.asset("assets/Images/BottomNavigation/qrIcon.png",
+                      color: kThirdColor)),
+              TabItem(
+                  icon: Image.asset(
+                "assets/Images/BottomNavigation/privilege.png",
+                color: kThirdColor,
+              )),
+              TabItem(
+                  activeIcon: Icon(
+                    Icons.account_circle_rounded,
+                    color: Colors.white,
+                    size: 64,
+                  ),
+                  icon: Icon(
+                    Icons.account_circle_rounded,
+                    color: Colors.white,
+                  )),
+            ],
+            activeColor: kPrimaryColor,
+            backgroundColor: kPrimaryColor,
+            initialActiveIndex: 0,
+            onTap: (int i) {
+              setState(() {
+                selectedPage = i;
+              });
+            },
+          ),
         ),
       ),
     );

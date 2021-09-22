@@ -50,6 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -138,89 +139,89 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                   _password.length >= 6
                       ? isInclude
-                          ? auth
-                              .createUserWithEmailAndPassword(
-                                  email: _email, password: _password)
-                              .then((_) {
-                              create(
-                                  name: _username,
-                                  email: _email,
-                                  password: _password,
-                                  city: _city,
-                                  uid: currentUid,
-                                  superhero: _superhero);
-                              addReferralData(
-                                  referralId: _referral.substring(0, 6),
-                                  uid: currentUid);
+                      ? auth
+                      .createUserWithEmailAndPassword(
+                      email: _email, password: _password)
+                      .then((_) {
+                    create(
+                        name: _username,
+                        email: _email,
+                        password: _password,
+                        city: _city,
+                        uid: currentUid,
+                        superhero: _superhero);
+                    addReferralData(
+                        referralId: _referral.substring(0, 6),
+                        uid: currentUid);
 
-                              Navigator.pushAndRemoveUntil<dynamic>(
-                                context,
-                                MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      BottomNavigation(),
-                                ),
-                                (route) => false,
-                              );
-                              signUp(
-                                  name: _username,
-                                  email: _email,
-                                  password: _password,
-                                  city: _city,
-                                  uid: currentUid,
-                                  superhero: _superhero);
-                            }).catchError((err) {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    print(err.message);
-                                    return AlertDialog(
-                                      title: Text("Error"),
-                                      content: Text(err.message),
-                                      actions: [
-                                        FlatButton(
-                                          child: Text("Ok"),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  });
-                            })
-                          : showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Error"),
-                                  content:
-                                      Text("Your referral code is invalid"),
-                                  actions: [
-                                    FlatButton(
-                                      child: Text("Ok"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              })
+                    Navigator.pushAndRemoveUntil<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) =>
+                            BottomNavigation(),
+                      ),
+                          (route) => false,
+                    );
+                    signUp(
+                        name: _username,
+                        email: _email,
+                        password: _password,
+                        city: _city,
+                        uid: currentUid,
+                        superhero: _superhero);
+                  }).catchError((err) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          print(err.message);
+                          return AlertDialog(
+                            title: Text("Error"),
+                            content: Text(err.message),
+                            actions: [
+                              FlatButton(
+                                child: Text("Ok"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  })
                       : showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Error"),
-                              content: Text(
-                                  "Şifreniz en az 6 karakter uzunluğunda olmalıdır."),
-                              actions: [
-                                FlatButton(
-                                  child: Text("Ok"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Error"),
+                          content:
+                          Text("Your referral code is invalid"),
+                          actions: [
+                            FlatButton(
+                              child: Text("Ok"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      })
+                      : showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Error"),
+                          content: Text(
+                              "Şifreniz en az 6 karakter uzunluğunda olmalıdır."),
+                          actions: [
+                            FlatButton(
+                              child: Text("Ok"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
                 } else {
                   showDialog(
                       context: context,

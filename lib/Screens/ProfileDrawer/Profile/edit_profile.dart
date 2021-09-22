@@ -109,8 +109,8 @@ class _EditProfileState extends State<EditProfile> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: imageUrl != null
                           ? Container(
-                              height: 22 * SizeConfig.heightMultiplier,
-                              width: 44 * SizeConfig.widthMultiplier,
+                              height: 220,
+                              width: 440,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
@@ -142,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                         'Kullancı adı:',
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 2 * SizeConfig.textMultiplier,
+                          fontSize: 20,
                         ),
                       ),
                       subtitle: TextField(
@@ -156,12 +156,12 @@ class _EditProfileState extends State<EditProfile> {
                         },
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 3.5 * SizeConfig.textMultiplier,
+                            fontSize: 35,
                             fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           hintStyle: TextStyle(
                               color: Colors.white,
-                              fontSize: 3.5 * SizeConfig.textMultiplier,
+                              fontSize: 35,
                               fontWeight: FontWeight.bold),
                           hintText: data["name"],
                         ),
@@ -171,7 +171,7 @@ class _EditProfileState extends State<EditProfile> {
                         'Şehir:',
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 2 * SizeConfig.textMultiplier,
+                          fontSize: 20,
                         ),
                       ),
                       subtitle: TextField(
@@ -185,12 +185,12 @@ class _EditProfileState extends State<EditProfile> {
                         },
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 3.5 * SizeConfig.textMultiplier,
+                            fontSize: 35,
                             fontWeight: FontWeight.bold),
                         decoration: InputDecoration(
                           hintStyle: TextStyle(
                               color: Colors.white,
-                              fontSize: 3.5 * SizeConfig.textMultiplier,
+                              fontSize: 35,
                               fontWeight: FontWeight.bold),
                           hintText: data["city"],
                         ),
@@ -200,7 +200,7 @@ class _EditProfileState extends State<EditProfile> {
                       'Favori süper kahraman',
                       style: TextStyle(
                         color: Colors.grey,
-                        fontSize: 2 * SizeConfig.textMultiplier,
+                        fontSize: 20,
                       ),
                     ),
                     subtitle: TextField(
@@ -214,46 +214,17 @@ class _EditProfileState extends State<EditProfile> {
                       },
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 3.5 * SizeConfig.textMultiplier,
+                          fontSize: 35,
                           fontWeight: FontWeight.bold),
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                             color: Colors.white,
-                            fontSize: 3.5 * SizeConfig.textMultiplier,
+                            fontSize: 35,
                             fontWeight: FontWeight.bold),
                         hintText: data["superhero"],
                       ),
                     ),
                   ),
-                  ListTile(
-                      title: Text(
-                        'Adres:',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 2 * SizeConfig.textMultiplier,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        onSubmitted: (value) {
-                          setState(() {
-                            _newAddress = value.trim();
-                            brewCollection.doc(currentUid).update({
-                              "address": _newAddress,
-                            });
-                          });
-                        },
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 3.5 * SizeConfig.textMultiplier,
-                            fontWeight: FontWeight.bold),
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 3.5 * SizeConfig.textMultiplier,
-                              fontWeight: FontWeight.bold),
-                          hintText: data["address"],
-                        ),
-                      )),
                   TextButton(
                       onPressed: () {
                         setState(() {

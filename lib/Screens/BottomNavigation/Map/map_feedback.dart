@@ -74,6 +74,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       //resizeToAvoidBottomPadding: false,
       body: SingleChildScrollView(
         child: Padding(
@@ -81,18 +82,15 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.08,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 13),
-                child: Text(
-                  "Şu anki konum: $_currentAddress",
-                  style:
-                      TextStyle(fontSize: 20, height: 1.3, color: Colors.white),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              //    Padding(
+              //                 padding: const EdgeInsets.symmetric(horizontal: 13),
+              //                 child: Text(
+              //                   "Şu anki konum: $_currentAddress",
+              //                   style:
+              //                       TextStyle(fontSize: 20, height: 1.3, color: Colors.white),
+              //                   textAlign: TextAlign.center,
+              //                 ),
+              //               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.06,
               ),
@@ -115,11 +113,9 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            "Bize nerenin yeni bir HeroStation'a ihtiyacı olduğunu bildir. Bunun için bir etkinlik etkinlik düzenleyelim.",
+                            "Kirli olduğunu düşündüğün bölgeyi buradan bizlere bildirerek bu alanı WE topluluğu ile birlikte temizlemek için etkinlik düzenleme isteği gönderebilirsin.",
                             style: TextStyle(
-                                fontSize: 17.5,
-                                height: 1.3,
-                                color: Colors.white),
+                                fontSize: 15, height: 1.3, color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -143,7 +139,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                     filled: true,
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                    hintText: 'İsim',
+                    hintText: 'Konu',
                     hintStyle: TextStyle(
                       color: Colors.blueGrey,
                     ),
@@ -180,7 +176,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                     fillColor: Color(0xffe6e6e6),
                     filled: true,
                     contentPadding:
-                        EdgeInsets.symmetric(vertical: 35, horizontal: 20),
+                    EdgeInsets.symmetric(vertical: 35, horizontal: 20),
                     hintText: 'Mesajınız',
                     hintStyle: TextStyle(
                       color: Colors.blueGrey,
@@ -219,7 +215,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                       t1.clear();
                       t2.clear();
                       launchUrl(
-                          "mailto:we.recycle.team@gmail.com?subject=$name&body=$message sent from $_currentAddress ");
+                          "mailto:we.recycle.team@gmail.com?subject=$name&body=$message");
                     });
                   },
                   child: ListTile(
@@ -228,18 +224,18 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                       children: <Widget>[
                         Center(
                             child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        )),
+                              Icons.send,
+                              color: Colors.white,
+                            )),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.03,
                         ),
                         Center(
                             child: Text(
-                          "Gönder",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                        )),
+                              "Gönder",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            )),
                       ],
                     ),
                   ),

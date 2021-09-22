@@ -9,6 +9,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         height: size.height,
         width: double.infinity,
@@ -45,8 +46,8 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   RoundedButton(
                     text: "KAYIT OL",
-                    color: Colors.white,
-                    textColor: Colors.black,
+                    color: kSecondaryColor,
+                    textColor: Colors.white,
                     onPressed: () {
                       Navigator.push(
                         context,

@@ -1,4 +1,3 @@
-import 'package:WE/Resources/SizeConfig.dart';
 import 'package:WE/Resources/components/pop_up.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Services/ChatService/we_chat.dart';
@@ -84,7 +83,7 @@ class _HerProfileState extends State<HerProfile> {
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return FutureBuilder<DocumentSnapshot>(
-        future: users.doc(currentUid).get(),
+        future: users.doc(widget.uid).get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -107,17 +106,15 @@ class _HerProfileState extends State<HerProfile> {
                   Container(
                     color: kSecondaryColor,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 15.0,
-                          right: 15.0,
-                          top: 5 * SizeConfig.heightMultiplier),
+                      padding:
+                          EdgeInsets.only(left: 15.0, right: 15.0, top: 50),
                       child: Column(
                         children: <Widget>[
                           Column(
                             children: <Widget>[
                               Container(
-                                height: 22 * SizeConfig.heightMultiplier,
-                                width: 44 * SizeConfig.widthMultiplier,
+                                height: 110,
+                                width: 110,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
@@ -128,7 +125,7 @@ class _HerProfileState extends State<HerProfile> {
                                     )),
                               ),
                               SizedBox(
-                                height: 7 * SizeConfig.widthMultiplier,
+                                height: 70,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,18 +134,18 @@ class _HerProfileState extends State<HerProfile> {
                                     widget.username,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 6 * SizeConfig.textMultiplier,
+                                        fontSize: 60,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier,
+                                    height: 10,
                                   ),
                                 ],
                               ),
                             ],
                           ),
                           SizedBox(
-                            height: 5 * SizeConfig.heightMultiplier,
+                            height: 50,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -159,14 +156,14 @@ class _HerProfileState extends State<HerProfile> {
                                     "Seviye " + widget.level.toString(),
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 3 * SizeConfig.textMultiplier,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     widget.superhero.toString(),
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 1.5 * SizeConfig.textMultiplier,
+                                      fontSize: 10,
                                     ),
                                   ),
                                 ],
@@ -177,14 +174,14 @@ class _HerProfileState extends State<HerProfile> {
                                     widget.coins.toString(),
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 3 * SizeConfig.textMultiplier,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     "Toplam coin",
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 1.5 * SizeConfig.textMultiplier,
+                                      fontSize: 10,
                                     ),
                                   ),
                                 ],
@@ -195,14 +192,14 @@ class _HerProfileState extends State<HerProfile> {
                                     widget.recycled.toString(),
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 3 * SizeConfig.textMultiplier,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     "Geri dönüştürülen",
                                     style: TextStyle(
                                       color: Colors.white70,
-                                      fontSize: 1.5 * SizeConfig.textMultiplier,
+                                      fontSize: 10,
                                     ),
                                   ),
                                 ],
@@ -210,7 +207,7 @@ class _HerProfileState extends State<HerProfile> {
                             ],
                           ),
                           SizedBox(
-                            height: 4 * SizeConfig.heightMultiplier,
+                            height: 40,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -218,8 +215,8 @@ class _HerProfileState extends State<HerProfile> {
                               isFriend.contains(true)
                                   ? Container()
                                   : Container(
-                                      height: 50,
-                                      width: 180,
+                                height: 50,
+                                      width: 200,
                                       decoration: BoxDecoration(
                                         border:
                                             Border.all(color: kPrimaryColor),
@@ -253,9 +250,7 @@ class _HerProfileState extends State<HerProfile> {
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     color: kPrimaryColor,
-                                                    fontSize: 1.5 *
-                                                        SizeConfig
-                                                            .textMultiplier),
+                                                    fontSize: 15),
                                               ),
                                             ),
                                           ],
@@ -266,7 +261,7 @@ class _HerProfileState extends State<HerProfile> {
                             ],
                           ),
                           SizedBox(
-                            height: 4 * SizeConfig.heightMultiplier,
+                            height: 40,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,

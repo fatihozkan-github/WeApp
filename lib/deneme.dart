@@ -21,6 +21,16 @@ class _DenemePageState extends State<DenemePage> {
   List<dynamic> friends = [];
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    Query collectionReference =
+        FirebaseFirestore.instance.collection("users").orderBy('coins');
+    print(collectionReference.toString());
+    print("*");
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     CollectionReference users =
@@ -46,25 +56,25 @@ class _DenemePageState extends State<DenemePage> {
                 itemBuilder: (context, index) {
                   return Card(
                       child: ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return HerProfile(
-                              username: friends[index]["name"].toString(),
-                              level: friends[index]["level"],
-                              coins: friends[index]["coins"],
-                              recycled: friends[index]["recycled"],
-                              superhero: friends[index]["superhero"],
-                              points: friends[index]["points"],
-                            );
-                          },
-                        ),
-                      );
-                    },
-                    title: Text(friends[index]["name"].toString()),
-                  ));
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return HerProfile(
+                                  username: friends[index]["name"].toString(),
+                                  level: friends[index]["level"],
+                                  coins: friends[index]["coins"],
+                                  recycled: friends[index]["recycled"],
+                                  superhero: friends[index]["superhero"],
+                                  points: friends[index]["points"],
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        title: Text(friends[index]["name"].toString()),
+                      ));
                 },
               ),
             );

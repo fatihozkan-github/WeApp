@@ -36,8 +36,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Geri bildirim",
-          style: TextStyle(fontFamily: "Panthera", fontSize: 24),
+          "Geri Bildirim",
+          style: TextStyle(fontSize: 24),
         ),
       ),
       //resizeToAvoidBottomPadding: false,
@@ -218,8 +218,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
                     width: MediaQuery.of(context).size.width * 0.06,
                   ),
                   GestureDetector(
-                    onTap: () => _launchURLMail(),
-                    child: Icon(FontAwesomeIcons.at,
+                    onTap: () => launchUrl(
+                        "https://play.google.com/store/apps/details?id=com.we.werecyclemobile"),
+                    child: Icon(FontAwesomeIcons.googlePlay,
                         color: Color(0xff1DA1F2), size: 35),
                   ),
                 ],

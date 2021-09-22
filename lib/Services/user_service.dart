@@ -204,6 +204,48 @@ void checkReferralData({String referralId, String uid}) async {
   // TODO: opsiyonel (digit code Upper case'le, burda olmak zorunda değil ama bunu da)
 }
 
+void addKanka(
+    {String uid,
+    String name,
+    dynamic recycled,
+    dynamic level,
+    dynamic coins,
+    String superhero}) async {
+  DocumentSnapshot documentSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUid)
+      .get();
+  int check = 0;
+  DocumentSnapshot docSnapshot;
+  docSnapshot = await FirebaseFirestore.instance
+      .collection('friends')
+      .doc(currentUid)
+      .get();
+  if (docSnapshot.data() != null) {
+    for (var i = 1; i <= docSnapshot.data().length; i++) {
+      if (docSnapshot.data()["friend" + i.toString()].containsValue(uid)) {
+        check = check + 1;
+      }
+    }
+  }
+
+  if (check == 0) {
+    await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
+      "friend" +
+          (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1)
+              .toString(): {
+        "uid": uid,
+        "name": name,
+        "recycled": recycled,
+        "supehero": superhero,
+        "coins": coins,
+        "level": level
+      },
+    }, SetOptions(merge: true));
+  }
+}
+
 void addFriend(
     {String name,
     String superhero,
@@ -268,14 +310,20 @@ void getIsFriendData() async {
 
 void update100gData(currentUser) async {
   DocumentSnapshot documentSnapshot;
-
   documentSnapshot = await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUser)
       .get();
-
   await FirebaseFirestore.instance.collection('users').doc(currentUser).update(
       {"forbadgecount": (documentSnapshot.data()["forbadgecount"] + 1)});
+}
+
+void getUserDataForL(uid) async {
+  DocumentSnapshot documentSnapshot;
+
+  documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  return documentSnapshot.data()["name"];
 }
 
 void read() async {

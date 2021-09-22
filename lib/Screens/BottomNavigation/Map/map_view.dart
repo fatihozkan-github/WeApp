@@ -68,7 +68,7 @@ class _MapViewState extends State<MapView> {
         appBar: AppBar(
           title: Text(
             "HeroStation",
-            style: TextStyle(fontFamily: "Panthera", fontSize: 30),
+            style: TextStyle(fontFamily: "Montserrat_Alternates", fontSize: 24),
           ),
           centerTitle: true,
           actions: [

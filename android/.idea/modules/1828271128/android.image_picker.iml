@@ -34,7 +34,6 @@
     <content url="file://$MODULE_DIR$/../../../../build/image_picker/generated/aidl_source_output_dir/debugAndroidTest/compileDebugAndroidTestAidl/out" />
     <content url="file://$MODULE_DIR$/../../../../build/image_picker/generated/ap_generated_sources/debug/out">
       <sourceFolder url="file://$MODULE_DIR$/../../../../build/image_picker/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../build/image_picker/generated/ap_generated_sources/debug/out" isTestSource="false" generated="true" />
     </content>
     <content url="file://$MODULE_DIR$/../../../../build/image_picker/generated/ap_generated_sources/debugAndroidTest/out" />
     <content url="file://$MODULE_DIR$/../../../../build/image_picker/generated/ap_generated_sources/debugUnitTest/out" />
@@ -49,7 +48,6 @@
     <content url="file://$MODULE_DIR$/../../../../build/image_picker/generated/source/buildConfig/androidTest/debug" />
     <content url="file://$MODULE_DIR$/../../../../build/image_picker/generated/source/buildConfig/debug">
       <sourceFolder url="file://$MODULE_DIR$/../../../../build/image_picker/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../../build/image_picker/generated/source/buildConfig/debug" isTestSource="false" generated="true" />
     </content>
     <content url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.5.4+3/android">
       <sourceFolder url="file://$USER_HOME$/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.5.4+3/android/src/main/java" isTestSource="false" />
@@ -58,7 +56,7 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-241c87ad800beeab545ab867354d4683d5bfb6ce" level="project" />
+    <orderEntry type="library" name="Gradle: io.flutter:flutter_embedding_debug:1.0.0-a9d88a4d182bdae23e3a4989abfb7ea25954aad1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />

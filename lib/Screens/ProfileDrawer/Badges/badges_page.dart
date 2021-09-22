@@ -36,6 +36,15 @@ class _BadgePageState extends State<BadgePage> {
   }
 
   List<String> badges = [
+    "2 arkadaşın onlara verdiğin kodla kayıt olmalı.",
+    "WE'yi bir sosyal medya hesabında #werecycleteam hashtag'i ile paylaşmalısın.",
+    "2 geri bildirim göndererek gelişime katkıda bulun.",
+    "3 hafta boyunca en az 3 kez HeroStation'lardan dönüşüme katkıda bulunmalısınız.",
+    "Dünyayı 800 gram geri dönüştürülemeyen plastikten kurtarmalısınız.",
+    "15 arkadaşınız sizin için tanımlanmış kod ile WE'Nin bir parçası olmalıdır.",
+  ];
+
+  List<String> badgesENG = [
     "2 of your friends must register with the code you gave them.",
     "You should share WE on a social media account with #werecycleteam hashtag.",
     "You must contribute to development by sending 2 feedbacks.",
@@ -43,7 +52,6 @@ class _BadgePageState extends State<BadgePage> {
     "You have to save the earth from 800 grams of non-recyclable plastic.",
     "15 of your friends should be part of We with the code defined for you.",
   ];
-
   List<List<String>> allBadges = [
     [
       "assets/Images/Badges/Unlocked/activeBadge1.png",
@@ -93,8 +101,8 @@ class _BadgePageState extends State<BadgePage> {
                 appBar: AppBar(
                   centerTitle: true,
                   title: Text(
-                    "Badges",
-                    style: TextStyle(fontFamily: "Panthera", fontSize: 24),
+                    "Rozetler",
+                    style: TextStyle(fontSize: 24),
                   ),
                   actions: [
                     Screenshot(
@@ -218,7 +226,7 @@ class _BadgePageState extends State<BadgePage> {
                     )
                   ],
                 ),
-                backgroundColor: kSecondaryColor,
+                backgroundColor: Colors.white,
                 body: ListView(
                   shrinkWrap: true,
                   children: <Widget>[
@@ -244,7 +252,7 @@ class _BadgePageState extends State<BadgePage> {
                                 scale: 8,
                               ),
                             ),
-                            Text("FRIENDSHIP",
+                            Text("DOSTLUK",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: size.width * 0.045)),
@@ -263,7 +271,7 @@ class _BadgePageState extends State<BadgePage> {
                                 scale: 8,
                               ),
                             ),
-                            Text("PIONEER",
+                            Text("ÖNCÜ",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: size.width * 0.045)),
@@ -290,7 +298,7 @@ class _BadgePageState extends State<BadgePage> {
                                 scale: 8,
                               ),
                             ),
-                            Text("WISDOM",
+                            Text("BİLGE",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: size.width * 0.045)),
@@ -309,7 +317,7 @@ class _BadgePageState extends State<BadgePage> {
                                 scale: 8,
                               ),
                             ),
-                            Text("ROOKIE HERO",
+                            Text("ÇAYLAK KAHRAMAN",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: size.width * 0.045)),
@@ -336,7 +344,7 @@ class _BadgePageState extends State<BadgePage> {
                                 scale: 8,
                               ),
                             ),
-                            Text("FOLK HERO",
+                            Text("HALK KAHRAMANI",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: size.width * 0.045)),
@@ -358,7 +366,7 @@ class _BadgePageState extends State<BadgePage> {
                                 scale: 8,
                               ),
                             ),
-                            Text("CHALLENGER",
+                            Text("ŞAMPİYON",
                                 style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: size.width * 0.045)),

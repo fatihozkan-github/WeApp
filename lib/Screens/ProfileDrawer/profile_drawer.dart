@@ -17,6 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Entertainment/entertainment_page.dart';
 import '../../Services/profile_search.dart';
 import 'package:shimmer/shimmer.dart';
@@ -34,7 +35,7 @@ class DrawerItem {
 
 class ProfileDrawer extends StatefulWidget {
   final drawerItems = [
-    DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
+    //DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
     DrawerItem(title: "Rozetler", icon: Icons.badge),
     DrawerItem(title: "Düello", icon: Icons.local_police_rounded),
     // DrawerItem(title: "Did you know these?", icon: Icons.wb_incandescent),
@@ -45,7 +46,7 @@ class ProfileDrawer extends StatefulWidget {
     DrawerItem(title: "Home", icon: Icons.help),
   ];
   final drawerTitles = [
-    DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
+    //DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
     DrawerItem(title: "Rozetler", icon: Icons.badge),
     DrawerItem(title: "Düello", icon: Icons.local_police_rounded),
     //DrawerItem(title: "Entertainment", icon: Icons.wb_incandescent),
@@ -78,19 +79,19 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     switch (pos) {
       case 0:
         return FeedPage();
+      //  case 1:
+      //  return ChallengePage();
       case 1:
-        return ChallengePage();
-      case 2:
         return BadgePage();
-      case 3:
+      case 2:
         return DuelsPage();
       //case 4:
       //return EntertainmentPage();
       // case 4:
       //   return LessonsPage();
-      case 4:
+      case 3:
         return InvitePage();
-      case 5:
+      case 4:
         return FeedbackPage();
       //case 7:
       //return SupportPage();
@@ -137,7 +138,6 @@ class ProfileDrawerState extends State<ProfileDrawer> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
             return Scaffold(
-              backgroundColor: kPrimaryColor,
               appBar: AppBar(
                 actions: [
                   IconButton(
@@ -220,8 +220,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                         },
                         child: data["avatar"] != null
                             ? Container(
-                                height: 11 * SizeConfig.heightMultiplier,
-                                width: 22 * SizeConfig.widthMultiplier,
+                                height: 110,
+                                width: 220,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
@@ -238,7 +238,10 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                     Column(children: drawerOptions),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.remove('isLoggedIn');
                           logout();
                           exit(0);
                         },

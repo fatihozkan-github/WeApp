@@ -12,10 +12,11 @@ class InvitePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(),
       body: Column(
         children: [
           SizedBox(
-            height: size.height * 0.1,
+            height: size.height * 0.03,
           ),
           Text(
             "Davet et ve Kazan",
@@ -64,12 +65,12 @@ class InvitePage extends StatelessWidget {
                   padding: const EdgeInsets.all(24.0),
                   child: Center(
                       child: Text(
-                    firebaseUser.uid.substring(0, 6),
-                    style: TextStyle(
-                        color: kPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24),
-                  ))),
+                        firebaseUser.uid.substring(0, 6),
+                        style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24),
+                      ))),
             ),
           ),
         ],

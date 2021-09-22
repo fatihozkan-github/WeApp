@@ -43,8 +43,7 @@ class _DuelsPageState extends State<DuelsPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Duellolar',
-          style: TextStyle(fontFamily: "Panthera"),
+          'Düellolar',
         ),
       ),
       body: FutureBuilder<DocumentSnapshot>(
@@ -114,14 +113,14 @@ class _DuelsPageState extends State<DuelsPage> {
                     SizedBox(height: size.height * 0.1),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return Leaderboard();
-                            },
-                          ),
-                        );
+                        //Navigator.push(
+                        //                           context,
+                        //                           MaterialPageRoute(
+                        //                             builder: (context) {
+                        //                               return Leaderboard();
+                        //                             },
+                        //                           ),
+                        //                         );
                       },
                       child: Container(
                         width: size.width * 0.8,

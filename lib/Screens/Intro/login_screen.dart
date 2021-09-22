@@ -10,6 +10,7 @@ import 'package:WE/Resources/components/rounded_password_field.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
 
@@ -35,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         height: size.height,
         width: double.infinity,
@@ -42,10 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                "GİRİŞ YAP",
-                style: TextStyle(color: kPrimaryColor),
-              ),
               Image.asset(
                 "assets/we.png",
                 scale: 2,
@@ -96,7 +94,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? auth
                           .signInWithEmailAndPassword(
                               email: _email, password: _password)
-                          .then((_) {
+                          .then((_) async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs?.setBool("isLoggedIn", true);
+
                           Navigator.pushAndRemoveUntil<dynamic>(
                             context,
                             MaterialPageRoute<dynamic>(
@@ -106,39 +108,39 @@ class _LoginScreenState extends State<LoginScreen> {
                             (route) => false,
                           );
                         }).catchError((err) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Hata"),
-                                  content: Text(err.message),
-                                  actions: [
-                                    FlatButton(
-                                      child: Text("Tamam"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                        })
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Hata"),
+                            content: Text(err.message),
+                            actions: [
+                              FlatButton(
+                                child: Text("Tamam"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  })
                       : showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text("Hata"),
-                              content: Text("Lütfen bütün alanları doldurun"),
-                              actions: [
-                                FlatButton(
-                                  child: Text("Tamam"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Hata"),
+                          content: Text("Lütfen bütün alanları doldurun"),
+                          actions: [
+                            FlatButton(
+                              child: Text("Tamam"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
                 },
               ),
               SizedBox(height: size.height * 0.03),

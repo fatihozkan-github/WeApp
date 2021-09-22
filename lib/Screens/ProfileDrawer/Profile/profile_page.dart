@@ -66,19 +66,20 @@ class _ProfilePageState extends State<ProfilePage> {
             return Text("Something went wrong");
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data = snapshot.data.data();
+            Map<String, dynamic> data = snapshot?.data.data();
             return Scaffold(
               backgroundColor: Color(0xFFF8F8F8),
               appBar: AppBar(
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil<dynamic>(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute<dynamic>(
-                            builder: (BuildContext context) => EditProfile(),
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return EditProfile();
+                            },
                           ),
-                          (route) => false,
                         );
                         //getImage(true);
                       },
@@ -94,12 +95,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: <Widget>[
                   Container(
                     color: Color(0xFFF8F8F8),
-                    height: 26 * SizeConfig.heightMultiplier,
+                    height: 260,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 15.0,
-                          right: 15.0,
-                          top: 1 * SizeConfig.heightMultiplier),
+                      padding:
+                          EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
                       child: Column(
                         children: <Widget>[
                           Row(
@@ -121,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Colors.grey,
                                     ),
                               SizedBox(
-                                width: 6 * SizeConfig.widthMultiplier,
+                                width: 20,
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,11 +129,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     data["name"],
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 3 * SizeConfig.textMultiplier,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    height: 1 * SizeConfig.heightMultiplier,
+                                    height: 10,
                                   ),
                                   Row(
                                     children: <Widget>[
@@ -142,18 +141,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                         "assets/Icons/supermanicon.png",
                                         scale: 0.2,
                                         color: Colors.black,
-                                        height: 3 * SizeConfig.heightMultiplier,
-                                        width: 3 * SizeConfig.widthMultiplier,
+                                        height: 30,
+                                        width: 30,
                                       ),
                                       SizedBox(
-                                        width: 2 * SizeConfig.widthMultiplier,
+                                        width: 20,
                                       ),
                                       Text(
                                         data["superhero"],
                                         style: TextStyle(
                                           color: Colors.black,
-                                          fontSize:
-                                              1.5 * SizeConfig.textMultiplier,
+                                          fontSize: 15,
                                         ),
                                       ),
                                     ],
@@ -171,14 +169,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     data["coins"].toString(),
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 3 * SizeConfig.textMultiplier,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     "WE coin",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 1.5 * SizeConfig.textMultiplier,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ],
@@ -189,14 +187,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                     data["recycled"].toString(),
                                     style: TextStyle(
                                         color: Colors.black,
-                                        fontSize: 3 * SizeConfig.textMultiplier,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
                                     "Geri dönüştürülen",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 1.5 * SizeConfig.textMultiplier,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ],
@@ -231,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Color(0xFFF8F8F8),
                         padding:
                             EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                        height: SizeConfig.heightMultiplier * 34,
+                        height: size.height * 0.3,
                         child: Column(
                           children: [
                             Row(
@@ -253,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               "Seviye ${data['level'].toString()} "), //text inside it
                                         ))),
                                 SizedBox(
-                                  width: size.width * 0.1,
+                                  width: size.width * 0.01,
                                 ),
                               ],
                             ),

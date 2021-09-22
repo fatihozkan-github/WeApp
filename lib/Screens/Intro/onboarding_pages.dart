@@ -68,30 +68,30 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(fontSize: 19.0, color: Colors.white);
+    const bodyStyle = TextStyle(fontSize: 19.0, color: kSecondaryColor);
 
     const pageDecoration = PageDecoration(
       contentPadding: EdgeInsets.only(top: 50),
       titleTextStyle: TextStyle(
-          color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w700),
+          color: kSecondaryColor, fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: kSecondaryColor,
+      pageColor: Colors.white,
       imagePadding: EdgeInsets.only(top: 50),
     );
     const initialPageDecoration = PageDecoration(
       contentPadding: EdgeInsets.only(top: 50),
       titleTextStyle: TextStyle(
-          color: Colors.white, fontSize: 28.0, fontWeight: FontWeight.w700),
+          color: kSecondaryColor, fontSize: 28.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: kSecondaryColor,
+      pageColor: Colors.white,
       imagePadding: EdgeInsets.only(top: 50),
     );
 
     return IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: kSecondaryColor,
+      globalBackgroundColor: Colors.white,
       pages: [
         PageViewModel(
           titleWidget: RichText(
@@ -101,7 +101,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   TextSpan(
                       text: " ve",
                       style: TextStyle(
-                          color: Colors.white,
+                          color: kSecondaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 30)),
                   TextSpan(
@@ -173,14 +173,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       //rtl: true, // Display as right-to-left
       skip: const Text(
         'Geç',
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: kSecondaryColor),
       ),
       next: const Icon(
         Icons.arrow_forward,
-        color: Colors.white,
+        color: kSecondaryColor,
       ),
       done: const Text('Bitti',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+          style:
+              TextStyle(color: kSecondaryColor, fontWeight: FontWeight.w600)),
       curve: Curves.fastLinearToSlowEaseIn,
       dotsDecorator: const DotsDecorator(
         activeColor: kPrimaryColor,

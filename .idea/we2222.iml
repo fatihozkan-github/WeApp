@@ -109,6 +109,12 @@
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/geolocator/build" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/geolocator/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/geolocator/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_blue/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_blue/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_blue/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_blue/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_blue/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/flutter_blue/build" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Dart SDK" level="project" />

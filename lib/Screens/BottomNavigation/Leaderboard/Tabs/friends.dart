@@ -1,7 +1,9 @@
 import 'package:WE/Resources/SizeConfig.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/global.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/hisprofile.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/user_profile.dart';
+import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +17,8 @@ class FriendsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('friends');
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(firebaseUser.uid).get(),
         builder:
@@ -25,10 +28,10 @@ class FriendsTab extends StatelessWidget {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
-            if (data["friends"] != null) {
+            if (data != null) {
               friends.clear();
-              for (int i = 1; i < data["friends"].length + 1; i++) {
-                Map map = data["friends"]["friend" + i.toString()];
+              for (int i = 1; i < data.length + 1; i++) {
+                Map map = data["friend" + i.toString()];
                 friends.add(map);
                 // TODO: implement points and friends tab
                 friends.sort((a, b) => b["recycled"].compareTo(a["recycled"]));
@@ -37,63 +40,64 @@ class FriendsTab extends StatelessWidget {
             }
 
             return Scaffold(
-                backgroundColor: kSecondaryColor,
-                body: data["friends"] != null
+                backgroundColor: Colors.white,
+                body: data != null
                     ? ListView.builder(
-                        itemCount: data["friends"].length,
+                        itemCount: data.length,
                         itemBuilder: (context, index) {
-                          return Card(
-                              child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return HerProfile(
-                                      username: data["friends"]
-                                          ["friend" + index.toString()]["name"],
-                                      level: data["friends"]
-                                              ["friend" + index.toString()]
-                                          ["level"],
-                                      coins: data["friends"]
-                                              ["friend" + index.toString()]
-                                          ["coins"],
-                                      recycled: data["friends"]
-                                              ["friend" + index.toString()]
-                                          ["recycled"],
-                                      superhero: data["friends"]
-                                              ["friend" + index.toString()]
-                                          ["superhero"],
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            trailing: Container(
-                              height: 7 * SizeConfig.heightMultiplier,
-                              width: 12 * SizeConfig.widthMultiplier,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(index < 3
-                                          ? leaderboardIcons[index]
-                                          : leaderboardIcons[3]))),
+                          return Container(
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                    width: 1.0, color: Color(0xFFDFDFDF)),
+                                left: BorderSide(
+                                    width: 1.0, color: Color(0xFFDFDFDF)),
+                                right: BorderSide(
+                                    width: 1.0, color: Color(0xFF7F7F7F)),
+                                bottom: BorderSide(
+                                    width: 1.0, color: Color(0xFFffffff)),
+                              ),
                             ),
-                            leading: Container(
-                              height: 7 * SizeConfig.heightMultiplier,
-                              width: 12 * SizeConfig.widthMultiplier,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: friends[index]["avatar"] == null
-                                          ? AssetImage("assets/Icons/user.png")
-                                          : NetworkImage(
-                                              friends[index]["avatar"]))),
-                            ),
-                            title: Text(friends[index]["name"]),
-                          ));
+                            child: Card(
+                                child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return HisProfile(
+                                        uid: friends[index]["uid"],
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              trailing: Container(
+                                height: 48,
+                                width: 48,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: AssetImage(index < 3
+                                            ? leaderboardIcons[index]
+                                            : leaderboardIcons[3]))),
+                              ),
+                              leading: Container(
+                                height: 48,
+                                width: 48,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: data["avatar"] == null
+                                            ? AssetImage(
+                                                "assets/Icons/user.png")
+                                            : NetworkImage(data["avatar"]))),
+                              ),
+                              title: Text(friends[index]["name"]),
+                            )),
+                          );
                         },
                       )
                     : Column(
