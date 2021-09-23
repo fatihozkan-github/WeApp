@@ -1,8 +1,8 @@
-import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
+// ignore_for_file: prefer_final_fields, omit_local_variable_types, prefer_single_quotes, missing_return
+
+import 'dart:collection';
 import 'package:WE/Screens/BottomNavigation/Map/map_view.dart';
 import 'package:WE/Screens/BottomNavigation/Offers/new_prize_page.dart';
-import 'package:WE/Screens/BottomNavigation/Offers/prizes.dart';
-import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,17 +23,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final currentUid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   DocumentSnapshot snapshot;
+  int selectedPage = 0;
+  final _pageOptions = [ProfileDrawer(), MapView(), QRScanPage(), NewPrizePage(), ProfilePage()];
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData().then((value) {
-      avatarList.clear();
-      avatarList.add(value);
-    });
-    checkReferralData();
-  }
+  /// We use ListQueue to stack visited pages. Generally, Flutter's Navigator does this for us.
+  /// But in our case, we are not using navigator so we have to keep our own stack.
+  ListQueue<int> _navStack = ListQueue();
+
+  /// Finally, we update the state of ConvexAppBar by its key. See line 82.
+  final GlobalKey<ConvexAppBarState> _convexAppBarKey = GlobalKey<ConvexAppBarState>();
 
   Future<String> getData() async {
     var document = await users.doc(currentUid);
@@ -47,70 +45,83 @@ class _BottomNavigationState extends State<BottomNavigation> {
     }
   }
 
-  int selectedPage = 0;
-  final _pageOptions = [
-    ProfileDrawer(),
-    MapView(),
-    QRScanPage(),
-    NewPrizePage(),
-    ProfilePage()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    getData().then((value) {
+      avatarList.clear();
+      avatarList.add(value);
+    });
+    checkReferralData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'WE',
-        theme: ThemeData(
-          canvasColor: kSecondaryColor,
-          fontFamily: "Montserrat_Alternates",
-          primaryColor: kPrimaryColor,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Scaffold(
-          body: _pageOptions[selectedPage],
-          bottomNavigationBar: ConvexAppBar(
-            items: [
-              TabItem(
-                  icon: Image.asset(
-                      "assets/Images/BottomNavigation/homeIcon.png")),
-              TabItem(
-                  icon: Image.asset(
-                "assets/Images/BottomNavigation/mapIcon.png",
-                color: kThirdColor,
-              )),
-              TabItem(
-                  icon: Image.asset("assets/Images/BottomNavigation/qrIcon.png",
-                      color: kThirdColor)),
-              TabItem(
-                  icon: Image.asset(
-                "assets/Images/BottomNavigation/privilege.png",
-                color: kThirdColor,
-              )),
-              TabItem(
-                  activeIcon: Icon(
-                    Icons.account_circle_rounded,
-                    color: Colors.white,
-                    size: 64,
-                  ),
-                  icon: Icon(
-                    Icons.account_circle_rounded,
-                    color: Colors.white,
-                  )),
-            ],
-            activeColor: kPrimaryColor,
-            backgroundColor: kPrimaryColor,
-            initialActiveIndex: 0,
-            onTap: (int i) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'WE',
+      theme: ThemeData(
+        canvasColor: kSecondaryColor,
+        fontFamily: "Montserrat_Alternates",
+        primaryColor: kPrimaryColor,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Scaffold(
+        body: WillPopScope(
+          onWillPop: () async {
+            bool returnValue = false;
+            if (_navStack.isEmpty) returnValue = await _showDialog();
+            if (_navStack.isNotEmpty) {
               setState(() {
-                selectedPage = i;
+                _navStack.removeLast();
+                int position = _navStack.isEmpty ? 0 : _navStack.last;
+                selectedPage = position;
+                returnValue = false;
               });
-            },
-          ),
+            }
+            _convexAppBarKey.currentState.tap(selectedPage);
+            return returnValue;
+          },
+          child: _pageOptions[selectedPage],
+        ),
+        bottomNavigationBar: ConvexAppBar(
+          key: _convexAppBarKey,
+          items: itemList,
+          activeColor: kPrimaryColor,
+          backgroundColor: kPrimaryColor,
+          initialActiveIndex: 0,
+          onTap: _tapHandler,
         ),
       ),
     );
   }
+
+  _showDialog() async => await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          content: Text('Uygulamadan çıkmak istediğinize emin misiniz?'),
+          actions: <Widget>[
+            TextButton(child: Text('Hayır'), onPressed: () => Navigator.of(context).pop(false)),
+            TextButton(child: Text('Evet'), onPressed: () => Navigator.of(context).pop(true)),
+          ],
+        );
+      });
+
+  _tapHandler(int index) {
+    if (index != selectedPage) {
+      _navStack.addLast(index);
+      setState(() => selectedPage = index);
+    }
+  }
+
+  List<TabItem> itemList = [
+    TabItem(icon: Image.asset("assets/Images/BottomNavigation/homeIcon.png")),
+    TabItem(icon: Image.asset("assets/Images/BottomNavigation/mapIcon.png", color: kThirdColor)),
+    TabItem(icon: Image.asset("assets/Images/BottomNavigation/qrIcon.png", color: kThirdColor)),
+    TabItem(icon: Image.asset("assets/Images/BottomNavigation/privilege.png", color: kThirdColor)),
+    TabItem(
+        activeIcon: Icon(Icons.account_circle_rounded, color: Colors.white, size: 64),
+        icon: Icon(Icons.account_circle_rounded, color: Colors.white))
+  ];
 }

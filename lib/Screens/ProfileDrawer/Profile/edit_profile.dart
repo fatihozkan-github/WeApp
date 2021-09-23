@@ -1,6 +1,6 @@
-import 'dart:io';
+// ignore_for_file: omit_local_variable_types
 
-import 'package:WE/Resources/SizeConfig.dart';
+import 'dart:io';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Services/user_service.dart';
@@ -19,20 +19,13 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  String _newUsername,
-      _newEmail,
-      _newPassword,
-      _newAddress,
-      _newSuperhero,
-      _newCity;
+  String _newUsername, _newEmail, _newPassword, _newAddress, _newSuperhero, _newCity;
   String imageUrl;
-  DocumentReference sightingRef =
-      FirebaseFirestore.instance.collection("users").doc();
-
-  final CollectionReference brewCollection =
-      FirebaseFirestore.instance.collection('users');
+  DocumentReference sightingRef = FirebaseFirestore.instance.collection("users").doc();
+  final CollectionReference brewCollection = FirebaseFirestore.instance.collection('users');
 
   uploadImage() async {
+    print('ch1');
     final _storage = FirebaseStorage.instance;
     File image;
 
@@ -42,13 +35,12 @@ class _EditProfileState extends State<EditProfile> {
 
     if (permissionStatus.isGranted) {
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      print('ch2');
+      print(File(image.path));
       var file = File(image.path);
 
       if (image != null) {
-        var snapshot = await _storage
-            .ref()
-            .child('profilePhotos/${basename(image.path)}')
-            .putFile(file);
+        var snapshot = await _storage.ref().child('profilePhotos/${basename(image.path)}').putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
           'avatar': downloadUrl,
@@ -73,39 +65,29 @@ class _EditProfileState extends State<EditProfile> {
     var firebaseUser = FirebaseAuth.instance.currentUser;
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(firebaseUser.uid).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text("Something went wrong");
         }
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
-          return Scaffold(
-              body: DoubleBack(
-            condition: allowClose,
-            onConditionFail: () {
-              setState(() {
-                allowClose = true;
-              });
-            },
-            message: "Çıkmak için tekrar dokunun.",
-            onFirstBackPress: (context) {
-              // change this with your custom action
-              final snackBar =
-                  SnackBar(content: Text('Çıkmak için tekrar dokunun.'));
-              Scaffold.of(context).showSnackBar(snackBar);
-              // ---
-            },
-            waitForSecondBackPress: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      uploadImage();
-                    },
-                    child: Padding(
+          return _getBody(data, context, size);
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  _getBody(data, context, size) => Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            children: [
+              GestureDetector(
+                onTap: () => uploadImage(),
+                child: Column(
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: imageUrl != null
                           ? Container(
@@ -113,151 +95,81 @@ class _EditProfileState extends State<EditProfile> {
                               width: 440,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(data["avatar"]))),
+                                  image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
                             )
-                          : Icon(
-                              Icons.account_circle_rounded,
-                              size: 150,
-                              color: Colors.grey,
-                            ),
+                          : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      uploadImage();
-                    },
-                    child: Container(
+                    Container(
                       child: Center(
-                          child: Text(
-                        "Profil fotoğrafını değiştirmek için avatara dokun.",
-                        style: TextStyle(color: Colors.grey),
-                      )),
+                          child:
+                              Text("Profil fotoğrafını değiştirmek için avatara dokun.", style: TextStyle(color: Colors.grey))),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                      title: Text(
-                        'Kullancı adı:',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        onSubmitted: (value1) {
-                          setState(() {
-                            _newUsername = value1.trim();
-                            brewCollection.doc(currentUid).update({
-                              "name": _newUsername,
-                            });
-                          });
-                        },
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold),
-                          hintText: data["name"],
-                        ),
-                      )),
-                  ListTile(
-                      title: Text(
-                        'Şehir:',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
-                      ),
-                      subtitle: TextField(
-                        onSubmitted: (value) {
-                          setState(() {
-                            _newCity = value.trim();
-                            brewCollection.doc(currentUid).update({
-                              "city": _newCity,
-                            });
-                          });
-                        },
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(
-                              color: Colors.white,
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold),
-                          hintText: data["city"],
-                        ),
-                      )),
-                  ListTile(
-                    title: Text(
-                      'Favori süper kahraman',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 20,
-                      ),
-                    ),
-                    subtitle: TextField(
-                      onSubmitted: (value) {
-                        setState(() {
-                          _newSuperhero = value.trim();
-                          brewCollection.doc(currentUid).update({
-                            "superhero": _newSuperhero,
-                          });
-                        });
-                      },
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 35,
-                          fontWeight: FontWeight.bold),
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold),
-                        hintText: data["superhero"],
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        setState(() {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return BottomNavigation();
-                              },
-                            ),
-                          );
-                        });
-                      },
-                      child: Container(
-                        color: kPrimaryColor,
-                        height: size.height * 0.05,
-                        width: size.width * 0.9,
-                        child: Center(
-                          child: Text(
-                            "Onayla",
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                          ),
-                        ),
-                      ))
-                ],
+                  ],
+                ),
               ),
-            ),
-          ));
-        }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-  }
+              SizedBox(height: 10),
+              ListTile(
+                  title: Text('Kullancı adı:', style: TextStyle(color: Colors.grey, fontSize: 20)),
+                  subtitle: TextField(
+                    onSubmitted: (value1) {
+                      setState(() {
+                        _newUsername = value1.trim();
+                        brewCollection.doc(currentUid).update({
+                          "name": _newUsername,
+                        });
+                      });
+                    },
+                    style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+                      hintText: data["name"],
+                    ),
+                  )),
+              ListTile(
+                  title: Text('Şehir:', style: TextStyle(color: Colors.grey, fontSize: 20)),
+                  subtitle: TextField(
+                    onSubmitted: (value) {
+                      setState(() {
+                        _newCity = value.trim();
+                        brewCollection.doc(currentUid).update({
+                          "city": _newCity,
+                        });
+                      });
+                    },
+                    style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+                    decoration: InputDecoration(
+                      hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+                      hintText: data["city"],
+                    ),
+                  )),
+              ListTile(
+                title: Text('Favori süper kahraman', style: TextStyle(color: Colors.grey, fontSize: 20)),
+                subtitle: TextField(
+                  onSubmitted: (value) {
+                    setState(() {
+                      _newSuperhero = value.trim();
+                      brewCollection.doc(currentUid).update({"superhero": _newSuperhero});
+                    });
+                  },
+                  style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+                    hintText: data["superhero"],
+                  ),
+                ),
+              ),
+              TextButton(
+                  onPressed: () {
+                    setState(() => Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation())));
+                  },
+                  child: Container(
+                    color: kPrimaryColor,
+                    height: size.height * 0.05,
+                    width: size.width * 0.9,
+                    child: Center(child: Text("Onayla", style: TextStyle(color: Colors.black, fontSize: 16))),
+                  ))
+            ],
+          ),
+        ),
+      );
 }
