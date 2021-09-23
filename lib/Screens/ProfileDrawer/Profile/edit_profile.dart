@@ -1,4 +1,4 @@
-// ignore_for_file: omit_local_variable_types
+// ignore_for_file: omit_local_variable_types, prefer_single_quotes
 
 import 'dart:io';
 import 'package:WE/Resources/constants.dart';
@@ -28,13 +28,12 @@ class _EditProfileState extends State<EditProfile> {
     print('ch1');
     final _storage = FirebaseStorage.instance;
     File image;
-
     await Permission.photos.request();
-
     var permissionStatus = await Permission.photos.status;
 
     if (permissionStatus.isGranted) {
       image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      print(image);
       print('ch2');
       print(File(image.path));
       var file = File(image.path);

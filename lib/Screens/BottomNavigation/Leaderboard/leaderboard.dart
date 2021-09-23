@@ -9,13 +9,8 @@ class Leaderboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          "Lider Tablosu",
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      appBar:
+          AppBar(centerTitle: true, title: Text("Lider Tablosu", style: TextStyle(fontSize: 24)), backgroundColor: kPrimaryColor),
       body: Stack(
         children: [
           Container(
@@ -30,18 +25,8 @@ class Leaderboard extends StatelessWidget {
                         height: 50,
                         child: TabBar(
                           tabs: [
-                            Tab(
-                              child: Text(
-                                "WE",
-                                style: TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            Tab(
-                                child: Text("Arkadaşlar",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold))),
+                            Tab(child: Text("WE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+                            Tab(child: Text("Arkadaşlar", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
                           ],
                           labelColor: kPrimaryColor,
                           unselectedLabelColor: Colors.black,
@@ -49,13 +34,7 @@ class Leaderboard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
-                        child: Container(
-                      color: Colors.white,
-                      child: TabBarView(
-                        children: [Example(), FriendsTab()],
-                      ),
-                    ))
+                    Expanded(child: Container(color: Colors.white, child: TabBarView(children: [Example(), FriendsTab()])))
                   ],
                 ),
               )),

@@ -49,11 +49,9 @@ class QRScanPageState extends State<QRScanPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(
-          "HeroStation",
-          style: TextStyle(fontSize: 24),
-        ),
+        title: Text("HeroStation", style: TextStyle(fontSize: 24)),
         centerTitle: true,
+        backgroundColor: Color(0xFFFF6B00),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -66,10 +64,7 @@ class QRScanPageState extends State<QRScanPage> {
               alignment: Alignment.topRight,
               nip: BubbleNip.leftBottom,
               color: kPrimaryColor,
-              child: Text(
-                'Hoş geldin kahraman!',
-                style: TextStyle(color: Colors.white),
-              ),
+              child: Text('Hoş geldin kahraman!', style: TextStyle(color: Colors.white)),
             ),
             Image.asset("assets/instruction.png"),
             Center(
@@ -78,16 +73,11 @@ class QRScanPageState extends State<QRScanPage> {
                 child: Text(
                   "Lütfen dönüştürmeye başlamadan önce aşağıdaki görevleri tamamladığından emin ol!",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, color: kPrimaryColor, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            SizedBox(
-              height: size.height * 0.02,
-            ),
+            SizedBox(height: size.height * 0.02),
             Column(children: [
               Container(
                 child: CarouselSlider(
@@ -110,11 +100,8 @@ class QRScanPageState extends State<QRScanPage> {
                   return Container(
                     width: 8.0,
                     height: 8.0,
-                    margin:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _current == index ? kPrimaryColor : Colors.grey),
+                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? kPrimaryColor : Colors.grey),
                   );
                 }).toList(),
               ),
@@ -137,8 +124,7 @@ class QRScanPageState extends State<QRScanPage> {
                           ),
                         );
                       },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80.0)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                       padding: EdgeInsets.all(0.0),
                       child: Ink(
                         decoration: BoxDecoration(
@@ -149,23 +135,16 @@ class QRScanPageState extends State<QRScanPage> {
                             ),
                             borderRadius: BorderRadius.circular(30.0)),
                         child: Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                          constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
                           alignment: Alignment.center,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(
-                                Icons.qr_code_rounded,
-                                color: Colors.white,
-                              ),
+                              Icon(Icons.qr_code_rounded, color: Colors.white),
                               Text(
                                 "TARAT",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -187,8 +166,7 @@ class QRScanPageState extends State<QRScanPage> {
                           ),
                         );
                       },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80.0)),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                       padding: EdgeInsets.all(0.0),
                       child: Ink(
                         decoration: BoxDecoration(
@@ -199,8 +177,7 @@ class QRScanPageState extends State<QRScanPage> {
                             ),
                             borderRadius: BorderRadius.circular(30.0)),
                         child: Container(
-                          constraints:
-                              BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                          constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
                           alignment: Alignment.center,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -208,16 +185,9 @@ class QRScanPageState extends State<QRScanPage> {
                               Text(
                                 "OKUT",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
                               ),
-                              Container(
-                                  width: 30,
-                                  child: Image.asset(
-                                      "assets/Icons/bracelet.png",
-                                      color: Colors.white)),
+                              Container(width: 30, child: Image.asset("assets/Icons/bracelet.png", color: Colors.white)),
                             ],
                           ),
                         ),

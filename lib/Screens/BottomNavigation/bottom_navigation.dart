@@ -61,6 +61,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
       debugShowCheckedModeBanner: false,
       title: 'WE',
       theme: ThemeData(
+        /// TODO: Test
+        accentColor: Colors.orange,
         canvasColor: kSecondaryColor,
         fontFamily: "Montserrat_Alternates",
         primaryColor: kPrimaryColor,
