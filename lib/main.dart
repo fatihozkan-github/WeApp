@@ -33,26 +33,20 @@ class WE extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: isLoggedIn == false
-            ? Scaffold(body: BottomNavigation())
-            : Scaffold(
-                body: SplashScreen(
-                  loadingText: Text(
-                    "WE ekibinden",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  photoSize: 240,
-                  seconds: 0,
-                  navigateAfterSeconds: AfterSplash(),
-                  image: Image.asset(
-                    "assets/we2.png",
-                    alignment: Alignment.center,
-                    width: 160,
-                  ),
-                  backgroundColor: kSecondaryColor,
-                ),
-        ));
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: isLoggedIn == false
+            ? BottomNavigation()
+            : SplashScreen(
+                loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
+                photoSize: 240,
+                seconds: 0,
+                navigateAfterSeconds: AfterSplash(),
+                image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
+                backgroundColor: kSecondaryColor,
+              ),
+      ),
+    );
   }
 }
 
@@ -69,6 +63,7 @@ class AfterSplash extends StatelessWidget {
               title: 'WE',
               theme: ThemeData(
                 canvasColor: kSecondaryColor,
+                accentColor: Colors.orange,
                 fontFamily: "Montserrat_Alternates",
                 primaryColor: kPrimaryColor,
                 visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -81,3 +76,15 @@ class AfterSplash extends StatelessWidget {
     );
   }
 }
+
+// ? Scaffold(body: BottomNavigation())
+// : Scaffold(
+//     body: SplashScreen(
+//       loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
+//       photoSize: 240,
+//       seconds: 0,
+//       navigateAfterSeconds: AfterSplash(),
+//       image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
+//       backgroundColor: kSecondaryColor,
+//     ),
+//   ));

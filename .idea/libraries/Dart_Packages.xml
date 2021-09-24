@@ -401,6 +401,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_spinkit">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_spinkit-5.1.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_svg">
           <value>
             <list>
@@ -1153,6 +1160,7 @@
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_blue-0.7.3/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_icons-1.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_spinkit-5.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_svg-0.19.3/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/font_awesome_flutter-8.12.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/flutter/.pub-cache/hosted/pub.dartlang.org/functional_widget_annotation-0.8.0/lib" />

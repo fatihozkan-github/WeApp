@@ -1,6 +1,7 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes
 
 import 'dart:io';
+import 'package:WE/Resources/components/we_text_field.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Services/user_service.dart';
@@ -55,26 +56,34 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  bool allowClose = false;
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     var firebaseUser = FirebaseAuth.instance.currentUser;
-    return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(firebaseUser.uid).get(),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong");
-        }
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data.data();
-          return _getBody(data, context, size);
-        }
-        return Center(child: CircularProgressIndicator());
-      },
+    return Column(
+      children: [
+        SizedBox(height: 30),
+        WeTextFormField(),
+        SizedBox(height: 30),
+        WeTextFormField(),
+        SizedBox(height: 30),
+        WeTextFormField(),
+      ],
     );
+    //   FutureBuilder<DocumentSnapshot>(
+    //   future: users.doc(firebaseUser.uid).get(),
+    //   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+    //     if (snapshot.hasError) {
+    //       return Text("Something went wrong");
+    //     }
+    //     if (snapshot.connectionState == ConnectionState.done) {
+    //       Map<String, dynamic> data = snapshot.data.data();
+    //       return _getBody(data, context, size);
+    //     }
+    //     return Center(child: CircularProgressIndicator());
+    //   },
+    // );
   }
 
   _getBody(data, context, size) => Scaffold(

@@ -20,44 +20,17 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(
-                    "WE'ye HOŞGELDİN!",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: kPrimaryColor,
-                        fontSize: 32),
-                  ),
-                  Image.asset(
-                    "assets/we.png",
-                    scale: 1.5,
-                  ),
+                  Text("WE'ye HOŞGELDİN!", style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor, fontSize: 32)),
+                  Image.asset("assets/we.png", scale: 1.5),
                   RoundedButton(
                     text: "GİRİŞ YAP",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return LoginScreen();
-                          },
-                        ),
-                      );
-                    },
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
                   ),
                   RoundedButton(
                     text: "KAYIT OL",
                     color: kSecondaryColor,
                     textColor: Colors.white,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return SignUpScreen();
-                          },
-                        ),
-                      );
-                    },
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
                   ),
                 ],
               ),
