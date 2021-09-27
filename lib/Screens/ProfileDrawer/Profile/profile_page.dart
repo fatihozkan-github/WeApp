@@ -92,13 +92,23 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(data["name"], style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text(data["name"] ?? 'İsim Girilmedi!',
+                          style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
                       Row(
                         children: <Widget>[
                           Image.asset("assets/Icons/supermanicon.png", scale: 0.2, color: Colors.black, height: 30, width: 30),
                           SizedBox(width: 20),
-                          Text(data["superhero"], style: TextStyle(color: Colors.black, fontSize: 15)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Text(
+                              data["superhero"] ?? 'Kahraman İsmi Girilmedi!',
+                              style: TextStyle(color: Colors.black, fontSize: 15),
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ),
                         ],
                       )
                     ],

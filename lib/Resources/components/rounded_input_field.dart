@@ -11,6 +11,7 @@ class RoundedInputField extends StatelessWidget {
   final TextInputAction textInputAction;
   final Function validator;
   final Function onEditingComplete;
+  final String initialValue;
 
   /// • For a password field with a toggle button do NOT use [TextInputAction.next], instead consider the following:
   ///
@@ -31,6 +32,7 @@ class RoundedInputField extends StatelessWidget {
     this.textInputAction,
     this.validator,
     this.onEditingComplete,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class RoundedInputField extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
+        initialValue: initialValue,
         textInputAction: textInputAction ?? TextInputAction.next,
         autocorrect: false,
         keyboardType: keyboardType,

@@ -131,8 +131,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: kPrimaryColor),
-              accountName: Text(data["superhero"], style: TextStyle(color: kThirdColor)),
-              accountEmail: Text(data["name"], style: TextStyle(color: kThirdColor)),
+              accountName: Text(data["superhero"] ?? 'Kahraman İsmi Girilmedi!', style: TextStyle(color: kThirdColor)),
+              accountEmail: Text(data["name"] ?? 'İsim Girilmedi!', style: TextStyle(color: kThirdColor)),
               currentAccountPicture: GestureDetector(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
                 child: data["avatar"] != null

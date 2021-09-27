@@ -108,7 +108,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                 style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),
                               );
                             }
-                            return Center(child: CircularProgressIndicator());
+                            return WESpinKit();
                           }),
                       Text('WE Coin', style: TextStyle(color: Colors.white, fontSize: 26.0, fontWeight: FontWeight.bold)),
                     ],
