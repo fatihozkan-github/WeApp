@@ -1,13 +1,11 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes, unawaited_futures
 
 import 'dart:io';
-import 'package:WE/Resources/components/text_field_container.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Screens/Intro/signup_screen.dart';
 import 'package:WE/Resources/components/already_have_an_account_acheck.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
-import 'package:WE/Resources/components/rounded_password_field.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
@@ -24,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email, _password;
   final auth = FirebaseAuth.instance;
   bool _obscureText = true;
+  bool _showError = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isValidEmail() {
@@ -32,15 +31,10 @@ class _LoginScreenState extends State<LoginScreen> {
         .hasMatch(_email);
   }
 
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
+  void _toggle() => setState(() => _obscureText = !_obscureText);
 
   @override
   Widget build(BuildContext context) {
-    // Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: true,
@@ -48,9 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Form(
           key: _formKey,
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             children: <Widget>[
-              Image.asset("assets/we2.png", scale: 2),
+              Image.asset("assets/we2.png", scale: 1.4),
               RoundedInputField(
                 hintText: "E-posta",
                 icon: Icons.mail,
@@ -85,8 +79,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   }
                 },
               ),
+              _showError
+                  ? Text(
+                      'Girdiğiniz bilgilere sahip bir kullanıcı bulamadık. Mailinizi ve şifrenizi kontrol edip tekrar deneyiniz.',
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Container(),
               RoundedButton(
-                /// TODO: User not found alert.
+                /// TODO: User check
                 text: "GİRİŞ YAP",
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
@@ -101,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     );
+                    // .onError((error, stackTrace) async => setState(() => _showError = true));
                   }
                 },
               ),

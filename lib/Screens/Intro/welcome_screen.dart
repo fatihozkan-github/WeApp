@@ -7,33 +7,26 @@ import 'package:WE/Resources/constants.dart';
 class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
-        height: size.height,
-        width: double.infinity,
-        child: Stack(
-          alignment: Alignment.center,
+      body: Center(
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 10),
           children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("WE'ye HOŞGELDİN!", style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor, fontSize: 32)),
-                  Image.asset("assets/we.png", scale: 1.5),
-                  RoundedButton(
-                    text: "GİRİŞ YAP",
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
-                  ),
-                  RoundedButton(
-                    text: "KAYIT OL",
-                    color: kSecondaryColor,
-                    textColor: Colors.white,
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
-                  ),
-                ],
-              ),
+            SizedBox(height: 60),
+            Center(
+              child: Text("WE'ye HOŞGELDİN!", style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor, fontSize: 32)),
+            ),
+            Image.asset("assets/we2.png", scale: 1.4),
+            RoundedButton(
+              text: "GİRİŞ YAP",
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
+            ),
+            RoundedButton(
+              text: "KAYIT OL",
+              color: kSecondaryColor,
+              textColor: Colors.white,
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
             ),
           ],
         ),

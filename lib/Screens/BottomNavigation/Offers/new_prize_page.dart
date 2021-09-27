@@ -1,6 +1,6 @@
 import 'package:WE/Resources/components/opportunities/sliding_cards.dart';
 import 'package:WE/Resources/components/pop_up.dart';
-import 'package:WE/Resources/components/we_spin.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,15 +18,10 @@ class _NewPrizePageState extends State<NewPrizePage> {
   List<int> coinsList = [];
   List<bool> boolList = [];
   int _current = 0;
-  var items = [
-    1,
-    2,
-    3,
-  ];
+  var items = [1, 2, 3];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getCoinData().then((value) {
       coinsList.clear();
@@ -37,7 +32,6 @@ class _NewPrizePageState extends State<NewPrizePage> {
   final databaseReference = FirebaseDatabase.instance.reference();
   final currentUid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-
   CollectionReference prizes = FirebaseFirestore.instance.collection('prizes');
 
   Future<void> updateCoins(
@@ -87,7 +81,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('Ayrıcalıklar', style: TextStyle(fontSize: 24)),
-        backgroundColor: Color(0xFFFF6B00),
+        backgroundColor: kPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -223,9 +217,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                                 ),
                                                               ));
                                                         }
-                                                        return Center(
-                                                          child: CircularProgressIndicator(),
-                                                        );
+                                                        return WESpinKit();
                                                       }),
                                                 ],
                                               ),
@@ -239,7 +231,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
                       ),
                     );
                   }
-                  return Center(child: CircularProgressIndicator());
+                  return WESpinKit();
                 }),
             FutureBuilder<DocumentSnapshot>(
                 future: prizes.doc("1pHYVNY6et3U7RcVIiJp").get(),
@@ -345,9 +337,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                                 ),
                                                               ));
                                                         }
-                                                        return Center(
-                                                          child: CircularProgressIndicator(),
-                                                        );
+                                                        return WESpinKit();
                                                       }),
                                                 ],
                                               ),
@@ -361,9 +351,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
                       ),
                     );
                   }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return WESpinKit();
                 }),
             FutureBuilder<DocumentSnapshot>(
                 future: prizes.doc("1pHYVNY6et3U7RcVIiJp").get(),
@@ -457,21 +445,16 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                                     }
                                                                   },
                                                                   child: Container(
-                                                                    width: 120,
-                                                                    height: 30,
-                                                                    color: kPrimaryColor,
-                                                                    child: Center(
-                                                                        child: Text(
-                                                                      "5000 WE Coin",
-                                                                      style: TextStyle(color: Colors.white),
-                                                                    )),
-                                                                  ),
+                                                                      width: 120,
+                                                                      height: 30,
+                                                                      color: kPrimaryColor,
+                                                                      child: Center(
+                                                                          child: Text("5000 WE Coin",
+                                                                              style: TextStyle(color: Colors.white)))),
                                                                 ),
                                                               ));
                                                         }
-                                                        return Center(
-                                                          child: CircularProgressIndicator(),
-                                                        );
+                                                        return WESpinKit();
                                                       }),
                                                 ],
                                               ),
@@ -485,9 +468,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
                       ),
                     );
                   }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return WESpinKit();
                 }),
             SizedBox(height: 20),
           ],

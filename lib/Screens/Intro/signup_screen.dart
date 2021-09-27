@@ -1,6 +1,4 @@
-import 'package:WE/Resources/components/text_field_container.dart';
 import 'package:WE/Resources/components/unFocuser.dart';
-import 'package:WE/Resources/components/we_text_field.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,9 +7,6 @@ import 'package:WE/Screens/Intro/login_screen.dart';
 import 'package:WE/Resources/components/already_have_an_account_acheck.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
-import 'package:WE/Resources/components/rounded_password_field.dart';
-import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
-import 'package:WE/Services/user_service.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override

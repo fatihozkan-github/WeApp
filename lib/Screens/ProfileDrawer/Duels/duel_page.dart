@@ -1,3 +1,4 @@
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,8 +21,7 @@ class _DuelsPageState extends State<DuelsPage> {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
 
-    CollectionReference challenges =
-        FirebaseFirestore.instance.collection('challenges');
+    CollectionReference challenges = FirebaseFirestore.instance.collection('challenges');
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -32,24 +32,17 @@ class _DuelsPageState extends State<DuelsPage> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                    insetPadding:
-                        EdgeInsets.symmetric(vertical: size.height * 0.3),
+                    insetPadding: EdgeInsets.symmetric(vertical: size.height * 0.3),
                     title: Text("Düellolar hakkında bilgi"),
                     content: Text(
                         "Bu saydada sana meydan okunmuş düelloları görebilir ve onları kabul edebilirsin. Düello bitim tarihine kadar kim daha fazla geri dönüşüm yaparsa düelloya girdiği kişinin coinlerini de alır. Düelloyu kaybeden kişi ise kazandığı coinleri kaybeder. Düelloya girmeden önce iyi düşün, bu riskli bir iş!"));
               });
         },
       ),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Düellolar',
-        ),
-      ),
+      appBar: AppBar(centerTitle: true, title: Text('Düellolar'), backgroundColor: kPrimaryColor),
       body: FutureBuilder<DocumentSnapshot>(
           future: challenges.doc(currentUid).get(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasError) {
               return Text("Something went wrong");
             }
@@ -61,32 +54,19 @@ class _DuelsPageState extends State<DuelsPage> {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Card(
-                        child: data["user" + (index + 1).toString()]
-                                    ["isAccepted"] !=
-                                true
+                        child: data["user" + (index + 1).toString()]["isAccepted"] != true
                             ? ListTile(
-                                title: Text(
-                                    data["user" + (index + 1).toString()]
-                                            ["name"] +
-                                        " sana düello teklif etti"),
-                                subtitle: Text(
-                                    data["user" + (index + 1).toString()]
-                                            ["time1"] +
-                                        "'e kadar."),
+                                title: Text(data["user" + (index + 1).toString()]["name"] + " sana düello teklif etti"),
+                                subtitle: Text(data["user" + (index + 1).toString()]["time1"] + "'e kadar."),
                                 trailing: IconButton(
                                   icon: Icon(Icons.check),
                                   onPressed: () {
                                     setState(() {
-                                      FirebaseFirestore.instance
-                                          .collection('challenges')
-                                          .doc(currentUid)
-                                          .update({
+                                      FirebaseFirestore.instance.collection('challenges').doc(currentUid).update({
                                         "user" + (index + 1).toString(): {
                                           "isAccepted": true,
-                                          "name": data["user" +
-                                              (index + 1).toString()]["name"],
-                                          "time1": data["user" +
-                                              (index + 1).toString()]["time1"],
+                                          "name": data["user" + (index + 1).toString()]["name"],
+                                          "time1": data["user" + (index + 1).toString()]["time1"],
                                           "time2": formattedDate,
                                         }
                                       });
@@ -95,14 +75,8 @@ class _DuelsPageState extends State<DuelsPage> {
                                 ),
                               )
                             : ListTile(
-                                title: Text(
-                                    data["user" + (index + 1).toString()]
-                                            ["name"] +
-                                        " ile şu anda bir düellodasın."),
-                                subtitle: Text(
-                                    data["user" + (index + 1).toString()]
-                                            ["time1"] +
-                                        "'e kadar daha mücadele et."),
+                                title: Text(data["user" + (index + 1).toString()]["name"] + " ile şu anda bir düellodasın."),
+                                subtitle: Text(data["user" + (index + 1).toString()]["time1"] + "'e kadar daha mücadele et."),
                                 trailing: Icon(Icons.local_police_rounded),
                               ));
                   },
@@ -126,9 +100,7 @@ class _DuelsPageState extends State<DuelsPage> {
                         width: size.width * 0.8,
                         height: size.height * 0.2,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: kPrimaryColor,
-                          ),
+                          border: Border.all(color: kPrimaryColor),
                           borderRadius: BorderRadius.circular(32),
                         ),
                         child: Padding(
@@ -136,10 +108,7 @@ class _DuelsPageState extends State<DuelsPage> {
                             child: Center(
                                 child: Text(
                               "Şu anda herhangi bir düellon veya davetin bulunmuyor. Hadi sen arkadaşlarını düelloya davet ederek başla!",
-                              style: TextStyle(
-                                  color: kPrimaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
+                              style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
                             ))),
                       ),
                     ),
@@ -149,9 +118,7 @@ class _DuelsPageState extends State<DuelsPage> {
                 );
               }
             }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return WESpinKit();
           }),
     );
   }

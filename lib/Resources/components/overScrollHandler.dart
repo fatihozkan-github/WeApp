@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 class OverScroll extends StatelessWidget {
-  /// • Simple widget that removes the blue trailing in the Scrollable Widgets.
+  /// • Simple widget that removes the blue trailing of the Scrollable Widgets.
   ///
   /// • One may consider to use BouncingScrollPhysics() for ListView.
   ///
   /// • [child] parameter is required.
   OverScroll({@required this.child});
-
   final Widget child;
 
   @override

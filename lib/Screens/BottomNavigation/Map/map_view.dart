@@ -1,7 +1,7 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes
 
 import 'dart:typed_data';
-import 'package:WE/Resources/components/we_spin.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -80,8 +80,7 @@ class _MapViewState extends State<MapView> {
               initialCameraPosition: CameraPosition(target: const LatLng(40.408418, 29.092993), zoom: 14),
               markers: _markers.values.toSet(),
             )
-          : Center(child: WESpinKit()),
-      // : Center(child: CircularProgressIndicator()),
+          : WESpinKit(),
     );
   }
 }

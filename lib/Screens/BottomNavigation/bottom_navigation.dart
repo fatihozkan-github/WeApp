@@ -32,7 +32,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   /// But in our case, we are not using navigator so we have to keep our own stack.
   ListQueue<int> _navStack = ListQueue();
 
-  /// Finally, we update the state of ConvexAppBar by its key. See line 84.
+  /// Finally, we update the state of ConvexAppBar by its key. See [_willPop].
   final GlobalKey<ConvexAppBarState> _convexAppBarKey = GlobalKey<ConvexAppBarState>();
 
   Future<String> getData() async {
@@ -74,7 +74,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Scaffold(
-          body: WillPopScope(child: _pageOptions[selectedPage], onWillPop: _willPop),
+          body: WillPopScope(onWillPop: _willPop, child: _pageOptions[selectedPage]),
           bottomNavigationBar: ConvexAppBar(
             key: _convexAppBarKey,
             items: itemList,

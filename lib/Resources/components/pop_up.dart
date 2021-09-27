@@ -9,9 +9,7 @@ Widget buildPopupDialog(BuildContext context, title, bool) {
     content: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(title),
-      ],
+      children: <Widget>[Text(title)],
     ),
     actions: <Widget>[
       TextButton(
@@ -19,20 +17,10 @@ Widget buildPopupDialog(BuildContext context, title, bool) {
           if (bool == true) {
             Navigator.of(context).pop();
           } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return BottomNavigation();
-                },
-              ),
-            );
+            Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
           }
         },
-        child: Text(
-          'Kapat',
-          style: TextStyle(color: kPrimaryColor),
-        ),
+        child: Text('Kapat', style: TextStyle(color: kPrimaryColor)),
       ),
     ],
   );

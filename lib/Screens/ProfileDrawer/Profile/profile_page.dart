@@ -23,33 +23,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   var firebaseUser = FirebaseAuth.instance.currentUser;
 
-  // final Map<int, int> expTable = {
-  //   1: 50,
-  //   2: 150,
-  //   3: 300,
-  //   4: 500,
-  //   5: 750,
-  //   6: 1050,
-  //   7: 1400,
-  //   8: 1800,
-  //   9: 2250,
-  //   10: 2750,
-  //   11: 3300,
-  //   12: 3900,
-  //   13: 4550,
-  //   14: 5250,
-  //   15: 6000,
-  //   16: 6800,
-  //   17: 7650,
-  //   18: 8550,
-  //   19: 9500,
-  //   20: 10500,
-  //   21: 11550,
-  //   22: 12650,
-  //   23: 13800,
-  //   24: 15000,
-  // };
-
   @override
   void initState() {
     super.initState();
@@ -198,22 +171,22 @@ class _ProfilePageState extends State<ProfilePage> {
             )),
       );
 
-  _footer(data, size) => SizedBox(
-        height: size.height * 0.1,
-        child: ListView(
-          itemExtent: 100,
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            Image.asset(data["badges"]["badge1"] ? allBadges[0][0] : allBadges[0][1]),
-            Image.asset(data["badges"]["badge2"] ? allBadges[1][0] : allBadges[1][1], scale: 8),
-            GestureDetector(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BadgePage())),
-              child: Image.asset(data["badges"]["badge3"] ? allBadges[2][0] : allBadges[2][1], scale: 8),
-            ),
-            Image.asset(data["forbadgecount"] >= 3 ? allBadges[3][0] : allBadges[3][1], scale: 8),
-            Image.asset(data["recycled"] >= 800 ? allBadges[4][0] : allBadges[4][1], scale: 8),
-            Image.asset(data["badges"]["badge6"] ? allBadges[5][0] : allBadges[5][1], scale: 8),
-          ],
+  _footer(data, size) => GestureDetector(
+        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BadgePage())),
+        child: SizedBox(
+          height: size.height * 0.1,
+          child: ListView(
+            itemExtent: 100,
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              Image.asset(data["badges"]["badge1"] ? allBadges[0][0] : allBadges[0][1]),
+              Image.asset(data["badges"]["badge2"] ? allBadges[1][0] : allBadges[1][1], scale: 8),
+              Image.asset(data["badges"]["badge3"] ? allBadges[2][0] : allBadges[2][1], scale: 8),
+              Image.asset(data["forbadgecount"] >= 3 ? allBadges[3][0] : allBadges[3][1], scale: 8),
+              Image.asset(data["recycled"] >= 800 ? allBadges[4][0] : allBadges[4][1], scale: 8),
+              Image.asset(data["badges"]["badge6"] ? allBadges[5][0] : allBadges[5][1], scale: 8),
+            ],
+          ),
         ),
       );
 }

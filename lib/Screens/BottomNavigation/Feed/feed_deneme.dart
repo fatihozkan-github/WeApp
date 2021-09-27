@@ -1,4 +1,4 @@
-import 'package:WE/Resources/components/we_spin.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

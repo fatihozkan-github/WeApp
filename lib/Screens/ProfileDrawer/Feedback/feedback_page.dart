@@ -1,3 +1,4 @@
+import 'package:WE/Resources/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,10 +36,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Geri Bildirim",
-          style: TextStyle(fontSize: 24),
-        ),
+        title: Text("Geri Bildirim", style: TextStyle(fontSize: 24)),
+        backgroundColor: kPrimaryColor,
       ),
       //resizeToAvoidBottomPadding: false,
       body: SingleChildScrollView(
@@ -52,14 +51,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 13),
                 child: Text(
                   "Bize bir mesaj bırakın. En yakın zamanda geri dönüş yapacağız.",
-                  style: TextStyle(
-                      fontSize: 17.5, height: 1.3, color: Colors.white),
+                  style: TextStyle(fontSize: 17.5, height: 1.3, color: Colors.white),
                   textAlign: TextAlign.justify,
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.04),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
@@ -70,28 +66,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   decoration: InputDecoration(
                     fillColor: Color(0xffe6e6e6),
                     filled: true,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     hintText: 'İsim',
                     hintStyle: TextStyle(
                       color: Colors.blueGrey,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                   ),
@@ -108,28 +97,21 @@ class _FeedbackPageState extends State<FeedbackPage> {
                   decoration: InputDecoration(
                     fillColor: Color(0xffe6e6e6),
                     filled: true,
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 35, horizontal: 20),
+                    contentPadding: EdgeInsets.symmetric(vertical: 35, horizontal: 20),
                     hintText: 'Mesajınız',
                     hintStyle: TextStyle(
                       color: Colors.blueGrey,
                     ),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(17),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(17),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(17),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                   ),
@@ -138,90 +120,54 @@ class _FeedbackPageState extends State<FeedbackPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Card(
                 color: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
                       t1.clear();
                       t2.clear();
-                      launchUrl(
-                          "mailto:support@we.com?subject=From $name&body=$message");
+                      launchUrl("mailto:support@we.com?subject=From $name&body=$message");
                     });
                   },
                   child: ListTile(
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Center(
-                            child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        )),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.03,
-                        ),
-                        Center(
-                            child: Text(
-                          "Gönder",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                        )),
+                        Center(child: Icon(Icons.send, color: Colors.white)),
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+                        Center(child: Text("Gönder", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.035,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.035),
               Padding(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.05,
                     left: 21,
                     right: 21,
                     bottom: MediaQuery.of(context).size.height * 0.034),
-                child: Text(
-                  "Alternatif olarak bu platformlardan da bize ulaşabilirsiniz.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    height: 1.3,
-                  ),
-                ),
+                child: Text("Alternatif olarak bu platformlardan da bize ulaşabilirsiniz.",
+                    textAlign: TextAlign.center, style: TextStyle(color: Colors.white, fontSize: 17, height: 1.3)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () =>
-                        launchUrl("https://github.com/alihansoykal/we"),
-                    child: Icon(
-                      FontAwesomeIcons.github,
-                      color: Colors.orange,
-                      size: 35,
-                    ),
+                    onTap: () => launchUrl("https://github.com/alihansoykal/we"),
+                    child: Icon(FontAwesomeIcons.github, color: Colors.orange, size: 35),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.06,
-                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.06),
                   GestureDetector(
-                    onTap: () => launchUrl(
-                        "https://www.instagram.com/werecycle.official/"),
-                    child: Icon(FontAwesomeIcons.instagram,
-                        color: Color(0xfffb3958), size: 35),
+                    onTap: () => launchUrl("https://www.instagram.com/werecycle.official/"),
+                    child: Icon(FontAwesomeIcons.instagram, color: Color(0xfffb3958), size: 35),
                   ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.06,
-                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.06),
                   GestureDetector(
-                    onTap: () => launchUrl(
-                        "https://play.google.com/store/apps/details?id=com.we.werecyclemobile"),
-                    child: Icon(FontAwesomeIcons.googlePlay,
-                        color: Color(0xff1DA1F2), size: 35),
+                    onTap: () => launchUrl("https://play.google.com/store/apps/details?id=com.we.werecyclemobile"),
+                    child: Icon(FontAwesomeIcons.googlePlay, color: Color(0xff1DA1F2), size: 35),
                   ),
                 ],
               ),
