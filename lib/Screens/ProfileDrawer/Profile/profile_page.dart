@@ -2,7 +2,6 @@
 
 import 'package:WE/Resources/components/or_divider.dart';
 import 'package:WE/Resources/components/pop_up.dart';
-import 'package:WE/Resources/components/progress_bar.dart';
 import 'package:WE/Screens/ProfileDrawer/Badges/badges_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
 import 'package:WE/Services/user_service.dart';
@@ -24,32 +23,32 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   var firebaseUser = FirebaseAuth.instance.currentUser;
 
-  final Map<int, int> expTable = {
-    1: 50,
-    2: 150,
-    3: 300,
-    4: 500,
-    5: 750,
-    6: 1050,
-    7: 1400,
-    8: 1800,
-    9: 2250,
-    10: 2750,
-    11: 3300,
-    12: 3900,
-    13: 4550,
-    14: 5250,
-    15: 6000,
-    16: 6800,
-    17: 7650,
-    18: 8550,
-    19: 9500,
-    20: 10500,
-    21: 11550,
-    22: 12650,
-    23: 13800,
-    24: 15000,
-  };
+  // final Map<int, int> expTable = {
+  //   1: 50,
+  //   2: 150,
+  //   3: 300,
+  //   4: 500,
+  //   5: 750,
+  //   6: 1050,
+  //   7: 1400,
+  //   8: 1800,
+  //   9: 2250,
+  //   10: 2750,
+  //   11: 3300,
+  //   12: 3900,
+  //   13: 4550,
+  //   14: 5250,
+  //   15: 6000,
+  //   16: 6800,
+  //   17: 7650,
+  //   18: 8550,
+  //   19: 9500,
+  //   20: 10500,
+  //   21: 11550,
+  //   22: 12650,
+  //   23: 13800,
+  //   24: 15000,
+  // };
 
   @override
   void initState() {
@@ -57,10 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
     calculateLevel(firebaseUser.uid);
   }
 
-  ///Test values
-  int _currentStep = 0;
-
-  ///Test values
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -91,14 +86,6 @@ class _ProfilePageState extends State<ProfilePage> {
               body: ListView(
                 children: <Widget>[
                   _header(data),
-                  ProgressBar(currentValue: _currentStep),
-                  ProgressBar2(currentValue: _currentStep),
-                  Row(
-                    children: [
-                      TextButton(child: Text('Hit Test'), onPressed: () => setState(() => _currentStep++)),
-                      TextButton(child: Text('Hit Test'), onPressed: () => setState(() => _currentStep--)),
-                    ],
-                  ),
                   _mainBody(data, size),
                   OrDivider(text: "Rozetler"),
                   _footer(data, size),
@@ -132,10 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        data["name"],
-                        style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
+                      Text(data["name"], style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
                       Row(
                         children: <Widget>[
@@ -153,19 +137,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Text(
-                        data["coins"].toString(),
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
+                      Text(data["coins"].toString(),
+                          style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)),
                       Text("WE coin", style: TextStyle(color: Colors.black, fontSize: 15)),
                     ],
                   ),
                   Column(
                     children: <Widget>[
-                      Text(
-                        data["recycled"].toString(),
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
+                      Text(data["recycled"].toString(),
+                          style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)),
                       Text("Geri dönüştürülen", style: TextStyle(color: Colors.black, fontSize: 15)),
                     ],
                   ),

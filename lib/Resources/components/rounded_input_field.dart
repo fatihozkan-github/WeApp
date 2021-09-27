@@ -13,7 +13,15 @@ class RoundedInputField extends StatelessWidget {
   final Function validator;
   final Function onEditingComplete;
 
-  const RoundedInputField({
+  /// • For a password field with a toggle button do NOT use [TextInputAction.next], instead consider the following:
+  ///
+  /// {@tool snippet}
+  ///             onEditingComplete: () {
+  ///                FocusScope.of(context).nextFocus();
+  ///                FocusScope.of(context).nextFocus();
+  ///             },
+  /// {@end-tool}
+  RoundedInputField({
     Key key,
     this.hintText,
     this.icon = Icons.person,

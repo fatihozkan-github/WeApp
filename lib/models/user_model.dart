@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// TODO: Fix
 class User {
   final String id;
   final String username;

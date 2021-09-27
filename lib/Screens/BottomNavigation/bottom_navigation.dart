@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:WE/Screens/BottomNavigation/Map/map_view.dart';
 import 'package:WE/Screens/BottomNavigation/Offers/new_prize_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
+import 'package:WE/Services/service_user.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Screens/BottomNavigation/QR/qr_page.dart';
 import 'package:WE/Screens/ProfileDrawer/profile_drawer.dart';
+import 'package:provider/provider.dart';
 import '../../Resources/constants.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -57,64 +59,69 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'WE',
-      theme: ThemeData(
-        /// TODO: Test
-        accentColor: Colors.orange,
-        canvasColor: kSecondaryColor,
-        fontFamily: "Montserrat_Alternates",
-        primaryColor: kPrimaryColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Scaffold(
-        body: WillPopScope(
-          child: _pageOptions[selectedPage],
-          onWillPop: () async {
-            bool returnValue = false;
-            if (_navStack.isEmpty) returnValue = await _showDialog();
-            if (_navStack.isNotEmpty) {
-              setState(() {
-                _navStack.removeLast();
-                int position = _navStack.isEmpty ? 0 : _navStack.last;
-                selectedPage = position;
-                returnValue = false;
-              });
-            }
-            _convexAppBarKey.currentState.tap(selectedPage);
-            return returnValue;
-          },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserService()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'WE',
+        theme: ThemeData(
+          accentColor: Colors.orange,
+          canvasColor: kSecondaryColor,
+          fontFamily: "Montserrat_Alternates",
+          primaryColor: kPrimaryColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        bottomNavigationBar: ConvexAppBar(
-          key: _convexAppBarKey,
-          items: itemList,
-          activeColor: kPrimaryColor,
-          backgroundColor: kPrimaryColor,
-          initialActiveIndex: 0,
-          onTap: _tapHandler,
+        home: Scaffold(
+          body: WillPopScope(child: _pageOptions[selectedPage], onWillPop: _willPop),
+          bottomNavigationBar: ConvexAppBar(
+            key: _convexAppBarKey,
+            items: itemList,
+            activeColor: kPrimaryColor,
+            backgroundColor: kPrimaryColor,
+            initialActiveIndex: 0,
+            onTap: _tapHandler,
+          ),
         ),
       ),
     );
   }
 
-  _showDialog() async => await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Text('Uygulamadan çıkmak istediğinize emin misiniz?'),
-          actions: <Widget>[
-            TextButton(child: Text('Hayır'), onPressed: () => Navigator.of(context).pop(false)),
-            TextButton(child: Text('Evet'), onPressed: () => Navigator.of(context).pop(true)),
-          ],
-        );
+  Future<bool> _willPop() async {
+    bool returnValue = false;
+    if (_navStack.isEmpty) returnValue = await _showDialog();
+    if (_navStack.isNotEmpty) {
+      setState(() {
+        _navStack.removeLast();
+        int position = _navStack.isEmpty ? 0 : _navStack.last;
+        selectedPage = position;
+        returnValue = false;
       });
+    }
+    _convexAppBarKey.currentState.tap(selectedPage);
+    return returnValue;
+  }
 
   _tapHandler(int index) {
     if (index != selectedPage) {
       _navStack.addLast(index);
       setState(() => selectedPage = index);
     }
+  }
+
+  _showDialog() async {
+    return await showDialog<bool>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text('Uygulamadan çıkmak istediğinize emin misiniz?'),
+            actions: <Widget>[
+              TextButton(child: Text('Hayır'), onPressed: () => Navigator.of(context).pop(false)),
+              TextButton(child: Text('Evet'), onPressed: () => Navigator.of(context).pop(true)),
+            ],
+          );
+        });
   }
 
   List<TabItem> itemList = [

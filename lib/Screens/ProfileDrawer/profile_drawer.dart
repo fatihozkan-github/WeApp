@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:WE/Resources/SizeConfig.dart';
+import 'package:WE/Resources/components/we_spin.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_screen.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
@@ -153,7 +154,9 @@ class ProfileDrawerState extends State<ProfileDrawer> {
               drawer: _getDrawer(data, drawerOptions),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          // return Center(child: CircularProgressIndicator());
+          return Center(child: WESpinKit());
+          // : Center(child: CircularProgressIndicator()),
         });
   }
 

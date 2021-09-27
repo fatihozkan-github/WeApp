@@ -1,5 +1,6 @@
 import 'package:WE/Resources/components/opportunities/sliding_cards.dart';
 import 'package:WE/Resources/components/pop_up.dart';
+import 'package:WE/Resources/components/we_spin.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

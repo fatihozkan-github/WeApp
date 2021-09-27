@@ -1,3 +1,4 @@
+import 'package:WE/Resources/components/we_spin.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -81,9 +82,8 @@ class FeedPage extends StatelessWidget {
                 },
               );
             }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: WESpinKit());
+            // Center(child: CircularProgressIndicator()),
           }),
     );
   }

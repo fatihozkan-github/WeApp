@@ -1,14 +1,9 @@
-import 'package:WE/Screens/BottomNavigation/Offers/new_prize_page.dart';
-import 'package:WE/Screens/BottomNavigation/Offers/prizes.dart';
-import 'package:WE/Screens/BottomNavigation/QR/qr_page.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
-import 'package:WE/Screens/Intro/onboarding_pages.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
-import 'package:WE/deneme.dart';
-import 'package:WE/example.dart';
-import 'package:WE/fb_deneme.dart';
+import 'package:WE/Services/login_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Resources/SizeConfig.dart';
 import 'Resources/constants.dart';
@@ -58,17 +53,23 @@ class AfterSplash extends StatelessWidget {
         return OrientationBuilder(
           builder: (context, orientation) {
             SizeConfig().init(constraints, orientation);
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'WE',
-              theme: ThemeData(
-                canvasColor: kSecondaryColor,
-                accentColor: Colors.orange,
-                fontFamily: "Montserrat_Alternates",
-                primaryColor: kPrimaryColor,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+            return MultiProvider(
+              providers: [
+                /// TODO: Check
+                ChangeNotifierProvider(create: (context) => LoginService()),
+              ],
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'WE',
+                theme: ThemeData(
+                  accentColor: Colors.orange,
+                  canvasColor: kSecondaryColor,
+                  fontFamily: "Montserrat_Alternates",
+                  primaryColor: kPrimaryColor,
+                  visualDensity: VisualDensity.adaptivePlatformDensity,
+                ),
+                home: WelcomeScreen(),
               ),
-              home: WelcomeScreen(),
             );
           },
         );
