@@ -1,3 +1,4 @@
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,11 @@ class GlobalTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('allUsers');
+    CollectionReference users = FirebaseFirestore.instance.collection('allUsers');
 
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc("C9nvPCW2TwemcjSVgm04").get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
@@ -42,10 +41,7 @@ class GlobalTab extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                           image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(index < 3
-                                  ? leaderboardIcons[index]
-                                  : leaderboardIcons[3]))),
+                              fit: BoxFit.cover, image: AssetImage(index < 3 ? leaderboardIcons[index] : leaderboardIcons[3]))),
                     ),
                     leading: Container(
                       height: 7 * SizeConfig.heightMultiplier,
@@ -81,9 +77,10 @@ class GlobalTab extends StatelessWidget {
               ),
             );
           }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return WESpinKit();
+          // return Center(
+          //   child: CircularProgressIndicator(),
+          // );
         });
   }
 }

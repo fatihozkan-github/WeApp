@@ -22,10 +22,7 @@ class _DenemePageState extends State<DenemePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
-    Query collectionReference =
-        FirebaseFirestore.instance.collection("users").orderBy('coins');
+    Query collectionReference = FirebaseFirestore.instance.collection("users").orderBy('coins');
     print(collectionReference.toString());
     print("*");
   }
@@ -33,12 +30,10 @@ class _DenemePageState extends State<DenemePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('allUsers');
+    CollectionReference users = FirebaseFirestore.instance.collection('allUsers');
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc("C9nvPCW2TwemcjSVgm04").get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
@@ -56,25 +51,25 @@ class _DenemePageState extends State<DenemePage> {
                 itemBuilder: (context, index) {
                   return Card(
                       child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return HerProfile(
-                                  username: friends[index]["name"].toString(),
-                                  level: friends[index]["level"],
-                                  coins: friends[index]["coins"],
-                                  recycled: friends[index]["recycled"],
-                                  superhero: friends[index]["superhero"],
-                                  points: friends[index]["points"],
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        title: Text(friends[index]["name"].toString()),
-                      ));
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return HerProfile(
+                              username: friends[index]["name"].toString(),
+                              level: friends[index]["level"],
+                              coins: friends[index]["coins"],
+                              recycled: friends[index]["recycled"],
+                              superhero: friends[index]["superhero"],
+                              points: friends[index]["points"],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    title: Text(friends[index]["name"].toString()),
+                  ));
                 },
               ),
             );

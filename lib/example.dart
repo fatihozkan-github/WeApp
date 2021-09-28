@@ -1,3 +1,4 @@
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/user_profile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +25,7 @@ class _ExampleState extends State<Example> {
   }
 
   void leaderboardFunction() async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .get()
-        .then((querySnapshot) {
+    await FirebaseFirestore.instance.collection("users").get().then((querySnapshot) {
       querySnapshot.docs.forEach((result) {
         l.add({
           "uid": result.id,
@@ -53,11 +51,7 @@ class _ExampleState extends State<Example> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return HisProfile(uid: l[index]["uid"]);
-                        },
-                      ),
+                      MaterialPageRoute(builder: (context) => HisProfile(uid: l[index]["uid"])),
                     );
                   },
                   child: Card(
@@ -67,8 +61,7 @@ class _ExampleState extends State<Example> {
                         top: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
                         left: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
                         right: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
-                        bottom:
-                            BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+                        bottom: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
                       ),
                     ),
                     child: ListTile(
@@ -79,24 +72,21 @@ class _ExampleState extends State<Example> {
                               shape: BoxShape.rectangle,
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: AssetImage(index < 3
-                                      ? leaderboardIcons[index]
-                                      : leaderboardIcons[3]))),
+                                  image: AssetImage(index < 3 ? leaderboardIcons[index] : leaderboardIcons[3]))),
                         ),
                         leading: Container(
                           height: 48,
                           width: 48,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage("assets/Icons/user.png"))),
+                              image: DecorationImage(fit: BoxFit.cover, image: AssetImage("assets/Icons/user.png"))),
                         ),
                         title: Text(l[index]["name"].toString())),
                   )),
                 );
               })
-          : Center(child: CircularProgressIndicator()),
+          : WESpinKit(),
+      // Center(child: CircularProgressIndicator()),
     );
   }
 }

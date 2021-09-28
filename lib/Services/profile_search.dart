@@ -1,3 +1,4 @@
+import 'package:WE/Resources/components/rounded_input_field.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +17,8 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
 
   List<List<String>> People = [
-    [
-      'Aysu Keçeci',
-      "Wonder woman",
-      "assets/Images/People/aysu.png",
-      "usixnrYluAelbadO68ABJz5AJ3u2"
-    ],
-    [
-      "Larry Page",
-      "X-man",
-      "assets/Images/People/larryPage.png",
-      "usixnrYluAelbadO68ABJz5AJ3u2"
-    ]
+    ['Aysu Keçeci', "Wonder woman", "assets/Images/People/aysu.png", "usixnrYluAelbadO68ABJz5AJ3u2"],
+    ["Larry Page", "X-man", "assets/Images/People/larryPage.png", "usixnrYluAelbadO68ABJz5AJ3u2"]
   ];
 
   var items = List<List<String>>();
@@ -58,8 +49,7 @@ class _SearchPageState extends State<SearchPage> {
       }
     }
     for (var i = 0; i < subPeople.length; i += 8) {
-      People2.add(subPeople.sublist(
-          i, i + 8 > subPeople.length ? subPeople.length : i + 8));
+      People2.add(subPeople.sublist(i, i + 8 > subPeople.length ? subPeople.length : i + 8));
     }
     //print(People2);
     items.addAll(People2);
@@ -114,36 +104,39 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Profil ara",
-          style: TextStyle(fontFamily: "Panthera", fontSize: 24),
-        ),
+        title: Text("Profil ara", style: TextStyle(fontFamily: "Panthera", fontSize: 24)),
+        backgroundColor: kPrimaryColor,
       ),
       body: Container(
         child: Column(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                style: TextStyle(color: Colors.black),
+              child: RoundedInputField(
+                icon: Icons.search,
+                hintText: "Ara",
                 onChanged: (value) {
                   getAllUsersData(value);
                 },
-                controller: editingController,
-                decoration: InputDecoration(
-                  fillColor: kPrimaryColor,
-                  hoverColor: kPrimaryColor,
-                  focusColor: kPrimaryColor,
-                  labelText: "Ara",
-                  prefixIcon: Icon(Icons.search, color: kPrimaryColor),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: kPrimaryColor,
-                    ),
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                ),
               ),
+              // TextField(
+              //   style: TextStyle(color: Colors.black),
+              //   onChanged: (value) {
+              //     getAllUsersData(value);
+              //   },
+              //   controller: editingController,
+              //   decoration: InputDecoration(
+              //     fillColor: kPrimaryColor,
+              //     hoverColor: kPrimaryColor,
+              //     focusColor: kPrimaryColor,
+              //     labelText: "Ara",
+              //     prefixIcon: Icon(Icons.search, color: kPrimaryColor),
+              //     focusedBorder: OutlineInputBorder(
+              //       borderSide: BorderSide(color: kPrimaryColor),
+              //       borderRadius: BorderRadius.circular(25.0),
+              //     ),
+              //   ),
+              // ),
             ),
             Expanded(
               child: ListView.builder(
@@ -152,13 +145,8 @@ class _SearchPageState extends State<SearchPage> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     contentPadding: EdgeInsets.only(left: 15, top: 5),
-                    leading: items[index][2] == null
-                        ? Image.asset("assets/Icons/user.png")
-                        : Image.asset(items[index][2]),
-                    title: Text(
-                      '${items[index][0]}',
-                      style: TextStyle(color: Colors.black, fontSize: 18),
-                    ),
+                    leading: items[index][2] == null ? Image.asset("assets/Icons/user.png") : Image.asset(items[index][2]),
+                    title: Text('${items[index][0]}', style: TextStyle(color: Colors.black, fontSize: 18)),
                     subtitle: Text(items[index][1]),
                     onTap: () {
                       Navigator.push(

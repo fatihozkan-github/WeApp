@@ -70,7 +70,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: kPrimaryColor),
       //resizeToAvoidBottomPadding: false,
       body: SingleChildScrollView(
         child: Padding(
@@ -87,21 +87,17 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
               //                   textAlign: TextAlign.center,
               //                 ),
               //               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.06,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
               Center(
                 child: Container(
                   width: 270,
                   height: 180,
                   color: Colors.white,
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.grey[850], boxShadow: [
-                      BoxShadow(
-                        color: kPrimaryColor,
-                        offset: Offset(15, 15),
-                      )
-                    ]),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[850],
+                      boxShadow: [BoxShadow(color: kPrimaryColor, offset: Offset(15, 15))],
+                    ),
                     child: Column(
                       children: [
                         SizedBox(height: 20),
@@ -118,9 +114,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.08,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.08),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextField(
@@ -133,25 +127,17 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                     hintText: 'Konu',
-                    hintStyle: TextStyle(
-                      color: Colors.blueGrey,
-                    ),
+                    hintStyle: TextStyle(color: Colors.blueGrey),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                   ),
@@ -170,25 +156,17 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 35, horizontal: 20),
                     hintText: 'Mesajınız',
-                    hintStyle: TextStyle(
-                      color: Colors.blueGrey,
-                    ),
+                    hintStyle: TextStyle(color: Colors.blueGrey),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(17),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(17),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(17),
-                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17)),
                       borderSide: BorderSide(color: Colors.grey[400]),
                     ),
                   ),
@@ -197,9 +175,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Card(
                 color: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
                 margin: EdgeInsets.symmetric(horizontal: 10.0),
                 child: GestureDetector(
                   onTap: () {
@@ -213,28 +189,15 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Center(
-                            child: Icon(
-                          Icons.send,
-                          color: Colors.white,
-                        )),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.03,
-                        ),
-                        Center(
-                            child: Text(
-                          "Gönder",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white),
-                        )),
+                        Center(child: Icon(Icons.send, color: Colors.white)),
+                        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+                        Center(child: Text("Gönder", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.002,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.002),
             ],
           ),
         ),

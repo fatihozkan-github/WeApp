@@ -2,6 +2,7 @@
 
 import 'package:WE/Resources/components/or_divider.dart';
 import 'package:WE/Resources/components/pop_up.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Screens/ProfileDrawer/Badges/badges_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
 import 'package:WE/Services/user_service.dart';
@@ -66,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return WESpinKit();
         });
   }
 

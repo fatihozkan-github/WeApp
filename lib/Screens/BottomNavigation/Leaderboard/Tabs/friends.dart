@@ -1,4 +1,5 @@
 import 'package:WE/Resources/SizeConfig.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/global.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/hisprofile.dart';
@@ -16,13 +17,10 @@ class FriendsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    CollectionReference users =
-        FirebaseFirestore.instance.collection('friends');
+    CollectionReference users = FirebaseFirestore.instance.collection('friends');
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(firebaseUser.uid).get(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
@@ -48,29 +46,17 @@ class FriendsTab extends StatelessWidget {
                           return Container(
                             decoration: const BoxDecoration(
                               border: Border(
-                                top: BorderSide(
-                                    width: 1.0, color: Color(0xFFDFDFDF)),
-                                left: BorderSide(
-                                    width: 1.0, color: Color(0xFFDFDFDF)),
-                                right: BorderSide(
-                                    width: 1.0, color: Color(0xFF7F7F7F)),
-                                bottom: BorderSide(
-                                    width: 1.0, color: Color(0xFFffffff)),
+                                top: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
+                                left: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
+                                right: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
+                                bottom: BorderSide(width: 1.0, color: Color(0xFFffffff)),
                               ),
                             ),
                             child: Card(
                                 child: ListTile(
                               onTap: () {
                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return HisProfile(
-                                        uid: friends[index]["uid"],
-                                      );
-                                    },
-                                  ),
-                                );
+                                    context, MaterialPageRoute(builder: (context) => HisProfile(uid: friends[index]["uid"])));
                               },
                               trailing: Container(
                                 height: 48,
@@ -79,9 +65,7 @@ class FriendsTab extends StatelessWidget {
                                     shape: BoxShape.rectangle,
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: AssetImage(index < 3
-                                            ? leaderboardIcons[index]
-                                            : leaderboardIcons[3]))),
+                                        image: AssetImage(index < 3 ? leaderboardIcons[index] : leaderboardIcons[3]))),
                               ),
                               leading: Container(
                                 height: 48,
@@ -91,8 +75,7 @@ class FriendsTab extends StatelessWidget {
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: data["avatar"] == null
-                                            ? AssetImage(
-                                                "assets/Icons/user.png")
+                                            ? AssetImage("assets/Icons/user.png")
                                             : NetworkImage(data["avatar"]))),
                               ),
                               title: Text(friends[index]["name"]),
@@ -103,17 +86,12 @@ class FriendsTab extends StatelessWidget {
                     : Column(
                         children: [
                           SizedBox(height: size.height * 0.02),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 32.0),
-                            child: Lottie.asset('assets/add_friend.json'),
-                          ),
+                          Padding(padding: const EdgeInsets.only(left: 32.0), child: Lottie.asset('assets/add_friend.json')),
                           Container(
                             width: size.width * 0.8,
                             height: size.height * 0.2,
                             decoration: BoxDecoration(
-                              border: Border.all(
-                                color: kPrimaryColor,
-                              ),
+                              border: Border.all(color: kPrimaryColor),
                               borderRadius: BorderRadius.circular(32),
                             ),
                             child: Padding(
@@ -121,22 +99,14 @@ class FriendsTab extends StatelessWidget {
                                 child: Center(
                                     child: Text(
                                   "Henüz hiç arkadaş eklemedin. Arkadaşlarını ekleyerek kendi aranızdaki mücadeleyi buradan takip edebilirsin.",
-                                  style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
+                                  style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
                                 ))),
                           ),
                         ],
                       ));
           }
-          return Center(
-            child: Image.asset(
-              "assets/giftir.gif",
-              height: 250.0,
-              width: 250.0,
-            ),
-          );
+          return WESpinKit();
+          // return Center(child: Image.asset("assets/giftir.gif", height: 250.0, width: 250.0));
         });
   }
 }

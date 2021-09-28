@@ -1,5 +1,7 @@
 import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:WE/Resources/constants.dart';
+import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
+import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         .hasMatch(_email);
   }
 
-  void _toggle() {
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
+  void _toggle() => setState(() => _obscureText = !_obscureText);
 
   Future<void> getCodes() async {
     DocumentSnapshot documentSnapshot;
@@ -59,7 +57,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 8),
               children: <Widget>[
-                SizedBox(height: size.height * 0.1),
+                SizedBox(height: 20),
+                Image.asset("assets/we2.png", scale: 1.4),
                 RoundedInputField(
                   hintText: "İsim",
                   onChanged: (value) => setState(() => _username = value.trim()),
@@ -97,23 +96,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     }
                   },
                 ),
-                RoundedInputField(
-                  hintText: "Şehir",
-                  icon: Icons.location_city_outlined,
-                  onChanged: (value) => _city = value.trim(),
-                ),
-                RoundedInputField(
-                  hintText: "Favori süper kahraman",
-                  icon: Icons.local_fire_department_outlined,
-                  onChanged: (value) => _superhero = value.trim(),
-                ),
+                // RoundedInputField(
+                //   hintText: "Şehir",
+                //   icon: Icons.location_city_outlined,
+                //   onChanged: (value) => _city = value.trim(),
+                // ),
+                // RoundedInputField(
+                //   hintText: "Favori süper kahraman",
+                //   icon: Icons.local_fire_department_outlined,
+                //   onChanged: (value) => _superhero = value.trim(),
+                // ),
                 RoundedInputField(
                   hintText: "Referans kodu zorunludur",
                   icon: Icons.lock,
                   onChanged: (value) => _referral = value.trim(),
                   textInputAction: TextInputAction.done,
                 ),
-                // SizedBox(height: size.height * 0.07),
                 SizedBox(height: 10),
 
                 /// TODO: Validate
@@ -121,9 +119,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   text: "KAYIT OL",
                   onPressed: () {
                     _formKey.currentState.validate();
+                    if (_referral.isNotEmpty) {
+                      for (var i = 0; i <= codes.length; i++) {
+                        if (_referral == codes[i.toString()]) {
+                          auth.createUserWithEmailAndPassword(email: _email, password: _password).then((_) {
+                            create(
+                                name: _username,
+                                email: _email,
+                                password: _password,
+                                city: _city,
+                                uid: currentUid,
+                                superhero: _superhero);
+                            addReferralData(referralId: _referral.substring(0, 6), uid: currentUid);
 
-                    /// TODO: Create user.
-                    // setState(() {});
+                            Navigator.pushAndRemoveUntil<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(builder: (BuildContext context) => BottomNavigation()),
+                              (route) => false,
+                            );
+                            signUp(
+                                name: _username,
+                                email: _email,
+                                password: _password,
+                                city: _city,
+                                uid: currentUid,
+                                superhero: _superhero);
+                          }).catchError((err) {
+                            return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  print(err.message);
+                                  return AlertDialog(
+                                    title: Text("Hata"),
+                                    content: Text(err.message),
+                                    actions: [TextButton(child: Text("Tamam"), onPressed: () => Navigator.of(context).pop())],
+                                  );
+                                });
+                          });
+                        } else
+                          print('Problem!');
+                      }
+                    }
                   },
                 ),
                 SizedBox(height: 20),
@@ -246,24 +282,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
-
-// TextFieldContainer(
-//   child: TextField(
-//     // keyboardType: TextInputType.visiblePassword,
-//     obscureText: _obscureText,
-//     onChanged: (value) {
-//       setState(() {
-//         _password = value.trim();
-//       });
-//     },
-//     cursorColor: kPrimaryColor,
-//     decoration: InputDecoration(
-//       filled: true,
-//       fillColor: Colors.white,
-//       hintText: "Şifreniz en az 6 karakter uzunluğunda olmalıdır.",
-//       icon: Container(color: Colors.white, child: Icon(Icons.lock, color: kPrimaryColor)),
-//       suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
-//       border: InputBorder.none,
-//     ),
-//   ),
-// ),
