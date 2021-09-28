@@ -1,5 +1,6 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes, unused_field, prefer_final_fields
 
+import 'dart:io';
 import 'package:WE/Resources/components/progress_bar.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
@@ -7,13 +8,14 @@ import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
-import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
-import 'package:WE/Services/service_user.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -50,6 +52,46 @@ class _EditProfileState extends State<EditProfile> {
     if (data["company"] != null && data["company"].toString().isNotEmpty) _currentProgress++;
   }
 
+  uploadImage() async {
+    print('ch1');
+    final _storage = FirebaseStorage.instance;
+    File image;
+    await Permission.photos.request();
+    var permissionStatus = await Permission.photos.status;
+    print(permissionStatus);
+    if (permissionStatus == PermissionStatus.granted) {
+      try {
+        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+        print(image);
+        print('ch2');
+        print(File(image.path));
+        var file = File(image.path);
+
+        if (image != null) {
+          print('ch3');
+
+          /// TODO: Fix.
+          var snapshot = await _storage.ref().child('profilePhotos/${basename(image.path)}').putFile(file);
+          print('ch4');
+          var downloadUrl = await snapshot.ref.getDownloadURL();
+          print('ch5');
+          await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
+            'avatar': downloadUrl,
+          });
+          setState(() {
+            imageUrl = downloadUrl;
+          });
+        } else {
+          print('No Path Received');
+        }
+      } catch (e) {
+        print('ERROR LOG: $e');
+      }
+    } else {
+      print('Grant Permissions and try again');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -59,109 +101,107 @@ class _EditProfileState extends State<EditProfile> {
               backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
               appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Profilini Düzenle'), centerTitle: true),
-              body: WillPopScope(
-                onWillPop: _onWillPop,
-                child: Form(
-                  key: _formKey,
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    children: [
-                      /// TODO: Fix initial values & new areas.
-                      SizedBox(height: 30),
-                      GestureDetector(
-                        onTap: () => Provider.of<UserService>(context, listen: false).uploadImage(),
-                        child: Column(
+              body: Form(
+                key: _formKey,
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  children: [
+                    /// TODO: Fix initial values & new areas.
+                    SizedBox(height: 30),
+                    GestureDetector(
+                      onTap: () => uploadImage(),
+                      child: Column(
+                        children: [
+                          /// TODO: Null path error!
+                          data["avatar"] != null
+                              ? Container(
+                                  height: 220,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"])),
+                                  ),
+                                )
+                              : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
+                          Text(
+                            "Profil fotoğrafını değiştirmek için avatara dokun.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    ProgressBar(currentValue: _currentProgress),
+                    SizedBox(height: 20),
+                    RoundedInputField(
+                      hintText: "Kullanıcı Adı",
+                      onChanged: (value) => _username = value.trim(),
+                      initialValue: data["name"],
+                    ),
+                    RoundedInputField(
+                      hintText: "Şehir",
+                      icon: Icons.location_city_outlined,
+                      onChanged: (value) => _city = value.trim(),
+                      initialValue: data["city"],
+                    ),
+                    RoundedInputField(
+                      hintText: "Favori süper kahraman",
+                      icon: Icons.local_fire_department_outlined,
+                      onChanged: (value) => _superhero = value.trim(),
+                      initialValue: data["superhero"],
+                    ),
+                    RoundedInputField(
+                      hintText: "Adres",
+                      icon: Icons.location_on_rounded,
+                      onChanged: (value) => _address = value.trim(),
+                      initialValue: data["address"],
+                      validator: (value) {},
+                    ),
+                    RoundedInputField(
+                      hintText: "Şirket",
+                      icon: Icons.work_rounded,
+                      onChanged: (value) => _company = value.trim(),
+                      initialValue: data["company"],
+                      validator: (value) {},
+                    ),
+                    Container(
+                      height: 60.0,
+                      margin: EdgeInsets.symmetric(vertical: 8.0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 2.0),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: TextButton(
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage())),
+                        child: Row(
                           children: [
-                            /// TODO: Null path error!
-                            imageUrl != null
-                                ? Container(
-                                    height: 220,
-                                    // width: 440,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
-                                  )
-                                : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
-                            Text(
-                              "Profil fotoğrafını değiştirmek için avatara dokun.",
-                              style: TextStyle(fontSize: width / 40, color: Colors.grey, decoration: TextDecoration.none),
+                            SizedBox(width: 5),
+                            Container(width: 20, child: Image.asset("assets/Icons/bracelet.png", color: kPrimaryColor)),
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                "Bileklik Sayfasına Gitmek için Tıklayınız",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
-                      ProgressBar(currentValue: _currentProgress),
-                      SizedBox(height: 20),
-                      RoundedInputField(
-                        hintText: "Kullanıcı Adı",
-                        onChanged: (value) => _username = value.trim(),
-                        initialValue: data["name"],
-                      ),
-                      RoundedInputField(
-                        hintText: "Şehir",
-                        icon: Icons.location_city_outlined,
-                        onChanged: (value) => _city = value.trim(),
-                        initialValue: data["city"],
-                      ),
-                      RoundedInputField(
-                        hintText: "Favori süper kahraman",
-                        icon: Icons.local_fire_department_outlined,
-                        onChanged: (value) => _superhero = value.trim(),
-                        initialValue: data["superhero"],
-                      ),
-                      RoundedInputField(
-                        hintText: "Adres",
-                        icon: Icons.location_on_rounded,
-                        onChanged: (value) => _address = value.trim(),
-                        initialValue: data["address"],
-                        validator: (value) {},
-                      ),
-                      RoundedInputField(
-                        hintText: "Şirket",
-                        icon: Icons.work_rounded,
-                        onChanged: (value) => _company = value.trim(),
-                        initialValue: data["company"],
-                        validator: (value) {},
-                      ),
-                      Container(
-                        height: 60.0,
-                        margin: EdgeInsets.symmetric(vertical: 8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 2.0),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: TextButton(
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage())),
-                          child: Row(
-                            children: [
-                              SizedBox(width: 5),
-                              Container(width: 20, child: Image.asset("assets/Icons/bracelet.png", color: kPrimaryColor)),
-                              SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  "Bileklik Sayfasına Gitmek için Tıklayınız",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      RoundedButton(
-                        text: "KAYDET",
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            await _adjustProgressBar();
-                          }
-                          setState(() {});
-                        },
-                      ),
-                      SizedBox(height: 20),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 20),
+                    RoundedButton(
+                      text: "KAYDET",
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          await _adjustProgressBar();
+                        }
+                        setState(() {});
+                      },
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 ),
               ),
             ),
@@ -232,11 +272,11 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  Future<bool> _onWillPop() {
-    Navigator.of(context).pop();
-    Navigator.of(context).setState(() {});
-    // return false;
-  }
+  // Future<bool> _onWillPop() {
+  //   Navigator.of(context).pop();
+  //   Navigator.of(context).setState(() {});
+  //   // return false;
+  // }
 }
 
 // RoundedInputField(
