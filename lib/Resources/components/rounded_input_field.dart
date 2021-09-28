@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
+import 'package:flutter/services.dart';
 
 class RoundedInputField extends StatelessWidget {
   final String hintText;
@@ -12,6 +13,8 @@ class RoundedInputField extends StatelessWidget {
   final Function validator;
   final Function onEditingComplete;
   final String initialValue;
+  final bool showIcon;
+  final int maxLines;
 
   /// • For a password field with a toggle button do NOT use [TextInputAction.next], instead consider the following:
   ///
@@ -33,6 +36,8 @@ class RoundedInputField extends StatelessWidget {
     this.validator,
     this.onEditingComplete,
     this.initialValue,
+    this.showIcon = true,
+    this.maxLines = 1,
   }) : super(key: key);
 
   @override
@@ -41,13 +46,14 @@ class RoundedInputField extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         initialValue: initialValue,
-        textInputAction: textInputAction ?? TextInputAction.next,
-        autocorrect: false,
-        keyboardType: keyboardType,
         onChanged: onChanged,
+        maxLines: maxLines,
+        textInputAction: textInputAction ?? TextInputAction.next,
+        keyboardType: keyboardType,
         cursorColor: kPrimaryColor,
         obscureText: obscureText,
         onEditingComplete: onEditingComplete,
+        autocorrect: false,
         validator: validator ??
             (_typed) {
               if (_typed.isEmpty) {
@@ -57,7 +63,7 @@ class RoundedInputField extends StatelessWidget {
               }
             },
         decoration: InputDecoration(
-          prefixIcon: Padding(padding: EdgeInsets.only(right: 3), child: Icon(icon, color: kPrimaryColor)),
+          prefixIcon: showIcon ? Padding(padding: EdgeInsets.only(right: 3), child: Icon(icon, color: kPrimaryColor)) : null,
           suffixIcon: suffixIcon,
           hintText: hintText,
           focusedBorder: OutlineInputBorder(

@@ -47,11 +47,9 @@ class _ProfilePageState extends State<ProfilePage> {
               appBar: AppBar(
                 actions: [
                   IconButton(
-                      onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile()));
-                        //getImage(true);
-                      },
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile())),
                       icon: Icon(Icons.settings))
+                  // getImage(true);
                 ],
                 centerTitle: true,
                 title: Text("Profil Sayfası", style: TextStyle(fontSize: 24)),

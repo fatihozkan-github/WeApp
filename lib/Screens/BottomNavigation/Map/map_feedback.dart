@@ -1,3 +1,6 @@
+import 'package:WE/Resources/components/rounded_button.dart';
+import 'package:WE/Resources/components/rounded_input_field.dart';
+import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,12 +15,11 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
-
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentLocation();
-  }
+  String _infoMessage =
+      "Kirli olduğunu düşündüğün bölgeyi buradan bizlere bildirerek bu alanı WE topluluğu ile birlikte temizlemek için etkinlik düzenleme isteği gönderebilirsin.";
+  String _subject;
+  String _message;
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   _getCurrentLocation() {
     geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
@@ -53,155 +55,77 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
     }
   }
 
-  //_launchURLMail() async {
-  //  const url = 'mailto:support@we.com?subject=WE&body=Feedback';
-  // if (await canLaunch(url)) {
-  //    await launch(url);
-  //  } else {
-  //    throw 'Could not launch $url';
-  //  }
-  //}
-
-  TextEditingController t1 = TextEditingController();
-  TextEditingController t2 = TextEditingController();
-  String name;
-  String message;
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: kPrimaryColor),
-      //resizeToAvoidBottomPadding: false,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              //    Padding(
-              //                 padding: const EdgeInsets.symmetric(horizontal: 13),
-              //                 child: Text(
-              //                   "Şu anki konum: $_currentAddress",
-              //                   style:
-              //                       TextStyle(fontSize: 20, height: 1.3, color: Colors.white),
-              //                   textAlign: TextAlign.center,
-              //                 ),
-              //               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-              Center(
+      appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Etkinlik İsteği'), centerTitle: true),
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          children: <Widget>[
+            SizedBox(height: 40),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.only(right: 15),
                 child: Container(
-                  width: 270,
-                  height: 180,
-                  color: Colors.white,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[850],
-                      boxShadow: [BoxShadow(color: kPrimaryColor, offset: Offset(15, 15))],
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Kirli olduğunu düşündüğün bölgeyi buradan bizlere bildirerek bu alanı WE topluluğu ile birlikte temizlemek için etkinlik düzenleme isteği gönderebilirsin.",
-                            style: TextStyle(fontSize: 15, height: 1.3, color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[850],
+                    boxShadow: [BoxShadow(color: kPrimaryColor, offset: Offset(15, 15))],
+                    borderRadius: BorderRadius.circular(20),
                   ),
+                  child: Text(_infoMessage, style: TextStyle(fontSize: 15, color: Colors.white), textAlign: TextAlign.center),
                 ),
               ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: TextField(
-                  onChanged: (val) {
-                    if (val != null || val.length > 0) name = val;
-                  },
-                  controller: t1,
-                  decoration: InputDecoration(
-                    fillColor: Color(0xffe6e6e6),
-                    filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                    hintText: 'Konu',
-                    hintStyle: TextStyle(color: Colors.blueGrey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      borderSide: BorderSide(color: Colors.grey[400]),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      borderSide: BorderSide(color: Colors.grey[400]),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      borderSide: BorderSide(color: Colors.grey[400]),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  onChanged: (val) {
-                    if (val != null || val.length > 0) message = val;
-                  },
-                  textAlign: TextAlign.start,
-                  controller: t2,
-                  decoration: InputDecoration(
-                    fillColor: Color(0xffe6e6e6),
-                    filled: true,
-                    contentPadding: EdgeInsets.symmetric(vertical: 35, horizontal: 20),
-                    hintText: 'Mesajınız',
-                    hintStyle: TextStyle(color: Colors.blueGrey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(17)),
-                      borderSide: BorderSide(color: Colors.grey[400]),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(17)),
-                      borderSide: BorderSide(color: Colors.grey[400]),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(17)),
-                      borderSide: BorderSide(color: Colors.grey[400]),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              Card(
-                color: Colors.black,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-                margin: EdgeInsets.symmetric(horizontal: 10.0),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      t1.clear();
-                      t2.clear();
-                      launchUrl("mailto:we.recycle.team@gmail.com?subject=$name&body=$message");
-                    });
-                  },
-                  child: ListTile(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Center(child: Icon(Icons.send, color: Colors.white)),
-                        SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                        Center(child: Text("Gönder", textAlign: TextAlign.center, style: TextStyle(color: Colors.white))),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.002),
-            ],
-          ),
+            ),
+            SizedBox(height: 40),
+            RoundedInputField(
+              hintText: 'Konu',
+              icon: Icons.mail_rounded,
+              onChanged: (value) => setState(() => _subject = value),
+            ),
+            RoundedInputField(
+              hintText: 'Mesajınız',
+              icon: Icons.message,
+              maxLines: null,
+              textInputAction: TextInputAction.newline,
+              onChanged: (value) => setState(() => _message = value),
+            ),
+            SizedBox(height: 15),
+            RoundedButton(
+              text: 'Gönder',
+              onPressed: () {
+                setState(() {
+                  if (_formKey.currentState.validate()) {
+                    launchUrl("mailto:we.recycle.team@gmail.com?subject=$_subject&body=$_message");
+                  }
+                });
+              },
+            ),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );
   }
 }
+
+/// Old
+//    Padding(
+//                 padding: const EdgeInsets.symmetric(horizontal: 13),
+//                 child: Text(
+//                   "Şu anki konum: $_currentAddress",
+//                   style:
+//                       TextStyle(fontSize: 20, height: 1.3, color: Colors.white),
+//                   textAlign: TextAlign.center,
+//                 ),
+//               ),

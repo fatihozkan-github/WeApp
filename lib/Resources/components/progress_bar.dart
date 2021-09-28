@@ -31,7 +31,7 @@ class ProgressBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              decoration: BoxDecoration(gradient: gradient ?? LinearGradient(colors: [Color(0xFFff4d00), Color(0xFFff9a00)])),
+              decoration: BoxDecoration(gradient: gradient ?? LinearGradient(colors: [Color(0xFFff9a00), Color(0xFFff4d00)])),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -46,15 +46,26 @@ class ProgressBar extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ProgressIcon(selected: currentValue >= 0 ? true : false, activeColor: Colors.deepOrange, show: true),
+              ProgressIcon(
+                selected: currentValue >= 0 ? true : false,
+                activeColor: Colors.orangeAccent,
+                show: true,
+                text: 'Profil Durumu: Zayıf Seviye',
+              ),
               for (int i = 0; i < 3; i++) ProgressIcon(),
-              ProgressIcon(selected: currentValue >= 4 ? true : false, activeColor: Color(0xFFff9800), show: true),
+              ProgressIcon(
+                selected: currentValue >= 4 ? true : false,
+                activeColor: Color(0xFFff9800),
+                show: true,
+                text: 'Profil Durumu: Orta Seviye',
+              ),
               for (int i = 0; i < 2; i++) ProgressIcon(),
               ProgressIcon(
                 selected: currentValue >= 7 ? true : false,
-                activeColor: Colors.orangeAccent,
+                activeColor: Colors.deepOrange,
                 show: true,
                 icon: Icons.star_border_outlined,
+                text: 'Profil Durumu: Güçlü Seviye',
               ),
             ],
           ),
@@ -92,12 +103,14 @@ class ProgressIcon extends StatefulWidget {
   bool show;
   IconData icon;
   Color activeColor;
+  String text;
 
   ProgressIcon({
     this.selected = false,
     this.show = false,
     this.icon = Icons.check,
     this.activeColor = Colors.green,
+    this.text = 'Keep Up the Good Work!',
   });
 
   @override
@@ -122,10 +135,10 @@ class _ProgressIconState extends State<ProgressIcon> {
       child: ConfettiWidget(
         confettiController: _confettiController,
         blastDirectionality: BlastDirectionality.explosive,
-        colors: [Colors.deepOrange, Color(0xFFff9800), Colors.orangeAccent],
+        colors: [Colors.orangeAccent, Color(0xFFff9800), Colors.deepOrange],
         child: widget.show
             ? Tooltip(
-                message: widget.selected ? 'Keep Up the Good Work!' : 'Complete More Steps!',
+                message: widget.selected ? widget.text : 'Daha çok adım tamamla!',
                 triggerMode: TooltipTriggerMode.tap,
                 decoration: BoxDecoration(
                   color: widget.selected ? widget.activeColor : Colors.grey,
