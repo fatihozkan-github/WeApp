@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(data["name"] ?? 'İsim Girilmedi!',
+                      Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
                           style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
                       Row(
@@ -103,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 3,
                             child: Text(
-                              data["superhero"] ?? 'Kahraman İsmi Girilmedi!',
+                              data["superhero"].toString().trim().isEmpty ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
                               style: TextStyle(color: Colors.black, fontSize: 15),
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,

@@ -31,9 +31,7 @@ class ProgressBar extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              decoration: BoxDecoration(
-                gradient: gradient ?? const LinearGradient(colors: [Colors.deepOrange, Color(0xFFff9800), Colors.orangeAccent]),
-              ),
+              decoration: BoxDecoration(gradient: gradient ?? LinearGradient(colors: [Color(0xFFff4d00), Color(0xFFff9a00)])),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -80,8 +78,8 @@ class ProgressTile extends StatelessWidget {
         duration: const Duration(milliseconds: 700),
         curve: Curves.fastOutSlowIn,
         foregroundDecoration: BoxDecoration(
-          color: selected ? Colors.transparent : Colors.grey[300], border: Border.all(color: Colors.white),
-          // borderRadius: BorderRadius.circular(5),
+          color: selected ? Colors.transparent : Colors.grey[300],
+          border: Border.all(color: Colors.white),
         ),
       ),
     );
