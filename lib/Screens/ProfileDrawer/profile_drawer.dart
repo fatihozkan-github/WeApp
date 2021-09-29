@@ -120,7 +120,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         ],
         centerTitle: true,
         backgroundColor: kPrimaryColor,
-        title: Text("WE", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
+        title: Text("WE"),
       );
 
   _getDrawer(data, drawerOptions) => Drawer(

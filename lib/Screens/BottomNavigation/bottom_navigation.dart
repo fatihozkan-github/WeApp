@@ -69,6 +69,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
         theme: ThemeData(
           accentColor: Colors.orange,
           fontFamily: "Montserrat_Alternates",
+          appBarTheme: AppBarTheme(
+            titleTextStyle:
+                TextStyle(color: Colors.white, fontFamily: "Montserrat_Alternates", fontSize: 30, fontWeight: FontWeight.bold),
+          ),
           primaryColor: kPrimaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),

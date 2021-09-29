@@ -80,40 +80,36 @@ class _NewPrizePageState extends State<NewPrizePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Ayrıcalıklar', style: TextStyle(fontSize: 24)),
+        title: Text('Ayrıcalıklar'),
         backgroundColor: kPrimaryColor,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: size.width,
-              child: Container(
-                color: kPrimaryColor,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      FutureBuilder<DocumentSnapshot>(
-                          future: users.doc(currentUid).get(),
-                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                            if (snapshot.hasError) {
-                              return Text("Something went wrong");
-                            }
-                            if (snapshot.connectionState == ConnectionState.done) {
-                              Map<String, dynamic> data = snapshot.data.data();
-                              return Text(
-                                data["coins"].toString(),
-                                style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),
-                              );
-                            }
-                            return WESpinKit();
-                          }),
-                      Text('WE Coin', style: TextStyle(color: Colors.white, fontSize: 26.0, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ),
+            Container(
+              width: double.infinity,
+              color: kPrimaryColor,
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  FutureBuilder<DocumentSnapshot>(
+                      future: users.doc(currentUid).get(),
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Something went wrong");
+                        }
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          Map<String, dynamic> data = snapshot.data.data();
+                          return Text(
+                            data["coins"].toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),
+                          );
+                        }
+                        return WESpinKit();
+                      }),
+                  Text('WE Coin', style: TextStyle(color: Colors.white, fontSize: 26.0, fontWeight: FontWeight.bold)),
+                ],
               ),
             ),
             FutureBuilder<DocumentSnapshot>(
