@@ -153,32 +153,50 @@ void addReferralData({String referralId, String uid}) async {
   // TODO: opsiyonel (digit code Upper case'le, burda olmak zorunda değil ama bunu da)
 }
 
-/// TODO: "The getter 'keys' was called on null"
+/// TODO: "The getter 'keys' was called on null" -> Fixed for now.
+///
+/// TODO: Rework. This function does not work as intended.
 void checkReferralData({String referralId, String uid}) async {
   DocumentSnapshot documentSnapshot;
   documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').get();
+  print('doc: ${documentSnapshot.data().keys.length}');
+  // print(currentUid.substring(0, 6));
+  // print(documentSnapshot.data());
+  var data = documentSnapshot.data();
+  int _counter = 0;
+  // print(data["BORUSA"]);
+  // print(data["BORUSA"].values);
+  for (int i = 0; i < data["BORUSA"].values.toList().length; i++) {
+    // print(data["BORUSA"].values.toList()[i]); // works
+    if (currentUid == data["BORUSA"].values.toList()[i]) {
+      // print(currentUid);
+      _counter++;
+    }
+  }
 
-  if (documentSnapshot.data()[currentUid.substring(0, 6)].keys.length >= 2) {
+  if (_counter >= 2) {
     await FirebaseFirestore.instance.collection('users').doc(currentUid).set({
       "badges": {
         "badge1": true,
       },
     }, SetOptions(merge: true));
   }
-  if (documentSnapshot.data()[currentUid.substring(0, 6)].keys.length >= 15) {
+  if (_counter >= 15) {
     await FirebaseFirestore.instance.collection('users').doc(currentUid).set({
       "badges": {
         "badge6": true,
       },
     }, SetOptions(merge: true));
   }
-  if (documentSnapshot.data()[currentUid.substring(0, 6)].keys.length >= 5) {
-    await FirebaseFirestore.instance.collection('users').doc(currentUid).set({
-      "badges": {
-        "challenges": true,
-      },
-    }, SetOptions(merge: true));
-  }
+
+  /// TODO: ??
+  // if (documentSnapshot.data()[currentUid.substring(0, 6)].keys.length >= 5) {
+  //   await FirebaseFirestore.instance.collection('users').doc(currentUid).set({
+  //     "badges": {
+  //       "challenges": true,
+  //     },
+  //   }, SetOptions(merge: true));
+  // }
   // TODO: if (documentSnapshot.data().keys.length >2 badges update at
   // TODO: opsiyonel (digit code Upper case'le, burda olmak zorunda değil ama bunu da)
 }
@@ -293,10 +311,13 @@ void read() async {
 //   }
 
 /// TODO: Move somewhere else.
+///
+/// TODO: Null error fixed. Test it.
 void calculateLevel(currentUser) async {
   DocumentSnapshot documentSnapshot;
 
   final Map<int, int> expTable = {
+    0: 0,
     1: 50,
     2: 150,
     3: 300,
@@ -323,10 +344,13 @@ void calculateLevel(currentUser) async {
     24: 15000,
   };
   var counter = 0;
-
   documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUser).get();
+  print(documentSnapshot["recycled"]);
+  print(documentSnapshot.data()["recycled"]);
+
   for (var i = 1; i <= 24; i++) {
     // print(i);
+
     if (documentSnapshot.data()["recycled"] / (expTable[i]) >= 1) {
       counter = counter + 1;
     }
@@ -335,6 +359,8 @@ void calculateLevel(currentUser) async {
     "level": counter + 1,
     "exp": (documentSnapshot.data()["recycled"] - (expTable[counter])) / ((expTable[counter + 1]) - (expTable[counter]))
   });
+
+  ///
   // print(documentSnapshot.data()["recycled"]);
   // print((expTable[counter]));
 }

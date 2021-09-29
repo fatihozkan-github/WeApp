@@ -14,13 +14,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:WE/Resources/constants.dart';
-import 'package:WE/Resources/SizeConfig.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
-  // ProfilePage({Key key, this.title}) : super(key: key);
-  // final String title;
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
