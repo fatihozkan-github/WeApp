@@ -33,8 +33,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> getCodes() async {
     DocumentSnapshot documentSnapshot;
+
+    /// TODO: Fix
+    ///
+    /// Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
     documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('list').get();
-    codes.addAll(documentSnapshot.data()["listOfReferrals"]);
+    codes.addAll(documentSnapshot.data()['listOfReferrals']);
     print(codes);
   }
 
@@ -46,7 +50,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return UnFocuser(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
@@ -58,13 +61,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               children: <Widget>[
                 SizedBox(height: 20),
-                Image.asset("assets/we2.png", scale: 1.4),
+                Image.asset('assets/we2.png', scale: 1.4),
                 RoundedInputField(
-                  hintText: "İsim",
+                  hintText: 'İsim',
                   onChanged: (value) => setState(() => _username = value.trim()),
                 ),
                 RoundedInputField(
-                  hintText: "E-posta",
+                  hintText: 'E-posta',
                   icon: Icons.mail,
                   onChanged: (value) => setState(() => _email = value.trim()),
                   keyboardType: TextInputType.emailAddress,
@@ -73,11 +76,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? 'Boş bırakılamaz'
                         : isValidEmail()
                             ? null
-                            : "Lütfen geçerli bir mail adresi giriniz";
+                            : 'Lütfen geçerli bir mail adresi giriniz';
                   },
                 ),
                 RoundedInputField(
-                  hintText: "Şifreniz",
+                  hintText: 'Şifreniz',
                   icon: Icons.lock,
                   onChanged: (value) => setState(() => _password = value.trim()),
                   obscureText: _obscureText,
@@ -97,14 +100,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                 ),
                 RoundedInputField(
-                  hintText: "Referans kodu zorunludur",
+                  hintText: 'Referans kodu zorunludur',
                   icon: Icons.lock,
                   onChanged: (value) => _referral = value.trim(),
                   textInputAction: TextInputAction.done,
                 ),
                 SizedBox(height: 10),
                 RoundedButton(
-                  text: "KAYIT OL",
+                  text: 'KAYIT OL',
                   onPressed: () {
                     _formKey.currentState.validate();
                     if (_referral.isNotEmpty) {
@@ -138,9 +141,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 builder: (BuildContext context) {
                                   print(err.message);
                                   return AlertDialog(
-                                    title: Text("Hata"),
+                                    title: Text('Hata'),
                                     content: Text(err.message),
-                                    actions: [TextButton(child: Text("Tamam"), onPressed: () => Navigator.of(context).pop())],
+                                    actions: [TextButton(child: Text('Tamam'), onPressed: () => Navigator.of(context).pop())],
                                   );
                                 });
                           });

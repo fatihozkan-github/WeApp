@@ -42,12 +42,10 @@ class _ProfilePageState extends State<ProfilePage> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot?.data.data();
-            print(data);
             return Scaffold(
-              backgroundColor: Color(0xFFF8F8F8),
               appBar: AppBar(
                 centerTitle: true,
-                title: Text("Profil Sayfası", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                title: Text("Profil Sayfası"),
                 backgroundColor: Color(0xFFFF6B00),
                 actions: [
                   IconButton(
@@ -89,6 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Expanded(
                   child: data["avatar"] != null
                       ? Container(
+                          height: 120,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"])),
@@ -104,7 +103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: <Widget>[
                       TextOverFlowHandler(
                         child: Text(
-                          data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
+                          data["name"].toString().trim() == null ? 'İsim Girilmedi!' : data["name"],
                           style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -116,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 3,
                             child: Text(
-                              data["superhero"].toString().trim().isEmpty ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
+                              data["superhero"].toString().trim() == null ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
                               style: TextStyle(color: Colors.black, fontSize: 15),
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -162,16 +161,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 190,
                   width: 190,
                   child: LiquidCircularProgressIndicator(
-                    value: data["exp"],
-                    valueColor: AlwaysStoppedAnimation(Colors.lightBlue[200]),
-                    backgroundColor: Colors.white,
-                    borderColor: kPrimaryColor,
-                    borderWidth: 10.0,
-                    direction: Axis.vertical,
-                    center: data['level'].toString() != null
-                        ? Text("Seviye ${data['level'].toString()}")
-                        : Text('Seviye 1'), //text inside it
-                  ))),
+                      value: data["exp"],
+                      valueColor: AlwaysStoppedAnimation(Colors.lightBlue[200]),
+                      backgroundColor: Colors.white,
+                      borderColor: kPrimaryColor,
+                      borderWidth: 10.0,
+                      direction: Axis.vertical,
+                      center: data['level'].toString() != null ? Text("Seviye ${data['level'].toString()}") : Text('Seviye 1')))),
           IconButton(
             icon: Image.asset("assets/question-mark.png"),
             iconSize: 60,

@@ -71,7 +71,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           fontFamily: "Montserrat_Alternates",
           appBarTheme: AppBarTheme(
             titleTextStyle:
-                TextStyle(color: Colors.white, fontFamily: "Montserrat_Alternates", fontSize: 30, fontWeight: FontWeight.bold),
+                TextStyle(color: Colors.white, fontFamily: "Montserrat_Alternates", fontSize: 26, fontWeight: FontWeight.bold),
           ),
           primaryColor: kPrimaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,

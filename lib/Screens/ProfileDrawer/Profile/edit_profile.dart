@@ -22,6 +22,7 @@ class EditProfile extends StatefulWidget {
   _EditProfileState createState() => _EditProfileState();
 }
 
+/// TODO: setState after photo update.
 class _EditProfileState extends State<EditProfile> {
   String _username, _city, _address, _superhero, _company, _referral, _bracelet;
   // _email, _password,
@@ -50,10 +51,10 @@ class _EditProfileState extends State<EditProfile> {
     if (data["superhero"] != null && data["superhero"].toString().isNotEmpty) _currentProgress++;
     if (data["address"] != null && data["address"].toString().isNotEmpty) _currentProgress++;
     if (data["company"] != null && data["company"].toString().isNotEmpty) _currentProgress++;
+    if (data["avatar"] != null && data["avatar"].toString().isNotEmpty) _currentProgress++;
   }
 
-  uploadImage() async {
-    print('ch1');
+  Future uploadImage() async {
     final _storage = FirebaseStorage.instance;
     File image;
     await Permission.photos.request();
@@ -62,24 +63,19 @@ class _EditProfileState extends State<EditProfile> {
     if (permissionStatus == PermissionStatus.granted) {
       try {
         image = await ImagePicker.pickImage(source: ImageSource.gallery);
-        print(image);
-        print('ch2');
-        print(File(image.path));
-        var file = File(image.path);
+        File file = File(image.path);
 
         if (image != null) {
-          print('ch3');
-
-          /// TODO: Fix.
           var snapshot = await _storage.ref().child('profilePhotos/${basename(image.path)}').putFile(file);
-          print('ch4');
           var downloadUrl = await snapshot.ref.getDownloadURL();
-          print('ch5');
           await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
             'avatar': downloadUrl,
           });
           setState(() {
             imageUrl = downloadUrl;
+            // if (data["avatar"] == null) {
+            //   _currentProgress++;
+            // }
           });
         } else {
           print('No Path Received');
@@ -108,28 +104,7 @@ class _EditProfileState extends State<EditProfile> {
                   children: [
                     /// TODO: Fix initial values & new areas.
                     SizedBox(height: 30),
-                    GestureDetector(
-                      onTap: () => uploadImage(),
-                      child: Column(
-                        children: [
-                          /// TODO: Null path error!
-                          data["avatar"] != null
-                              ? Container(
-                                  height: 220,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"])),
-                                  ),
-                                )
-                              : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
-                          Text(
-                            "Profil fotoğrafını değiştirmek için avatara dokun.",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none),
-                          ),
-                        ],
-                      ),
-                    ),
+                    _getImageContainer(width),
                     SizedBox(height: 20),
                     ProgressBar(currentValue: _currentProgress),
                     SizedBox(height: 20),
@@ -209,6 +184,58 @@ class _EditProfileState extends State<EditProfile> {
         : WESpinKit();
   }
 
+  _getImageContainer(width) => GestureDetector(
+        onTap: () => uploadImage().whenComplete(() async {
+          _currentProgress = 0;
+          getData();
+          setState(() {
+            print('uploaded');
+          });
+        }),
+        child: Column(
+          children: [
+            data["avatar"] != null
+                ? Container(
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"])),
+                    ),
+                  )
+                : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
+            // SizedBox(height: 10),
+            // if (data["avatar"] != null)
+            //   GestureDetector(
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Text(
+            //           'Fotoğrafımı kaldır.',
+            //           style: TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none),
+            //         ),
+            //         Icon(Icons.remove_circle_rounded, color: Colors.red),
+            //       ],
+            //     ),
+            //     onTap: () async {
+            //       setState(() {
+            //         _currentProgress--;
+            //       });
+            //       await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
+            //         'avatar': null,
+            //       });
+            //     },
+            //   ),
+            SizedBox(height: 10),
+            Text(
+              "Profil fotoğrafını değiştirmek için avatara dokun.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none),
+            ),
+          ],
+        ),
+      );
+
   /// • Adjusts progress bar and updates user.
   void _adjustProgressBar() async {
     /// TODO: Update user.
@@ -221,6 +248,8 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "name": _username,
       });
+      _currentProgress = 0;
+      getData();
     }
 
     if (_city != null && _city != data["city"]) {
@@ -232,6 +261,8 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "city": _city,
       });
+      _currentProgress = 0;
+      getData();
     }
 
     if (_superhero != null && _superhero != data["superhero"]) {
@@ -243,32 +274,34 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "superhero": _superhero,
       });
+      _currentProgress = 0;
+      getData();
     }
 
     if (_address != null && _address != data["address"]) {
       print('ch4');
       setState(() {
-        /// TODO
-        // if (_currentProgress < 7 && data["address"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7) _currentProgress++;
+        if (_currentProgress < 7 && data["address"].toString().isEmpty) _currentProgress++;
         if (_currentProgress < 7 && data["address"].toString().isNotEmpty && _address.isEmpty) _currentProgress--;
       });
-      // await brewCollection.doc(currentUid).update({
-      //   "superhero": _superhero,
-      // });
+      await brewCollection.doc(currentUid).update({
+        "address": _address,
+      });
+      _currentProgress = 0;
+      getData();
     }
 
     if (_company != null && _company != data["company"]) {
       print('ch5');
       setState(() {
-        /// TODO
-        // if (_currentProgress < 7 && data["company"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7) _currentProgress++;
+        if (_currentProgress < 7 && data["company"].toString().isEmpty) _currentProgress++;
         if (_currentProgress < 7 && data["company"].toString().isNotEmpty && _company.isEmpty) _currentProgress--;
       });
-      // await brewCollection.doc(currentUid).update({
-      //   "superhero": _superhero,
-      // });
+      await brewCollection.doc(currentUid).update({
+        "company": _company,
+      });
+      _currentProgress = 0;
+      getData();
     }
   }
 

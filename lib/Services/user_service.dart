@@ -317,7 +317,7 @@ void calculateLevel(currentUser) async {
   DocumentSnapshot documentSnapshot;
 
   final Map<int, int> expTable = {
-    0: 0,
+    0: 5,
     1: 50,
     2: 150,
     3: 300,
@@ -357,7 +357,7 @@ void calculateLevel(currentUser) async {
   }
   await FirebaseFirestore.instance.collection('users').doc(currentUser).update({
     "level": counter + 1,
-    "exp": (documentSnapshot.data()["recycled"] - (expTable[counter])) / ((expTable[counter + 1]) - (expTable[counter]))
+    "exp": (documentSnapshot.data()["recycled"] + (expTable[counter])) / ((expTable[counter + 1]) - (expTable[counter]))
   });
 
   ///
