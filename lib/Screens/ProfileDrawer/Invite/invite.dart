@@ -12,22 +12,23 @@ class InvitePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor: kPrimaryColor),
-      body: Column(
+      appBar: AppBar(backgroundColor: kPrimaryColor, title: Text("Davet et ve Kazan"), centerTitle: true),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
         children: [
-          SizedBox(height: size.height * 0.03),
-          Text("Davet et ve Kazan", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 24)),
-          SizedBox(height: size.height * 0.03),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          // SizedBox(height: 30),
+          // Text("Davet et ve Kazan", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 24)),
+          SizedBox(height: 40),
+          Center(
             child: Text(
               "Referans kodun ile arkadaşlarını davet et. Hem sen hem de onlar ekstra ayrıcalıklardan faydalanın.",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(height: size.height * 0.05),
+          SizedBox(height: 20),
           Image.asset("assets/invite.png", scale: 5),
-          SizedBox(height: size.height * 0.02),
+          SizedBox(height: 10),
           GestureDetector(
             onTap: () async {
               Scaffold.of(context).showSnackBar(_snackBar);
@@ -47,6 +48,12 @@ class InvitePage extends StatelessWidget {
                       child: Text(firebaseUser.uid.substring(0, 6),
                           style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 24)))),
             ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            "*Kopyalamak için basılı tutabilirsin.",
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+            textAlign: TextAlign.right,
           ),
         ],
       ),

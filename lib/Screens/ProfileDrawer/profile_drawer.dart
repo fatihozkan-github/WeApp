@@ -36,7 +36,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
       drawerOptions.add(
         ListTile(
           leading: Icon(d.icon, color: kPrimaryColor),
-          title: Text(d.title, style: TextStyle(color: kThirdColor)),
+          title: Text(d.title, style: TextStyle(color: Colors.black)),
           selected: i == _selectedDrawerIndex,
           onTap: () => _onSelectItem(i + 1),
         ),

@@ -38,7 +38,7 @@ class WE extends StatelessWidget {
                 seconds: 0,
                 navigateAfterSeconds: AfterSplash(),
                 image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
-                backgroundColor: kSecondaryColor,
+                // backgroundColor: kSecondaryColor,
               ),
       ),
     );
@@ -63,7 +63,7 @@ class AfterSplash extends StatelessWidget {
                 title: 'WE',
                 theme: ThemeData(
                   accentColor: Colors.orange,
-                  canvasColor: kSecondaryColor,
+                  // canvasColor: kSecondaryColor,
                   fontFamily: "Montserrat_Alternates",
                   primaryColor: kPrimaryColor,
                   visualDensity: VisualDensity.adaptivePlatformDensity,

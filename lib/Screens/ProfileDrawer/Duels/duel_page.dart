@@ -24,9 +24,10 @@ class _DuelsPageState extends State<DuelsPage> {
     CollectionReference challenges = FirebaseFirestore.instance.collection('challenges');
 
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
-        child: Icon(Icons.local_police_rounded),
+        child: Icon(Icons.local_police_rounded, color: Colors.white),
         onPressed: () {
           showDialog(
               context: context,
@@ -54,6 +55,7 @@ class _DuelsPageState extends State<DuelsPage> {
                   itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Card(
+                        elevation: 10,
                         child: data["user" + (index + 1).toString()]["isAccepted"] != true
                             ? ListTile(
                                 title: Text(data["user" + (index + 1).toString()]["name"] + " sana düello teklif etti"),

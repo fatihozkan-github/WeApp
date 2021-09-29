@@ -68,7 +68,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
         title: 'WE',
         theme: ThemeData(
           accentColor: Colors.orange,
-          canvasColor: kSecondaryColor,
           fontFamily: "Montserrat_Alternates",
           primaryColor: kPrimaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
