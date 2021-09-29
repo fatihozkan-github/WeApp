@@ -48,7 +48,10 @@ class _LoginScreenState extends State<LoginScreen> {
               RoundedInputField(
                 hintText: "E-posta",
                 icon: Icons.mail,
-                onChanged: (value) => setState(() => _email = value.trim()),
+                onChanged: (value) => setState(() {
+                  _email = value.trim();
+                  _showError = false;
+                }),
                 keyboardType: TextInputType.emailAddress,
                 validator: (_typedValue) {
                   return (_typedValue.isEmpty)
@@ -61,7 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
               RoundedInputField(
                 hintText: "Şifreniz",
                 icon: Icons.lock,
-                onChanged: (value) => setState(() => _password = value.trim()),
+                onChanged: (value) => setState(() {
+                  _password = value.trim();
+                  _showError = false;
+                }),
                 obscureText: _obscureText,
                 textInputAction: TextInputAction.done,
                 onEditingComplete: () {
@@ -100,7 +106,21 @@ class _LoginScreenState extends State<LoginScreen> {
                           (route) => false,
                         );
                       },
-                    );
+                    ).catchError((err) {
+                      setState(() {
+                        _showError = true;
+                      });
+                      // return showDialog(
+                      //     context: context,
+                      //     builder: (BuildContext context) {
+                      //       print(err.message);
+                      //       return AlertDialog(
+                      //         title: Text("Hata"),
+                      //         content: Text(err.message),
+                      //         actions: [TextButton(child: Text("Tamam"), onPressed: () => Navigator.of(context).pop())],
+                      //       );
+                      //     });
+                    });
                     // .onError((error, stackTrace) async => setState(() => _showError = true));
                   }
                 },

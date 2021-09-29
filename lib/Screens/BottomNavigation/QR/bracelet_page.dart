@@ -1,4 +1,5 @@
 import 'package:WE/Resources/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -9,7 +10,11 @@ class BraceletPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Bileklik Tanımlama'), centerTitle: true),
+        appBar: AppBar(
+          backgroundColor: kPrimaryColor,
+          title: Text('Bileklik Tanımlama', style: TextStyle(fontWeight: FontWeight.bold)),
+          centerTitle: true,
+        ),
         backgroundColor: Colors.white,
         body: ListView(
           children: [

@@ -96,16 +96,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     }
                   },
                 ),
-                // RoundedInputField(
-                //   hintText: "Şehir",
-                //   icon: Icons.location_city_outlined,
-                //   onChanged: (value) => _city = value.trim(),
-                // ),
-                // RoundedInputField(
-                //   hintText: "Favori süper kahraman",
-                //   icon: Icons.local_fire_department_outlined,
-                //   onChanged: (value) => _superhero = value.trim(),
-                // ),
                 RoundedInputField(
                   hintText: "Referans kodu zorunludur",
                   icon: Icons.lock,
@@ -113,8 +103,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   textInputAction: TextInputAction.done,
                 ),
                 SizedBox(height: 10),
-
-                /// TODO: Validate
                 RoundedButton(
                   text: "KAYIT OL",
                   onPressed: () {
@@ -168,112 +156,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   press: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
                 ),
                 SizedBox(height: 20),
-                // RoundedButton(
-                //   text: "KAYIT OL",
-                //   onPressed: () {
-                //     if (_referral.isNotEmpty) {
-                //       for (var i = 0; i <= codes.length; i++) {
-                //         if (_referral == codes[i.toString()]) {
-                //           isInclude = true;
-                //         }
-                //       }
-                //       _password.length >= 6
-                //           ? isInclude
-                //               ? auth.createUserWithEmailAndPassword(email: _email, password: _password).then((_) {
-                //                   create(
-                //                       name: _username,
-                //                       email: _email,
-                //                       password: _password,
-                //                       city: _city,
-                //                       uid: currentUid,
-                //                       superhero: _superhero);
-                //                   addReferralData(referralId: _referral.substring(0, 6), uid: currentUid);
-                //
-                //                   Navigator.pushAndRemoveUntil<dynamic>(
-                //                     context,
-                //                     MaterialPageRoute<dynamic>(
-                //                       builder: (BuildContext context) => BottomNavigation(),
-                //                     ),
-                //                     (route) => false,
-                //                   );
-                //                   signUp(
-                //                       name: _username,
-                //                       email: _email,
-                //                       password: _password,
-                //                       city: _city,
-                //                       uid: currentUid,
-                //                       superhero: _superhero);
-                //                 }).catchError((err) {
-                //                   showDialog(
-                //                       context: context,
-                //                       builder: (BuildContext context) {
-                //                         print(err.message);
-                //                         return AlertDialog(
-                //                           title: Text("Error"),
-                //                           content: Text(err.message),
-                //                           actions: [
-                //                             FlatButton(
-                //                               child: Text("Ok"),
-                //                               onPressed: () {
-                //                                 Navigator.of(context).pop();
-                //                               },
-                //                             )
-                //                           ],
-                //                         );
-                //                       });
-                //                 })
-                //               : showDialog(
-                //                   context: context,
-                //                   builder: (BuildContext context) {
-                //                     return AlertDialog(
-                //                       title: Text("Error"),
-                //                       content: Text("Your referral code is invalid"),
-                //                       actions: [
-                //                         FlatButton(
-                //                           child: Text("Ok"),
-                //                           onPressed: () {
-                //                             Navigator.of(context).pop();
-                //                           },
-                //                         )
-                //                       ],
-                //                     );
-                //                   })
-                //           : showDialog(
-                //               context: context,
-                //               builder: (BuildContext context) {
-                //                 return AlertDialog(
-                //                   title: Text("Error"),
-                //                   content: Text("Şifreniz en az 6 karakter uzunluğunda olmalıdır."),
-                //                   actions: [
-                //                     FlatButton(
-                //                       child: Text("Ok"),
-                //                       onPressed: () {
-                //                         Navigator.of(context).pop();
-                //                       },
-                //                     )
-                //                   ],
-                //                 );
-                //               });
-                //     } else {
-                //       showDialog(
-                //           context: context,
-                //           builder: (BuildContext context) {
-                //             return AlertDialog(
-                //               title: Text("Error"),
-                //               content: Text("WE'ye kayıt olmak için bir referans koduna ihtiyacınız olmalı."),
-                //               actions: [
-                //                 FlatButton(
-                //                   child: Text("Ok"),
-                //                   onPressed: () {
-                //                     Navigator.of(context).pop();
-                //                   },
-                //                 )
-                //               ],
-                //             );
-                //           });
-                //     }
-                //   },
-                // ),
               ],
             ),
           ),
@@ -282,3 +164,122 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
+
+///
+// RoundedInputField(
+//   hintText: "Şehir",
+//   icon: Icons.location_city_outlined,
+//   onChanged: (value) => _city = value.trim(),
+// ),
+// RoundedInputField(
+//   hintText: "Favori süper kahraman",
+//   icon: Icons.local_fire_department_outlined,
+//   onChanged: (value) => _superhero = value.trim(),
+// ),
+///
+// RoundedButton(
+//   text: "KAYIT OL",
+//   onPressed: () {
+//     if (_referral.isNotEmpty) {
+//       for (var i = 0; i <= codes.length; i++) {
+//         if (_referral == codes[i.toString()]) {
+//           isInclude = true;
+//         }
+//       }
+//       _password.length >= 6
+//           ? isInclude
+//               ? auth.createUserWithEmailAndPassword(email: _email, password: _password).then((_) {
+//                   create(
+//                       name: _username,
+//                       email: _email,
+//                       password: _password,
+//                       city: _city,
+//                       uid: currentUid,
+//                       superhero: _superhero);
+//                   addReferralData(referralId: _referral.substring(0, 6), uid: currentUid);
+//
+//                   Navigator.pushAndRemoveUntil<dynamic>(
+//                     context,
+//                     MaterialPageRoute<dynamic>(
+//                       builder: (BuildContext context) => BottomNavigation(),
+//                     ),
+//                     (route) => false,
+//                   );
+//                   signUp(
+//                       name: _username,
+//                       email: _email,
+//                       password: _password,
+//                       city: _city,
+//                       uid: currentUid,
+//                       superhero: _superhero);
+//                 }).catchError((err) {
+//                   showDialog(
+//                       context: context,
+//                       builder: (BuildContext context) {
+//                         print(err.message);
+//                         return AlertDialog(
+//                           title: Text("Error"),
+//                           content: Text(err.message),
+//                           actions: [
+//                             FlatButton(
+//                               child: Text("Ok"),
+//                               onPressed: () {
+//                                 Navigator.of(context).pop();
+//                               },
+//                             )
+//                           ],
+//                         );
+//                       });
+//                 })
+//               : showDialog(
+//                   context: context,
+//                   builder: (BuildContext context) {
+//                     return AlertDialog(
+//                       title: Text("Error"),
+//                       content: Text("Your referral code is invalid"),
+//                       actions: [
+//                         FlatButton(
+//                           child: Text("Ok"),
+//                           onPressed: () {
+//                             Navigator.of(context).pop();
+//                           },
+//                         )
+//                       ],
+//                     );
+//                   })
+//           : showDialog(
+//               context: context,
+//               builder: (BuildContext context) {
+//                 return AlertDialog(
+//                   title: Text("Error"),
+//                   content: Text("Şifreniz en az 6 karakter uzunluğunda olmalıdır."),
+//                   actions: [
+//                     FlatButton(
+//                       child: Text("Ok"),
+//                       onPressed: () {
+//                         Navigator.of(context).pop();
+//                       },
+//                     )
+//                   ],
+//                 );
+//               });
+//     } else {
+//       showDialog(
+//           context: context,
+//           builder: (BuildContext context) {
+//             return AlertDialog(
+//               title: Text("Error"),
+//               content: Text("WE'ye kayıt olmak için bir referans koduna ihtiyacınız olmalı."),
+//               actions: [
+//                 FlatButton(
+//                   child: Text("Ok"),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                 )
+//               ],
+//             );
+//           });
+//     }
+//   },
+// ),

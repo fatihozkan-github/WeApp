@@ -2,15 +2,16 @@ import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/friends.dart';
 import 'package:WE/example.dart';
 import 'package:flutter/material.dart';
-import 'Tabs/global.dart';
 
 class Leaderboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:
-          AppBar(centerTitle: true, title: Text("Lider Tablosu", style: TextStyle(fontSize: 24)), backgroundColor: kPrimaryColor),
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text("Lider Tablosu", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          backgroundColor: kPrimaryColor),
       body: Stack(
         children: [
           Container(

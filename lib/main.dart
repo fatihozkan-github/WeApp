@@ -55,7 +55,6 @@ class AfterSplash extends StatelessWidget {
             SizeConfig().init(constraints, orientation);
             return MultiProvider(
               providers: [
-                /// TODO: Check
                 ChangeNotifierProvider(create: (context) => LoginService()),
               ],
               child: MaterialApp(
@@ -63,7 +62,6 @@ class AfterSplash extends StatelessWidget {
                 title: 'WE',
                 theme: ThemeData(
                   accentColor: Colors.orange,
-                  // canvasColor: kSecondaryColor,
                   fontFamily: "Montserrat_Alternates",
                   primaryColor: kPrimaryColor,
                   visualDensity: VisualDensity.adaptivePlatformDensity,

@@ -24,9 +24,8 @@ class FeedPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var post = data["post" + (data.length - index).toString()];
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                     child: Container(
-                      height: 465.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20.0),

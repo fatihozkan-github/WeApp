@@ -5,6 +5,7 @@ import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/instructions.dart';
@@ -27,36 +28,28 @@ class QRScanPageState extends State<QRScanPage> {
   int _current = 0;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("HeroStation", style: TextStyle(fontSize: 24)),
+        title: Text("HeroStation", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Color(0xFFFF6B00),
+        backgroundColor: kPrimaryColor,
       ),
       body: ListView(
-        // padding: const EdgeInsets.symmetric(horizontal: 12.0),
         children: [
           SizedBox(height: 30),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset("assets/instruction.png", height: 220),
-              Bubble(
-                margin: BubbleEdges.only(top: 10),
-                padding: BubbleEdges.all(12),
-                alignment: Alignment.topRight,
-                nip: BubbleNip.leftBottom,
-                color: kPrimaryColor,
-                child: Container(
-                  /// TODO: Fix
-                  // width: 125,
-                  constraints: BoxConstraints(
-                    minWidth: 70,
-                    maxWidth: 150,
-                  ),
+              SizedBox(width: 10),
+              Expanded(child: Image.asset("assets/instruction.png", height: 220)),
+              Expanded(
+                child: Bubble(
+                  margin: BubbleEdges.only(top: 10),
+                  padding: BubbleEdges.all(12),
+                  alignment: Alignment.topRight,
+                  nip: BubbleNip.leftBottom,
+                  color: kPrimaryColor,
                   child: Text(
                     'Hoş geldin kahraman!',
                     style: TextStyle(color: Colors.white),
@@ -65,14 +58,18 @@ class QRScanPageState extends State<QRScanPage> {
                   ),
                 ),
               ),
+              SizedBox(width: 10),
             ],
           ),
           SizedBox(height: 40),
           Center(
-            child: Text(
-              "Lütfen dönüştürmeye başlamadan önce aşağıdaki görevleri tamamladığından emin ol!",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: kPrimaryColor, fontWeight: FontWeight.bold),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                "Lütfen dönüştürmeye başlamadan önce aşağıdaki görevleri tamamladığından emin ol!",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: kPrimaryColor, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           SizedBox(height: 40),

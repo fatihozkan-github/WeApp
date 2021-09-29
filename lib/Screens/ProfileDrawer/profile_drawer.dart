@@ -120,10 +120,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         ],
         centerTitle: true,
         backgroundColor: kPrimaryColor,
-        title: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text("WE", style: TextStyle(color: Colors.white, fontSize: 30, fontFamily: 'Panthera')),
-        ),
+        title: Text("WE", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
       );
 
   _getDrawer(data, drawerOptions) => Drawer(

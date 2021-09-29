@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/transition_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -29,7 +30,11 @@ class _QRViewExampleState extends State<QRViewExample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: kPrimaryColor),
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        title: Text('QR Okutma', style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+      ),
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
@@ -37,51 +42,50 @@ class _QRViewExampleState extends State<QRViewExample> {
             flex: 1,
             child: FittedBox(
               fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(primary: kPrimaryColor),
-                            onPressed: () async {
-                              await controller?.toggleFlash();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getFlashStatus(),
-                              builder: (context, snapshot) {
-                                return snapshot.data ? Icon(Icons.lightbulb) : Icon(Icons.lightbulb_outline);
-                              },
-                            )),
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(8),
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: kPrimaryColor,
-                            ),
-                            onPressed: () async {
-                              await controller?.flipCamera();
-                              setState(() {});
-                            },
-                            child: FutureBuilder(
-                              future: controller?.getCameraInfo(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  return Icon(Icons.camera_alt_outlined);
-                                } else {
-                                  return Text('loading');
-                                }
-                              },
-                            )),
-                      )
-                    ],
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: kPrimaryColor),
+                        onPressed: () async {
+                          await controller?.toggleFlash();
+                          setState(() {});
+                        },
+                        child: FutureBuilder(
+                          future: controller?.getFlashStatus(),
+                          builder: (context, snapshot) {
+                            return snapshot.data ? Icon(Icons.lightbulb) : Icon(Icons.lightbulb_outline);
+                          },
+                        )),
                   ),
+                  Container(
+                    margin: EdgeInsets.all(8),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: kPrimaryColor,
+                        ),
+                        onPressed: () async {
+                          await controller?.flipCamera();
+                          setState(() {});
+                        },
+                        child: FutureBuilder(
+                          future: controller?.getCameraInfo(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data != null) {
+                              return Transform(
+                                transform: Matrix4.rotationZ(180),
+                                alignment: Alignment.center,
+                                child: Icon(Icons.autorenew_rounded),
+                              );
+                            } else {
+                              return Text('loading');
+                            }
+                          },
+                        )),
+                  )
                 ],
               ),
             ),
