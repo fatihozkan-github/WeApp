@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,9 +11,7 @@ class APIUserService extends ChangeNotifier {
   final CollectionReference _brewCollection = FirebaseFirestore.instance.collection('users');
 
   Future updateUserName({String userID, String newName}) async {
-    await _brewCollection.doc(userID).update({
-      'name': newName,
-    });
+    await _brewCollection.doc(userID).update({'name': newName});
     return newName;
   }
 
@@ -43,12 +40,9 @@ class APIUserService extends ChangeNotifier {
     File image;
     await Permission.photos.request();
     var permissionStatus = await Permission.photos.status;
-    // print(permissionStatus);
     if (permissionStatus == PermissionStatus.granted) {
       try {
         image = await ImagePicker.pickImage(source: ImageSource.gallery);
-        print('BRU: $image');
-        print('BRUH: ${image.path}');
         if (image.path != null && image != null) {
           var snapshot = await _storage.ref().child('profilePhotos/${image.path}').putFile(image);
           var downloadUrl = await snapshot.ref.getDownloadURL();

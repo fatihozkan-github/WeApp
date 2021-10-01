@@ -18,12 +18,24 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  String _username, _city, _address, _superhero, _company, _referral, _bracelet, imageUrl;
+  String _username, _city, _address, _superhero, _company;
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey();
   UserModel currentUser = UserModel();
   int _currentProgress = 0;
-  bool isLoading = false;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = Provider.of<UserService>(context, listen: false).currentUser;
+    if (!(nullCheck(currentUser.avatar))) _currentProgress++;
+    if (!(nullCheck(currentUser.name))) _currentProgress++;
+    if (!(nullCheck(currentUser.city))) _currentProgress++;
+    if (!(nullCheck(currentUser.superhero))) _currentProgress++;
+    if (!(nullCheck(currentUser.address))) _currentProgress++;
+    if (!(nullCheck(currentUser.company))) _currentProgress++;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,16 +63,17 @@ class _EditProfileState extends State<EditProfile> {
                       initialValue: currentUser.name,
                     ),
                     RoundedInputField(
-                      hintText: "Şehir",
-                      icon: Icons.location_city_outlined,
-                      onChanged: (value) => _city = value.trim(),
-                      initialValue: currentUser.city,
-                    ),
-                    RoundedInputField(
                       hintText: "Favori süper kahraman",
                       icon: Icons.local_fire_department_outlined,
                       onChanged: (value) => _superhero = value.trim(),
                       initialValue: currentUser.superhero,
+                    ),
+                    RoundedInputField(
+                      hintText: "Şehir",
+                      icon: Icons.location_city_outlined,
+                      onChanged: (value) => _city = value.trim(),
+                      initialValue: currentUser.city,
+                      validator: (value) {},
                     ),
                     RoundedInputField(
                       hintText: "Adres",
@@ -121,21 +134,14 @@ class _EditProfileState extends State<EditProfile> {
         : WESpinKit();
   }
 
-  Future uploadImage() async {
-    setState(() => isLoading = true);
-    String newImage = await Provider.of<UserService>(context, listen: false).updateImage();
-    currentUser.avatar = newImage;
-    Timer(Duration(seconds: 2), () => setState(() => isLoading = false));
-  }
-
   Widget _getImageContainer(width) {
     TextStyle _hintTextStyle = TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none);
-    return isLoading
+    return _isLoading
         ? Column(
             children: [
               Container(height: 150, width: 150, child: WESpinKit()),
               SizedBox(height: 10),
-              Text("İşleminizi Gerçekleştiriyoruz!", textAlign: TextAlign.center, style: _hintTextStyle),
+              Text("İşlemini Gerçekleştiriyoruz!", textAlign: TextAlign.center, style: _hintTextStyle),
             ],
           )
         : GestureDetector(
@@ -161,72 +167,81 @@ class _EditProfileState extends State<EditProfile> {
 
   /// • Adjusts progress bar and updates user.
   void _adjustProgressBar() async {
-    /// TODO: Update user.
+    setState(() {});
     if (_username != null && _username != currentUser.name) {
-      print('ch1');
-      // setState(() {
-      //   if (_currentProgress < 7 && data["name"].toString().isEmpty) _currentProgress++;
-      //   if (_currentProgress < 7 && data["name"].toString().isNotEmpty && _username.isEmpty) _currentProgress--;
-      // });
-
+      setState(() {
+        if (_currentProgress < 7 && currentUser.name.trim() == '' && currentUser.name == null) _currentProgress++;
+      });
       await Provider.of<UserService>(context, listen: false)
           .updateName(_username)
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
-
-    if (_city != null && _city != currentUser.city) {
-      print('ch2');
-      // setState(() {
-      //   if (_currentProgress < 7 && data["city"].toString().isEmpty) _currentProgress++;
-      //   if (_currentProgress < 7 && data["city"].toString().isNotEmpty && _city.isEmpty) _currentProgress--;
-      // });
+    setState(() {});
+    if (_superhero != null && _superhero != currentUser.superhero) {
+      setState(() {
+        if (_currentProgress < 7 && currentUser.superhero.trim() == '' && currentUser.superhero == null) _currentProgress++;
+      });
+      await Provider.of<UserService>(context, listen: false)
+          .updateSuperHero(_superhero)
+          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
+    }
+    setState(() {});
+    if (!nullCheck(_city) || _city != currentUser.city) {
+      if (!nullCheck(_city) && nullCheck(currentUser.city))
+        _currentProgress++;
+      else if (nullCheck(_city) && !nullCheck(currentUser.city))
+        _currentProgress--;
+      else if (_city == currentUser.city) _currentProgress;
 
       await Provider.of<UserService>(context, listen: false)
           .updateCity(_city)
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
-
-    if (_superhero != null && _superhero != currentUser.superhero) {
-      print('ch3');
-      // setState(() {
-      //   if (_currentProgress < 7 && data["superhero"].toString().isEmpty) _currentProgress++;
-      //   if (_currentProgress < 7 && data["superhero"].toString().isNotEmpty && _superhero.isEmpty) _currentProgress--;
-      // });
-
-      await Provider.of<UserService>(context, listen: false)
-          .updateSuperHero(_superhero)
-          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
-    }
-
-    if (_address != null && _address != currentUser.address) {
-      print('ch4');
-      // setState(() {
-      //   if (_currentProgress < 7 && data["address"].toString().isEmpty) _currentProgress++;
-      //   if (_currentProgress < 7 && data["address"].toString().isNotEmpty && _address.isEmpty) _currentProgress--;
-      // });
-
+    setState(() {});
+    if (!nullCheck(_address) || _address != currentUser.address) {
+      if (!nullCheck(_address) && nullCheck(currentUser.address))
+        _currentProgress++;
+      else if (nullCheck(_address) && !nullCheck(currentUser.address))
+        _currentProgress--;
+      else if (_address == currentUser.address) _currentProgress;
       await Provider.of<UserService>(context, listen: false)
           .updateAddress(_address)
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
-
-    if (_company != null && _company != currentUser.company) {
-      print('ch5');
-      // setState(() {
-      //   if (_currentProgress < 7 && data["company"].toString().isEmpty) _currentProgress++;
-      //   if (_currentProgress < 7 && data["company"].toString().isNotEmpty && _company.isEmpty) _currentProgress--;
-      // });
-
+    setState(() {});
+    if (!nullCheck(_company) || _company != currentUser.company) {
+      if (!nullCheck(_company) && nullCheck(currentUser.company))
+        _currentProgress++;
+      else if (nullCheck(_company) && !nullCheck(currentUser.company))
+        _currentProgress--;
+      else if (_company == currentUser.company) _currentProgress;
       await Provider.of<UserService>(context, listen: false)
           .updateCompany(_company)
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
+    setState(() {});
   }
 
   SnackBar _snackBar(value) => SnackBar(
-        content: Text('İşlem Başarılı: $value'),
+        content: Text(value.toString().isEmpty || value == null ? 'İşlem Başarılı.' : 'İşlem Başarılı: $value'),
         backgroundColor: kPrimaryColor,
         elevation: 10,
         duration: Duration(milliseconds: 2000),
       );
+
+  bool nullCheck(String value) {
+    if (value == null || value?.trim() == '') {
+      return true;
+    } else if (value != null || value?.trim() != '') {
+      return false;
+    } else
+      return null;
+  }
+
+  Future uploadImage() async {
+    setState(() => _isLoading = true);
+    String newImage = await Provider.of<UserService>(context, listen: false).updateImage();
+    currentUser.avatar = newImage;
+    Timer(Duration(seconds: 2), () => setState(() => _isLoading = false));
+  }
 }

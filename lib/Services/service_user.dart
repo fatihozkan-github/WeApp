@@ -8,8 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:WE/API/API_initials.dart';
 
 class UserService extends ChangeNotifier {
-  UserModel currentUser = UserModel();
   final APIUserService _apiUserService = APIUserService();
+  UserModel currentUser = UserModel();
 
   /// • Get the current user according to our user model.
   ///
