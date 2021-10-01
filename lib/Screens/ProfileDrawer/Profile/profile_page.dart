@@ -55,9 +55,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               body: ListView(
                 children: <Widget>[
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   _header(data),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: RoundedButton(
@@ -130,6 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(width: 10),
               ],
             ),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[

@@ -22,11 +22,8 @@ class EditProfile extends StatefulWidget {
   _EditProfileState createState() => _EditProfileState();
 }
 
-/// TODO: setState after photo update.
 class _EditProfileState extends State<EditProfile> {
-  String _username, _city, _address, _superhero, _company, _referral, _bracelet;
-  // _email, _password,
-  String imageUrl;
+  String _username, _city, _address, _superhero, _company, _referral, _bracelet, imageUrl;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DocumentReference sightingRef = FirebaseFirestore.instance.collection("users").doc();
   final CollectionReference brewCollection = FirebaseFirestore.instance.collection('users');
@@ -102,7 +99,6 @@ class _EditProfileState extends State<EditProfile> {
                 child: ListView(
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   children: [
-                    /// TODO: Fix initial values & new areas.
                     SizedBox(height: 30),
                     _getImageContainer(width),
                     SizedBox(height: 20),
@@ -148,6 +144,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       child: TextButton(
                         onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage())),
+                        style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
                         child: Row(
                           children: [
                             SizedBox(width: 5),
@@ -312,13 +309,6 @@ class _EditProfileState extends State<EditProfile> {
   // }
 }
 
-// RoundedInputField(
-//   hintText: "Bileklik",
-//   icon: Icons.local_fire_department_outlined,
-//   onChanged: (value) => _bracelet = value.trim(),
-//   textInputAction: TextInputAction.done,
-//   validator: (value) {},
-// ),
 ///
 // await brewCollection.doc(currentUid).update({
 //                       //   "name": _username,

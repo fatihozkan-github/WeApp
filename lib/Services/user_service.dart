@@ -159,7 +159,7 @@ void addReferralData({String referralId, String uid}) async {
 void checkReferralData({String referralId, String uid}) async {
   DocumentSnapshot documentSnapshot;
   documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').get();
-  print('doc: ${documentSnapshot.data().keys.length}');
+  // print('doc: ${documentSnapshot.data().keys.length}');
   // print(currentUid.substring(0, 6));
   // print(documentSnapshot.data());
   var data = documentSnapshot.data();
