@@ -345,8 +345,8 @@ void calculateLevel(currentUser) async {
   };
   var counter = 0;
   documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUser).get();
-  print(documentSnapshot["recycled"]);
-  print(documentSnapshot.data()["recycled"]);
+  // print(documentSnapshot["recycled"]);
+  // print(documentSnapshot.data()["recycled"]);
 
   for (var i = 1; i <= 24; i++) {
     // print(i);

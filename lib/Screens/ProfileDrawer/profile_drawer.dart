@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_double_quotes, prefer_single_quotes, prefer_final_fields, always_declare_return_types
+// ignore_for_file: prefer_double_quotes, prefer_single_quotes, prefer_final_fields, always_declare_return_types, omit_local_variable_types
 
-import 'dart:io';
 import 'package:WE/Resources/components/drawer_item.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
@@ -11,10 +10,13 @@ import 'package:WE/Screens/ProfileDrawer/Invite/invite.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Feedback/feedback_page.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
+import 'package:WE/Services/service_user.dart';
+import 'package:WE/models/model_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Services/profile_search.dart';
 import 'package:shimmer/shimmer.dart';
@@ -25,9 +27,15 @@ class ProfileDrawer extends StatefulWidget {
 }
 
 class ProfileDrawerState extends State<ProfileDrawer> {
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-  int _selectedDrawerIndex = 0;
+  UserModel currentUser = UserModel();
   List<Widget> drawerOptions = [];
+  int _selectedDrawerIndex = 0;
+
+  /// TODO: Move
+  Future getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Provider.of<UserService>(context, listen: false).initiateUser(prefs.getString('userID'), context);
+  }
 
   @override
   void initState() {
@@ -42,14 +50,13 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         ),
       );
     }
+    getData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    /// TODO: Move
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(firebaseUser.uid).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -94,14 +101,9 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     }
   }
 
-  _onSelectItem(int index) {
-    // setState(() => _selectedDrawerIndex = index);
+  _onSelectItem(int index) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => _getDrawerItemWidget(index)));
 
-    // Navigator.of(context).pop();
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => _getDrawerItemWidget(index)));
-  }
-
-  _getAppBar() => AppBar(
+  AppBar _getAppBar() => AppBar(
         actions: [
           IconButton(
             icon: Icon(Icons.search_rounded, color: Colors.white, size: 30),
@@ -123,7 +125,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         title: Text("WE"),
       );
 
-  _getDrawer(data, drawerOptions) => Drawer(
+  Drawer _getDrawer(data, drawerOptions) => Drawer(
         child: Column(
           children: <Widget>[
             UserAccountsDrawerHeader(
@@ -150,9 +152,11 @@ class ProfileDrawerState extends State<ProfileDrawer> {
               child: GestureDetector(
                 onTap: () async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.remove('isLoggedIn');
-                  logout();
-                  exit(0);
+                  await prefs.remove('isLoggedIn');
+                  await prefs.remove('userID');
+                  await logout();
+                  // exit(0);
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (bc) => WelcomeScreen()), (route) => false);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -162,7 +166,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text("Çıkış yap ", style: TextStyle(color: Colors.grey)),
-                        Icon(Icons.cancel_presentation, color: Colors.grey),
+                        Icon(Icons.logout, color: Colors.grey),
                       ],
                     ),
                   ),
@@ -185,6 +189,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     // DrawerItem(title: "Destek", icon: Icons.help),
   ];
 
+  /// TODO: move
   Future logout() async {
     await FirebaseAuth.instance.signOut().then((value) =>
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => WelcomeScreen()), (route) => false));

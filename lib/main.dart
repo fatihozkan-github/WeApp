@@ -1,6 +1,9 @@
+import 'package:WE/API/API_fetch_data.dart';
+import 'package:WE/API/API_initials.dart';
+import 'package:WE/API/API_login.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
-import 'package:WE/Services/login_service.dart';
+import 'package:WE/Services/service_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,19 +30,38 @@ class WE extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: isLoggedIn == false
-            ? BottomNavigation()
-            : SplashScreen(
-                loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
-                photoSize: 240,
-                seconds: 0,
-                navigateAfterSeconds: AfterSplash(),
-                image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
-                // backgroundColor: kSecondaryColor,
-              ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => APIInitials()),
+        ChangeNotifierProvider(create: (context) => APILogin()),
+        ChangeNotifierProvider(create: (context) => APIFetchData()),
+        ChangeNotifierProvider(create: (context) => UserService()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'WE',
+        theme: ThemeData(
+          accentColor: Colors.orange,
+          fontFamily: "Montserrat_Alternates",
+          appBarTheme: AppBarTheme(
+            titleTextStyle:
+                TextStyle(color: Colors.white, fontFamily: "Montserrat_Alternates", fontSize: 26, fontWeight: FontWeight.bold),
+          ),
+          primaryColor: kPrimaryColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Scaffold(
+          body: isLoggedIn == false
+              ? BottomNavigation()
+              : SplashScreen(
+                  loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
+                  photoSize: 240,
+                  seconds: 0,
+                  navigateAfterSeconds: AfterSplash(),
+                  image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
+                  // backgroundColor: kSecondaryColor,
+                ),
+        ),
       ),
     );
   }
@@ -53,37 +75,10 @@ class AfterSplash extends StatelessWidget {
         return OrientationBuilder(
           builder: (context, orientation) {
             SizeConfig().init(constraints, orientation);
-            return MultiProvider(
-              providers: [
-                ChangeNotifierProvider(create: (context) => LoginService()),
-              ],
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'WE',
-                theme: ThemeData(
-                  accentColor: Colors.orange,
-                  fontFamily: "Montserrat_Alternates",
-                  primaryColor: kPrimaryColor,
-                  visualDensity: VisualDensity.adaptivePlatformDensity,
-                ),
-                home: WelcomeScreen(),
-              ),
-            );
+            return WelcomeScreen();
           },
         );
       },
     );
   }
 }
-
-// ? Scaffold(body: BottomNavigation())
-// : Scaffold(
-//     body: SplashScreen(
-//       loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
-//       photoSize: 240,
-//       seconds: 0,
-//       navigateAfterSeconds: AfterSplash(),
-//       image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
-//       backgroundColor: kSecondaryColor,
-//     ),
-//   ));

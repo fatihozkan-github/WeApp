@@ -59,34 +59,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserService()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'WE',
-        theme: ThemeData(
-          accentColor: Colors.orange,
-          fontFamily: "Montserrat_Alternates",
-          appBarTheme: AppBarTheme(
-            titleTextStyle:
-                TextStyle(color: Colors.white, fontFamily: "Montserrat_Alternates", fontSize: 26, fontWeight: FontWeight.bold),
-          ),
-          primaryColor: kPrimaryColor,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Scaffold(
-          body: WillPopScope(onWillPop: _willPop, child: _pageOptions[selectedPage]),
-          bottomNavigationBar: ConvexAppBar(
-            key: _convexAppBarKey,
-            items: itemList,
-            activeColor: kPrimaryColor,
-            backgroundColor: kPrimaryColor,
-            initialActiveIndex: 0,
-            onTap: _tapHandler,
-          ),
-        ),
+    return Scaffold(
+      body: WillPopScope(onWillPop: _willPop, child: _pageOptions[selectedPage]),
+      bottomNavigationBar: ConvexAppBar(
+        key: _convexAppBarKey,
+        items: itemList,
+        activeColor: kPrimaryColor,
+        backgroundColor: kPrimaryColor,
+        initialActiveIndex: 0,
+        onTap: _tapHandler,
       ),
     );
   }
