@@ -43,6 +43,7 @@ class _EditProfileState extends State<EditProfile> {
     snapshot = await users.doc(firebaseUser.uid).get();
     setState(() => data = snapshot.data());
     print(snapshot.data());
+    _currentProgress = 0;
     if (data["name"] != null && data["name"].toString().isNotEmpty) _currentProgress++;
     if (data["city"] != null && data["city"].toString().isNotEmpty) _currentProgress++;
     if (data["superhero"] != null && data["superhero"].toString().isNotEmpty) _currentProgress++;
@@ -245,8 +246,6 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "name": _username,
       });
-      _currentProgress = 0;
-      getData();
     }
 
     if (_city != null && _city != data["city"]) {
@@ -258,8 +257,6 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "city": _city,
       });
-      _currentProgress = 0;
-      getData();
     }
 
     if (_superhero != null && _superhero != data["superhero"]) {
@@ -271,8 +268,6 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "superhero": _superhero,
       });
-      _currentProgress = 0;
-      getData();
     }
 
     if (_address != null && _address != data["address"]) {
@@ -284,8 +279,6 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "address": _address,
       });
-      _currentProgress = 0;
-      getData();
     }
 
     if (_company != null && _company != data["company"]) {
@@ -297,9 +290,8 @@ class _EditProfileState extends State<EditProfile> {
       await brewCollection.doc(currentUid).update({
         "company": _company,
       });
-      _currentProgress = 0;
-      getData();
     }
+    getData();
   }
 
   // Future<bool> _onWillPop() {
