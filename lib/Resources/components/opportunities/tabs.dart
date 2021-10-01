@@ -7,10 +7,7 @@ class Tabs extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
         SizedBox(width: 24),
-        MyTab(
-          text: 'Shopping',
-          isSelected: true,
-        ),
+        MyTab(text: 'Shopping', isSelected: true),
         MyTab(text: 'Electronics', isSelected: false),
         MyTab(text: 'Health & Beauty', isSelected: false),
       ],
@@ -22,8 +19,7 @@ class MyTab extends StatelessWidget {
   final String text;
   final bool isSelected;
 
-  const MyTab({Key key, @required this.isSelected, @required this.text})
-      : super(key: key);
+  const MyTab({Key key, @required this.isSelected, @required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

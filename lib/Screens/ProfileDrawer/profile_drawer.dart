@@ -10,7 +10,7 @@ import 'package:WE/Screens/ProfileDrawer/Invite/invite.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Feedback/feedback_page.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
-import 'package:WE/Services/service_user.dart';
+import 'package:WE/Services/service_login.dart';
 import 'package:WE/models/model_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,12 +31,6 @@ class ProfileDrawerState extends State<ProfileDrawer> {
   List<Widget> drawerOptions = [];
   int _selectedDrawerIndex = 0;
 
-  /// TODO: Move
-  Future getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Provider.of<UserService>(context, listen: false).initiateUser(prefs.getString('userID'), context);
-  }
-
   @override
   void initState() {
     for (var i = 0; i < drawerItems.length - 1; i++) {
@@ -50,7 +44,6 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         ),
       );
     }
-    getData();
     super.initState();
   }
 

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_single_quotes, omit_local_variable_types
+// ignore_for_file: prefer_single_quotes, omit_local_variable_types, prefer_if_null_operators
 
 import 'package:WE/Resources/components/or_divider.dart';
 import 'package:WE/Resources/components/pop_up.dart';
@@ -26,15 +26,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    currentUser = Provider.of<UserService>(context, listen: false).currentUser;
-    Provider.of<UserService>(context, listen: false).currentUserInfo();
-    // Provider.of<UserService>(context, listen: false).calculateLevel();
+
+    /// TODO: Fix.
+    // currentUser.calculateLevel();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return currentUser.name != null
+    currentUser = Provider.of<UserService>(context, listen: true).currentUser;
+    return currentUser.userID != null
         ? Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -76,17 +77,17 @@ class _ProfilePageState extends State<ProfilePage> {
           children: <Widget>[
             Row(
               children: <Widget>[
+                /// TODO: Check
                 Expanded(
-                  child: currentUser.avatar != null
-                      ? Container(
-                          height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(currentUser.avatar)),
-                          ),
-                        )
-                      : Icon(Icons.account_circle_rounded, size: 120, color: Colors.grey),
-                ),
+                    child: currentUser.avatar != null
+                        ? Container(
+                            height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(currentUser.avatar)),
+                            ),
+                          )
+                        : Icon(Icons.account_circle_rounded, size: 120, color: Colors.grey)),
                 SizedBox(width: 20),
                 Expanded(
                   flex: 2,
@@ -95,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: <Widget>[
                       TextOverFlowHandler(
                         child: Text(
-                          currentUser.name.toString().trim() == null ? 'İsim Girilmedi!' : currentUser.name,
+                          currentUser.name == null ? 'İsim Girilmedi!' : currentUser.name,
                           style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -107,9 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 3,
                             child: Text(
-                              currentUser.superhero.toString().trim() == null
-                                  ? 'Kahraman İsmi Girilmedi!'
-                                  : currentUser.superhero,
+                              currentUser.superhero == null ? 'Kahraman İsmi Girilmedi!' : currentUser.superhero,
                               style: TextStyle(color: Colors.black, fontSize: 15),
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -156,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 190,
                   width: 190,
                   child: LiquidCircularProgressIndicator(
-                      value: currentUser.exp,
+                      value: currentUser.exp ?? 0,
                       valueColor: AlwaysStoppedAnimation(Colors.lightBlue[200]),
                       backgroundColor: Colors.white,
                       borderColor: kPrimaryColor,

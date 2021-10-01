@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:WE/Resources/components/pop_up.dart';
 import 'dart:math' as math;
-
 import 'package:WE/Resources/constants.dart';
 
 class Cards extends StatefulWidget {
@@ -104,12 +103,7 @@ class SlidingCard extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Expanded(
-              child: CardContent(
-                name: name,
-                date: date,
-                offset: gauss,
-                price: price,
-              ),
+              child: CardContent(name: name, date: date, offset: gauss, price: price),
             ),
           ],
         ),
@@ -167,8 +161,8 @@ class CardContent extends StatelessWidget {
                     borderRadius: BorderRadius.circular(32),
                   ),
                   onPressed: () {
-                    popUp(context, true,
-                        "We have received your request and we will inform you when your transaction takes place.");
+                    popUp(
+                        context, true, "We have received your request and we will inform you when your transaction takes place.");
                   },
                 ),
               ),

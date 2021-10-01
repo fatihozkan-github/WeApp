@@ -13,12 +13,12 @@ class APILogin extends ChangeNotifier {
 
   /// • Login function for WE.
   Future APIServicesLogin(String _email, String _password, BuildContext context) async {
-    var user = await auth.signInWithEmailAndPassword(email: _email, password: _password).catchError((err) => print(err));
+    print('ch2');
+    var user = await auth.signInWithEmailAndPassword(email: _email, password: _password);
     print('Login Provider, USER ID: ${user.user.uid}');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs?.setBool("isLoggedIn", true);
     await prefs?.setString("userID", user.user.uid);
-    // Provider.of<UserService>(context, listen: false).initiateUser(firebaseUser.uid, context);
   }
 
   /// TODO

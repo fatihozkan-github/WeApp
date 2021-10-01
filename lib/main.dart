@@ -1,8 +1,10 @@
 import 'package:WE/API/API_fetch_data.dart';
 import 'package:WE/API/API_initials.dart';
 import 'package:WE/API/API_login.dart';
+import 'package:WE/API/API_user_service.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
+import 'package:WE/Services/service_login.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +37,8 @@ class WE extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => APIInitials()),
         ChangeNotifierProvider(create: (context) => APILogin()),
         ChangeNotifierProvider(create: (context) => APIFetchData()),
+        ChangeNotifierProvider(create: (context) => APIUserService()),
+        ChangeNotifierProvider(create: (context) => LoginService()),
         ChangeNotifierProvider(create: (context) => UserService()),
       ],
       child: MaterialApp(

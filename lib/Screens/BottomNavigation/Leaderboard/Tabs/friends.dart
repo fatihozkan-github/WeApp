@@ -1,10 +1,7 @@
-import 'package:WE/Resources/SizeConfig.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/global.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/hisprofile.dart';
-import 'package:WE/Screens/ProfileDrawer/Profile/user_profile.dart';
-import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

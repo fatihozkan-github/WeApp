@@ -1,21 +1,16 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes, unused_field, prefer_final_fields
 
-import 'dart:io';
+import 'dart:async';
 import 'package:WE/Resources/components/progress_bar.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
-import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
-import 'package:WE/Services/user_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:WE/Services/service_user.dart';
+import 'package:WE/models/model_user.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
   @override
@@ -24,75 +19,21 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   String _username, _city, _address, _superhero, _company, _referral, _bracelet, imageUrl;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DocumentReference sightingRef = FirebaseFirestore.instance.collection("users").doc();
-  final CollectionReference brewCollection = FirebaseFirestore.instance.collection('users');
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-  DocumentSnapshot snapshot;
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  UserModel currentUser = UserModel();
   int _currentProgress = 0;
-  Map<String, dynamic> data;
-
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
-  void getData() async {
-    snapshot = await users.doc(firebaseUser.uid).get();
-    setState(() => data = snapshot.data());
-    print(snapshot.data());
-    if (data["name"] != null && data["name"].toString().isNotEmpty) _currentProgress++;
-    if (data["city"] != null && data["city"].toString().isNotEmpty) _currentProgress++;
-    if (data["superhero"] != null && data["superhero"].toString().isNotEmpty) _currentProgress++;
-    if (data["address"] != null && data["address"].toString().isNotEmpty) _currentProgress++;
-    if (data["company"] != null && data["company"].toString().isNotEmpty) _currentProgress++;
-    if (data["avatar"] != null && data["avatar"].toString().isNotEmpty) _currentProgress++;
-  }
-
-  Future uploadImage() async {
-    final _storage = FirebaseStorage.instance;
-    File image;
-    await Permission.photos.request();
-    var permissionStatus = await Permission.photos.status;
-    print(permissionStatus);
-    if (permissionStatus == PermissionStatus.granted) {
-      try {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
-        File file = File(image.path);
-
-        if (image != null) {
-          var snapshot = await _storage.ref().child('profilePhotos/${basename(image.path)}').putFile(file);
-          var downloadUrl = await snapshot.ref.getDownloadURL();
-          await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
-            'avatar': downloadUrl,
-          });
-          setState(() {
-            imageUrl = downloadUrl;
-            // if (data["avatar"] == null) {
-            //   _currentProgress++;
-            // }
-          });
-        } else {
-          print('No Path Received');
-        }
-      } catch (e) {
-        print('ERROR LOG: $e');
-      }
-    } else {
-      print('Grant Permissions and try again');
-    }
-  }
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return snapshot != null
-        ? UnFocuser(
+    currentUser = Provider.of<UserService>(context, listen: false).currentUser;
+    return currentUser.userID != null
+        ? ScaffoldMessenger(
+            key: _scaffoldKey,
             child: Scaffold(
-              backgroundColor: Colors.white,
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Profilini Düzenle'), centerTitle: true),
               body: Form(
                 key: _formKey,
@@ -107,32 +48,32 @@ class _EditProfileState extends State<EditProfile> {
                     RoundedInputField(
                       hintText: "Kullanıcı Adı",
                       onChanged: (value) => _username = value.trim(),
-                      initialValue: data["name"],
+                      initialValue: currentUser.name,
                     ),
                     RoundedInputField(
                       hintText: "Şehir",
                       icon: Icons.location_city_outlined,
                       onChanged: (value) => _city = value.trim(),
-                      initialValue: data["city"],
+                      initialValue: currentUser.city,
                     ),
                     RoundedInputField(
                       hintText: "Favori süper kahraman",
                       icon: Icons.local_fire_department_outlined,
                       onChanged: (value) => _superhero = value.trim(),
-                      initialValue: data["superhero"],
+                      initialValue: currentUser.superhero,
                     ),
                     RoundedInputField(
                       hintText: "Adres",
                       icon: Icons.location_on_rounded,
                       onChanged: (value) => _address = value.trim(),
-                      initialValue: data["address"],
+                      initialValue: currentUser.address,
                       validator: (value) {},
                     ),
                     RoundedInputField(
                       hintText: "Şirket",
                       icon: Icons.work_rounded,
                       onChanged: (value) => _company = value.trim(),
-                      initialValue: data["company"],
+                      initialValue: currentUser.company,
                       validator: (value) {},
                     ),
                     Container(
@@ -167,12 +108,11 @@ class _EditProfileState extends State<EditProfile> {
                       text: "KAYDET",
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
-                          await _adjustProgressBar();
+                          _adjustProgressBar();
                         }
-                        setState(() {});
                       },
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 60),
                   ],
                 ),
               ),
@@ -181,251 +121,112 @@ class _EditProfileState extends State<EditProfile> {
         : WESpinKit();
   }
 
-  _getImageContainer(width) => GestureDetector(
-        onTap: () => uploadImage().whenComplete(() async {
-          _currentProgress = 0;
-          getData();
-          setState(() {
-            print('uploaded');
-          });
-        }),
-        child: Column(
-          children: [
-            data["avatar"] != null
-                ? Container(
-                    height: 150,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"])),
-                    ),
-                  )
-                : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
-            // SizedBox(height: 10),
-            // if (data["avatar"] != null)
-            //   GestureDetector(
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Text(
-            //           'Fotoğrafımı kaldır.',
-            //           style: TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none),
-            //         ),
-            //         Icon(Icons.remove_circle_rounded, color: Colors.red),
-            //       ],
-            //     ),
-            //     onTap: () async {
-            //       setState(() {
-            //         _currentProgress--;
-            //       });
-            //       await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
-            //         'avatar': null,
-            //       });
-            //     },
-            //   ),
-            SizedBox(height: 10),
-            Text(
-              "Profil fotoğrafını değiştirmek için avatara dokun.",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none),
+  Future uploadImage() async {
+    setState(() => isLoading = true);
+    String newImage = await Provider.of<UserService>(context, listen: false).updateImage();
+    currentUser.avatar = newImage;
+    Timer(Duration(seconds: 2), () => setState(() => isLoading = false));
+  }
+
+  Widget _getImageContainer(width) {
+    TextStyle _hintTextStyle = TextStyle(fontSize: width / 25, color: Colors.grey, decoration: TextDecoration.none);
+    return isLoading
+        ? Column(
+            children: [
+              Container(height: 150, width: 150, child: WESpinKit()),
+              SizedBox(height: 10),
+              Text("İşleminizi Gerçekleştiriyoruz!", textAlign: TextAlign.center, style: _hintTextStyle),
+            ],
+          )
+        : GestureDetector(
+            onTap: () => uploadImage().catchError((e) => _snackBar('Bir hata oluştu!')),
+            child: Column(
+              children: [
+                currentUser.avatar != null
+                    ? Container(
+                        height: 150,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(currentUser.avatar)),
+                        ),
+                      )
+                    : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
+                SizedBox(height: 10),
+                Text("Profil fotoğrafını değiştirmek için avatara dokun.", textAlign: TextAlign.center, style: _hintTextStyle),
+              ],
             ),
-          ],
-        ),
-      );
+          );
+  }
 
   /// • Adjusts progress bar and updates user.
   void _adjustProgressBar() async {
     /// TODO: Update user.
-    if (_username != null && _username != data["name"]) {
+    if (_username != null && _username != currentUser.name) {
       print('ch1');
-      setState(() {
-        if (_currentProgress < 7 && data["name"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7 && data["name"].toString().isNotEmpty && _username.isEmpty) _currentProgress--;
-      });
-      await brewCollection.doc(currentUid).update({
-        "name": _username,
-      });
-      _currentProgress = 0;
-      getData();
+      // setState(() {
+      //   if (_currentProgress < 7 && data["name"].toString().isEmpty) _currentProgress++;
+      //   if (_currentProgress < 7 && data["name"].toString().isNotEmpty && _username.isEmpty) _currentProgress--;
+      // });
+
+      await Provider.of<UserService>(context, listen: false)
+          .updateName(_username)
+          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
 
-    if (_city != null && _city != data["city"]) {
+    if (_city != null && _city != currentUser.city) {
       print('ch2');
-      setState(() {
-        if (_currentProgress < 7 && data["city"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7 && data["city"].toString().isNotEmpty && _city.isEmpty) _currentProgress--;
-      });
-      await brewCollection.doc(currentUid).update({
-        "city": _city,
-      });
-      _currentProgress = 0;
-      getData();
+      // setState(() {
+      //   if (_currentProgress < 7 && data["city"].toString().isEmpty) _currentProgress++;
+      //   if (_currentProgress < 7 && data["city"].toString().isNotEmpty && _city.isEmpty) _currentProgress--;
+      // });
+
+      await Provider.of<UserService>(context, listen: false)
+          .updateCity(_city)
+          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
 
-    if (_superhero != null && _superhero != data["superhero"]) {
+    if (_superhero != null && _superhero != currentUser.superhero) {
       print('ch3');
-      setState(() {
-        if (_currentProgress < 7 && data["superhero"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7 && data["superhero"].toString().isNotEmpty && _superhero.isEmpty) _currentProgress--;
-      });
-      await brewCollection.doc(currentUid).update({
-        "superhero": _superhero,
-      });
-      _currentProgress = 0;
-      getData();
+      // setState(() {
+      //   if (_currentProgress < 7 && data["superhero"].toString().isEmpty) _currentProgress++;
+      //   if (_currentProgress < 7 && data["superhero"].toString().isNotEmpty && _superhero.isEmpty) _currentProgress--;
+      // });
+
+      await Provider.of<UserService>(context, listen: false)
+          .updateSuperHero(_superhero)
+          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
 
-    if (_address != null && _address != data["address"]) {
+    if (_address != null && _address != currentUser.address) {
       print('ch4');
-      setState(() {
-        if (_currentProgress < 7 && data["address"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7 && data["address"].toString().isNotEmpty && _address.isEmpty) _currentProgress--;
-      });
-      await brewCollection.doc(currentUid).update({
-        "address": _address,
-      });
-      _currentProgress = 0;
-      getData();
+      // setState(() {
+      //   if (_currentProgress < 7 && data["address"].toString().isEmpty) _currentProgress++;
+      //   if (_currentProgress < 7 && data["address"].toString().isNotEmpty && _address.isEmpty) _currentProgress--;
+      // });
+
+      await Provider.of<UserService>(context, listen: false)
+          .updateAddress(_address)
+          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
 
-    if (_company != null && _company != data["company"]) {
+    if (_company != null && _company != currentUser.company) {
       print('ch5');
-      setState(() {
-        if (_currentProgress < 7 && data["company"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7 && data["company"].toString().isNotEmpty && _company.isEmpty) _currentProgress--;
-      });
-      await brewCollection.doc(currentUid).update({
-        "company": _company,
-      });
-      _currentProgress = 0;
-      getData();
+      // setState(() {
+      //   if (_currentProgress < 7 && data["company"].toString().isEmpty) _currentProgress++;
+      //   if (_currentProgress < 7 && data["company"].toString().isNotEmpty && _company.isEmpty) _currentProgress--;
+      // });
+
+      await Provider.of<UserService>(context, listen: false)
+          .updateCompany(_company)
+          .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
   }
 
-  // Future<bool> _onWillPop() {
-  //   Navigator.of(context).pop();
-  //   Navigator.of(context).setState(() {});
-  //   // return false;
-  // }
+  SnackBar _snackBar(value) => SnackBar(
+        content: Text('İşlem Başarılı: $value'),
+        backgroundColor: kPrimaryColor,
+        elevation: 10,
+        duration: Duration(milliseconds: 2000),
+      );
 }
-
-///
-// await brewCollection.doc(currentUid).update({
-//                       //   "name": _username,
-//                       //   "city": _city,
-//                       //   // "adress": _address,
-//                       //   // "company": _company,
-//                       //   "superhero": _superhero,
-//                       // });
-//                       ///
-//                       // setState(() => Navigator.pop(context));
-
-/// OLD
-//   FutureBuilder<DocumentSnapshot>(
-//   future: users.doc(firebaseUser.uid).get(),
-//   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-//     if (snapshot.hasError) {
-//       return Text("Something went wrong");
-//     }
-//     if (snapshot.connectionState == ConnectionState.done) {
-//       Map<String, dynamic> data = snapshot.data.data();
-//       return _getBody(data, context, size);
-//     }
-//     return Center(child: CircularProgressIndicator());
-//   },
-// );
-/// Old
-// _getBody(data, context, size) => Scaffold(
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: ListView(
-//           children: [
-//             GestureDetector(
-//               onTap: () => uploadImage(),
-//               child: Column(
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                     child: imageUrl != null
-//                         ? Container(
-//                             height: 220,
-//                             width: 440,
-//                             decoration: BoxDecoration(
-//                                 shape: BoxShape.circle,
-//                                 image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
-//                           )
-//                         : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
-//                   ),
-//                   Container(
-//                     child: Center(
-//                         child:
-//                             Text("Profil fotoğrafını değiştirmek için avatara dokun.", style: TextStyle(color: Colors.grey))),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             SizedBox(height: 10),
-//             ListTile(
-//                 title: Text('Kullancı adı:', style: TextStyle(color: Colors.grey, fontSize: 20)),
-//                 subtitle: TextField(
-//                   onSubmitted: (value1) {
-//                     setState(() {
-//                       _newUsername = value1.trim();
-//                       brewCollection.doc(currentUid).update({
-//                         "name": _newUsername,
-//                       });
-//                     });
-//                   },
-//                   style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-//                   decoration: InputDecoration(
-//                     hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-//                     hintText: data["name"],
-//                   ),
-//                 )),
-//             ListTile(
-//                 title: Text('Şehir:', style: TextStyle(color: Colors.grey, fontSize: 20)),
-//                 subtitle: TextField(
-//                   onSubmitted: (value) {
-//                     setState(() {
-//                       _newCity = value.trim();
-//                       brewCollection.doc(currentUid).update({
-//                         "city": _newCity,
-//                       });
-//                     });
-//                   },
-//                   style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-//                   decoration: InputDecoration(
-//                     hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-//                     hintText: data["city"],
-//                   ),
-//                 )),
-//             ListTile(
-//               title: Text('Favori süper kahraman', style: TextStyle(color: Colors.grey, fontSize: 20)),
-//               subtitle: TextField(
-//                 onSubmitted: (value) {
-//                   setState(() {
-//                     _newSuperhero = value.trim();
-//                     brewCollection.doc(currentUid).update({"superhero": _newSuperhero});
-//                   });
-//                 },
-//                 style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-//                 decoration: InputDecoration(
-//                   hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-//                   hintText: data["superhero"],
-//                 ),
-//               ),
-//             ),
-//             TextButton(
-//                 onPressed: () {
-//                   setState(() => Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation())));
-//                 },
-//                 child: Container(
-//                   color: kPrimaryColor,
-//                   height: size.height * 0.05,
-//                   width: size.width * 0.9,
-//                   child: Center(child: Text("Onayla", style: TextStyle(color: Colors.black, fontSize: 16))),
-//                 ))
-//           ],
-//         ),
-//       ),
-//     );

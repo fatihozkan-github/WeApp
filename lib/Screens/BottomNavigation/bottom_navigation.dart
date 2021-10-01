@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:WE/Screens/BottomNavigation/Map/map_view.dart';
 import 'package:WE/Screens/BottomNavigation/Offers/new_prize_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
+import 'package:WE/Services/service_login.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -50,6 +51,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   @override
   void initState() {
     super.initState();
+    Provider.of<LoginService>(context, listen: false).login(context);
     getData().then((value) {
       avatarList.clear();
       avatarList.add(value);

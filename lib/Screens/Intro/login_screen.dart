@@ -1,6 +1,6 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes, unawaited_futures
 
-import 'package:WE/API/API_login.dart';
+import 'package:WE/Services/service_login.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Screens/Intro/signup_screen.dart';
 import 'package:WE/Resources/components/already_have_an_account_acheck.dart';
@@ -8,7 +8,7 @@ import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -90,7 +90,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 text: "GİRİŞ YAP",
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    await APILogin().APIServicesLogin(_email, _password, context).whenComplete(() async {
+                    await Provider.of<LoginService>(context, listen: false)
+                        .login(context, email: _email, password: _password)
+                        .then((value) async {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (BuildContext context) => BottomNavigation()),
