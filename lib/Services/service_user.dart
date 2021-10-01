@@ -11,14 +11,6 @@ class UserService extends ChangeNotifier {
   final APIUserService _apiUserService = APIUserService();
   UserModel currentUser = UserModel();
 
-  /// • Get the current user according to our user model.
-  ///
-  /// • For now, one can use this function in order to re-fetch the current user.
-  void initiateUser(String currentUserID, BuildContext context) async {
-    DocumentSnapshot rawUserData = await Provider.of<APIInitials>(context, listen: false).fetchUser(currentUserID);
-    currentUser = UserModel.fromDocument(rawUserData);
-  }
-
   Future<String> updateImage() async {
     String newImage = await _apiUserService.updateImage(defaultValue: currentUser.avatar);
     if (newImage != null) currentUser.avatar = newImage;

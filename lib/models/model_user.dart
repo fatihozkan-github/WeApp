@@ -1,7 +1,6 @@
 // ignore_for_file: sort_constructors_first, prefer_single_quotes
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class UserModel {
   String userID;
@@ -84,19 +83,6 @@ class UserModel {
       company: doc['company'],
     );
   }
-
-  // Widget createAvatar({String newAvatar}) {
-  //   avatar = newAvatar;
-  //   return newAvatar != null
-  //       ? Container(
-  //           height: 120,
-  //           decoration: BoxDecoration(
-  //             shape: BoxShape.circle,
-  //             image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(newAvatar)),
-  //           ),
-  //         )
-  //       : Icon(Icons.account_circle_rounded, size: 120, color: Colors.grey);
-  // }
 
   /// TODO: Needs fix!
   ///

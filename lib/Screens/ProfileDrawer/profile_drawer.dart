@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_double_quotes, prefer_single_quotes, prefer_final_fields, always_declare_return_types, omit_local_variable_types
+// ignore_for_file: prefer_double_quotes, prefer_single_quotes, prefer_final_fields, always_declare_return_types, omit_local_variable_types, prefer_if_null_operators
 
 import 'package:WE/Resources/components/drawer_item.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
@@ -11,13 +11,11 @@ import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Feedback/feedback_page.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
 import 'package:WE/Services/service_login.dart';
+import 'package:WE/Services/service_user.dart';
 import 'package:WE/models/model_user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../Services/profile_search.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -30,9 +28,11 @@ class ProfileDrawerState extends State<ProfileDrawer> {
   UserModel currentUser = UserModel();
   List<Widget> drawerOptions = [];
   int _selectedDrawerIndex = 0;
+  bool _isLoading = true;
 
   @override
   void initState() {
+    currentUser = Provider.of<UserService>(context, listen: false).currentUser;
     for (var i = 0; i < drawerItems.length - 1; i++) {
       var d = drawerItems[i];
       drawerOptions.add(
@@ -49,23 +49,19 @@ class ProfileDrawerState extends State<ProfileDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    return FutureBuilder<DocumentSnapshot>(
-        future: users.doc(firebaseUser.uid).get(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Text("Something went wrong");
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            Map<String, dynamic> data = snapshot.data.data();
-            return Scaffold(
-              appBar: _getAppBar(),
-              body: _getDrawerItemWidget(_selectedDrawerIndex),
-              drawer: _getDrawer(data, drawerOptions),
-            );
-          }
-          return WESpinKit();
-        });
+    currentUser = Provider.of<UserService>(context, listen: true).currentUser;
+    if (currentUser.userID == null && currentUser.userID == '') {
+      _isLoading = true;
+    } else {
+      _isLoading = false;
+    }
+    return _isLoading
+        ? WESpinKit()
+        : Scaffold(
+            appBar: _getAppBar(),
+            body: _getDrawerItemWidget(_selectedDrawerIndex),
+            drawer: _getDrawer(currentUser, drawerOptions),
+          );
   }
 
   _getDrawerItemWidget(int pos) {
@@ -118,38 +114,53 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         title: Text("WE"),
       );
 
-  Drawer _getDrawer(data, drawerOptions) => Drawer(
+  Drawer _getDrawer(UserModel currentUser, drawerOptions) => Drawer(
         child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(color: kPrimaryColor),
-              accountName: Text(data["superhero"].toString().trim().isEmpty ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
-                  style: TextStyle(color: kThirdColor)),
-              accountEmail: Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
-                  style: TextStyle(color: kThirdColor)),
-              currentAccountPicture: GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                child: data["avatar"] != null
-                    ? Container(
-                        height: 110,
-                        width: 220,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
-                      )
-                    : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
+                    child: currentUser.avatar != null
+                        ? Container(
+                            height: 90,
+                            width: 90,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(currentUser.avatar))),
+                          )
+                        : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          currentUser.superhero == null ? 'Kahraman İsmi Girilmedi!' : currentUser.superhero,
+                          style: TextStyle(color: kThirdColor),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          currentUser.name == null ? 'İsim Girilmedi!' : currentUser.name,
+                          style: TextStyle(color: kThirdColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             Column(children: drawerOptions),
             Expanded(
               child: GestureDetector(
                 onTap: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                  await prefs.remove('isLoggedIn');
-                  await prefs.remove('userID');
-                  await logout();
-                  // exit(0);
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (bc) => WelcomeScreen()), (route) => false);
+                  await Provider.of<LoginService>(context, listen: false).log_out(
+                      function: () => Navigator.pushAndRemoveUntil(
+                          context, MaterialPageRoute(builder: (bc) => WelcomeScreen()), (route) => false));
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -181,12 +192,6 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     //  DrawerItem(title: "Eğitim", icon: Icons.book_outlined),
     // DrawerItem(title: "Destek", icon: Icons.help),
   ];
-
-  /// TODO: move
-  Future logout() async {
-    await FirebaseAuth.instance.signOut().then((value) =>
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => WelcomeScreen()), (route) => false));
-  }
 }
 
 /// Drawer Items
@@ -201,3 +206,23 @@ class ProfileDrawerState extends State<ProfileDrawer> {
 //   // DrawerItem(title: "Destek", icon: Icons.help),
 //   DrawerItem(title: "Home", icon: Icons.help),
 // ];
+///
+// UserAccountsDrawerHeader(
+//   decoration: BoxDecoration(color: kPrimaryColor),
+//   accountName: Text(currentUser.superhero == null ? 'Kahraman İsmi Girilmedi!' : currentUser.superhero,
+//       style: TextStyle(color: kThirdColor)),
+//   accountEmail:
+//       Text(currentUser.name == null ? 'İsim Girilmedi!' : currentUser.name, style: TextStyle(color: kThirdColor)),
+//   currentAccountPicture: GestureDetector(
+//     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
+//     child: currentUser.avatar != null
+//         ? Container(
+//             height: 110,
+//             width: 220,
+//             decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(currentUser.avatar))),
+//           )
+//         : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+//   ),
+// ),

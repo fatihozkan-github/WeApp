@@ -24,6 +24,10 @@ class APILogin extends ChangeNotifier {
   /// TODO
   Future APIServicesSignup() {}
 
-  /// TODO:
-  Future APILogout() {}
+  Future APILogout(function) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isLoggedIn');
+    await prefs.remove('userID');
+    await FirebaseAuth.instance.signOut().then((value) => function());
+  }
 }
