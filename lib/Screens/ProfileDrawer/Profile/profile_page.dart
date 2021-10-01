@@ -70,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: 10),
                   OrDivider(text: "Rozetler"),
                   _footer(data),
+                  SizedBox(height: 20),
                 ],
               ),
             );
