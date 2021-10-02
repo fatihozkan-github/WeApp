@@ -60,7 +60,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         : Scaffold(
             appBar: _getAppBar(),
             body: _getDrawerItemWidget(_selectedDrawerIndex),
-            drawer: _getDrawer(currentUser, drawerOptions),
+            drawer: _getDrawer(drawerOptions),
           );
   }
 
@@ -106,7 +106,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                   highlightColor: kPrimaryColor,
                   child: Image.asset("assets/Images/BottomNavigation/leaderboardIcon.png", color: Colors.white),
                 )),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Leaderboard())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard())),
           )
         ],
         centerTitle: true,
@@ -114,7 +114,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         title: Text("WE"),
       );
 
-  Drawer _getDrawer(UserModel currentUser, drawerOptions) => Drawer(
+  Drawer _getDrawer(drawerOptions) => Drawer(
         child: Column(
           children: <Widget>[
             DrawerHeader(

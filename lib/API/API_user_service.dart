@@ -1,4 +1,7 @@
+// ignore_for_file: omit_local_variable_types
+
 import 'dart:io';
+import 'package:WE/models/model_friend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,9 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+/// TODO: STATUS CHECK FOR ALL FUNCTIONS
 class APIUserService extends ChangeNotifier {
   /// TODO: Not safe enough!
   final CollectionReference _brewCollection = FirebaseFirestore.instance.collection('users');
+
+  Future addFriend({FriendModel friend}) async {
+    /// TODO
+  }
+
+  Future fetchFriends({String userID}) async {
+    CollectionReference friends = FirebaseFirestore.instance.collection('friends');
+    DocumentSnapshot data = await friends.doc(userID).get();
+    return data;
+  }
 
   Future updateUserName({String userID, String newName}) async {
     await _brewCollection.doc(userID).update({'name': newName});

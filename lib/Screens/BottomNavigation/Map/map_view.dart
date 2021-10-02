@@ -63,11 +63,11 @@ class _MapViewState extends State<MapView> {
               title: Text("HeroStation", style: TextStyle(fontFamily: "Montserrat_Alternates", fontSize: 24)),
               centerTitle: true,
               actions: [
-                InkWell(
+                GestureDetector(
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapFeedbackPage())),
                   child: Image.asset("assets/Icons/eventrequestwhite.png", scale: 1.1),
                 ),
-                SizedBox(width: size.width * 0.01)
+                SizedBox(width: 5)
               ],
               backgroundColor: kPrimaryColor,
             ),

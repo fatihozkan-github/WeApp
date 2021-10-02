@@ -1,5 +1,6 @@
 // ignore_for_file: sort_constructors_first, prefer_single_quotes
 
+import 'package:WE/models/model_friend.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -33,6 +34,9 @@ class UserModel {
     "badge2": false
   };
 
+  /// TODO: TEST
+  List<FriendModel> friends;
+
   /// TODO: Check null safety.
   UserModel({
     this.userID,
@@ -56,6 +60,7 @@ class UserModel {
     this.raffle2 = false,
     this.raffle3 = false,
     this.company,
+    this.friends = const [],
   });
 
   factory UserModel.fromDocument(DocumentSnapshot doc) {

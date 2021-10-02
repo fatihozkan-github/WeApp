@@ -1,9 +1,10 @@
-import 'package:WE/API/API_fetch_data.dart';
+import 'package:WE/API/API_general_services.dart';
 import 'package:WE/API/API_initials.dart';
 import 'package:WE/API/API_login.dart';
 import 'package:WE/API/API_user_service.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
+import 'package:WE/Services/service_general.dart';
 import 'package:WE/Services/service_login.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,8 +37,9 @@ class WE extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => APIInitials()),
         ChangeNotifierProvider(create: (context) => APILogin()),
-        ChangeNotifierProvider(create: (context) => APIFetchData()),
+        ChangeNotifierProvider(create: (context) => APIGeneralServices()),
         ChangeNotifierProvider(create: (context) => APIUserService()),
+        ChangeNotifierProvider(create: (context) => GeneralServices()),
         ChangeNotifierProvider(create: (context) => LoginService()),
         ChangeNotifierProvider(create: (context) => UserService()),
       ],

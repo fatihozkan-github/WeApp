@@ -1,45 +1,33 @@
+import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/tab_friends.dart';
+import 'package:WE/Resources/components/overScrollHandler.dart';
 import 'package:WE/Resources/constants.dart';
-import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/friends.dart';
-import 'package:WE/example.dart';
 import 'package:flutter/material.dart';
+import 'package:WE/example.dart';
 
-class Leaderboard extends StatelessWidget {
+class LeaderBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text("Lider Tablosu", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          backgroundColor: kPrimaryColor),
-      body: Stack(
-        children: [
-          Container(
-              color: Colors.white,
-              child: DefaultTabController(
-                length: 2,
-                child: Column(
-                  children: [
-                    SafeArea(
-                      child: Container(
-                        color: Colors.white,
-                        height: 50,
-                        child: TabBar(
-                          tabs: [
-                            Tab(child: Text("WE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-                            Tab(child: Text("Arkadaşlar", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-                          ],
-                          labelColor: kPrimaryColor,
-                          unselectedLabelColor: Colors.black,
-                          indicatorColor: kPrimaryColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(child: Container(color: Colors.white, child: TabBarView(children: [Example(), FriendsTab()])))
-                  ],
-                ),
-              )),
-        ],
+      appBar: AppBar(centerTitle: true, title: Text('Lider Tablosu'), backgroundColor: kPrimaryColor),
+      body: OverScroll(
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              TabBar(
+                tabs: [
+                  Tab(child: Text("Genel", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+                  Tab(child: Text("Arkadaşlar", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+                ],
+                labelColor: kPrimaryColor,
+                unselectedLabelColor: Colors.black,
+                indicatorColor: kPrimaryColor,
+              ),
+              Expanded(child: TabBarView(children: [Example(), FriendsTab()]))
+            ],
+          ),
+        ),
       ),
     );
   }

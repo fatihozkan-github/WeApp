@@ -1,15 +1,35 @@
 // ignore_for_file: omit_local_variable_types
 
-import 'package:WE/API/API_user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:WE/API/API_user_service.dart';
+import 'package:WE/models/model_friend.dart';
 import 'package:WE/models/model_user.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:WE/API/API_initials.dart';
 
 class UserService extends ChangeNotifier {
   final APIUserService _apiUserService = APIUserService();
   UserModel currentUser = UserModel();
+
+  Future getFriends() async {
+    await _apiUserService.fetchFriends(userID: currentUser.userID);
+    DocumentSnapshot x = await _apiUserService.fetchFriends(userID: currentUser.userID);
+    Map<String, dynamic> y = x.data();
+    List<FriendModel> localList = [];
+    for (var value in y.values.toList()) {
+      FriendModel newFriend = FriendModel.fromJSON(value);
+      if (currentUser.userID != newFriend.userID) {
+        localList.add(newFriend);
+      }
+    }
+    localList.sort((a, b) => b.recycled.compareTo(a.recycled));
+    currentUser.friends = localList;
+  }
+
+  /// TODO
+  Future addFriend({FriendModel friend}) async {
+    await _apiUserService.addFriend(friend: friend);
+    notifyListeners();
+  }
 
   Future<String> updateImage() async {
     String newImage = await _apiUserService.updateImage(defaultValue: currentUser.avatar);
@@ -65,6 +85,7 @@ class UserService extends ChangeNotifier {
     print('exp       : ${currentUser.exp}');
     print('badges    : ${currentUser.badges}');
     print('recycled  : ${currentUser.recycled}');
+    print('friends   : ${currentUser.friends}');
     print('For info  : See UserService');
   }
 }
