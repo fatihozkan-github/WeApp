@@ -47,6 +47,7 @@ class _CodePageState extends State<CodePage> {
                 selectedColor: Colors.orange,
                 inactiveFillColor: Colors.grey[300],
               ),
+              textCapitalization: TextCapitalization.characters,
               animationDuration: Duration(milliseconds: 300),
               backgroundColor: Colors.transparent,
               enableActiveFill: true,
@@ -57,7 +58,7 @@ class _CodePageState extends State<CodePage> {
               // },
               onChanged: (value) {
                 setState(() {
-                  currentText = value;
+                  currentText = value.toUpperCase();
                   showError = false;
                 });
               },
