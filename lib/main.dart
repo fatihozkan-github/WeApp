@@ -49,11 +49,16 @@ class WE extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'WE',
         theme: ThemeData(
-          accentColor: Colors.orange,
+          accentColor: kPrimaryColor,
           fontFamily: 'Montserrat_Alternates',
           appBarTheme: AppBarTheme(
-            titleTextStyle:
-                TextStyle(color: Colors.white, fontFamily: 'Montserrat_Alternates', fontSize: 26, fontWeight: FontWeight.bold),
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Montserrat_Alternates',
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
+            backgroundColor: kPrimaryColor,
           ),
           primaryColor: kPrimaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
