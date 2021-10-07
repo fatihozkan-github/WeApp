@@ -1,6 +1,5 @@
 // ignore_for_file: omit_local_variable_types
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:WE/API/API_user_service.dart';
 import 'package:WE/models/model_friend.dart';
 import 'package:WE/models/model_user.dart';
@@ -9,6 +8,11 @@ import 'package:flutter/material.dart';
 class UserService extends ChangeNotifier {
   final APIUserService _apiUserService = APIUserService();
   UserModel currentUser = UserModel();
+
+  Future gotUser({UserModel loggedInUser}) async {
+    currentUser = loggedInUser;
+    notifyListeners();
+  }
 
   Future getFriends() async {
     currentUser.friends = await _apiUserService.fetchFriends(userID: currentUser.userID);

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:WE/API/API_general_services.dart';
 import 'package:WE/API/API_initials.dart';
 import 'package:WE/API/API_login.dart';
@@ -48,10 +50,10 @@ class WE extends StatelessWidget {
         title: 'WE',
         theme: ThemeData(
           accentColor: Colors.orange,
-          fontFamily: "Montserrat_Alternates",
+          fontFamily: 'Montserrat_Alternates',
           appBarTheme: AppBarTheme(
             titleTextStyle:
-                TextStyle(color: Colors.white, fontFamily: "Montserrat_Alternates", fontSize: 26, fontWeight: FontWeight.bold),
+                TextStyle(color: Colors.white, fontFamily: 'Montserrat_Alternates', fontSize: 26, fontWeight: FontWeight.bold),
           ),
           primaryColor: kPrimaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -60,11 +62,11 @@ class WE extends StatelessWidget {
           body: isLoggedIn == false
               ? BottomNavigation()
               : SplashScreen(
-                  loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
+                  loadingText: Text('WE ekibinden', style: TextStyle(color: Colors.white)),
                   photoSize: 240,
                   seconds: 0,
                   navigateAfterSeconds: AfterSplash(),
-                  image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
+                  image: Image.asset('assets/we2.png', alignment: Alignment.center, width: 160),
                   // backgroundColor: kSecondaryColor,
                 ),
         ),

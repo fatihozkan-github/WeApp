@@ -2,6 +2,7 @@
 
 import 'package:WE/Resources/components/pop_up.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
+import 'package:WE/Services/challenge_service.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:WE/models/model_friend.dart';
 import 'package:WE/Resources/constants.dart';
@@ -155,9 +156,9 @@ class _HisProfileState extends State<HisProfile> {
                               popUp(context, widget.friend.name + " düelloya davet edildi. Bol şans!", true);
 
                               /// TODO: Background functions.
-                              // checkChallenges(widget.username);
-                              // createChallenge(widget.uid, data["name"]);
-                              //_number();
+                              checkChallenges(widget.friend.name);
+                              createChallenge(widget.friend.userID, widget.friend.name);
+                              // _number();
                             },
                           ),
                         ),

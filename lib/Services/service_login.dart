@@ -2,6 +2,7 @@
 
 import 'package:WE/API/API_initials.dart';
 import 'package:WE/API/API_login.dart';
+import 'package:WE/Resources/functions.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:WE/models/model_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,23 +12,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService extends ChangeNotifier {
   APILogin _apiLogin = APILogin();
+  Functions _functions = Functions();
 
   /// • Get the current user according to our user model.
-  void initiateUser(String currentUserID, BuildContext context) async {
+  Future initiateUser(String currentUserID, BuildContext context) async {
     DocumentSnapshot rawUserData = await Provider.of<APIInitials>(context, listen: false).fetchUser(currentUserID);
     UserModel _currentUser = UserModel.fromDocument(rawUserData);
-    Provider.of<UserService>(context, listen: false).currentUser = _currentUser;
+    // Provider.of<UserService>(context, listen: false).currentUser = _currentUser;
+    Provider.of<UserService>(context, listen: false).gotUser(loggedInUser: _currentUser);
+    notifyListeners();
   }
 
   /// • Login service for WE.
   Future login(BuildContext context, {String email, String password}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('userID') == null) {
+    if (_functions.nullCheck(prefs.getString('userID'))) {
       await _apiLogin.APIServicesLogin(email, password, context);
-    } else if (prefs.getString('userID') != null) {
+    } else if (!_functions.nullCheck(prefs.getString('userID'))) {
       /// TODO: Status check.
-      initiateUser(prefs.getString('userID'), context);
+      await initiateUser(prefs.getString('userID'), context);
     }
+    notifyListeners();
   }
 
   /// • Sign up service for WE.

@@ -52,7 +52,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
   void initState() {
     super.initState();
     Provider.of<LoginService>(context, listen: false).login(context);
-
     getData().then((value) {
       avatarList.clear();
       avatarList.add(value);

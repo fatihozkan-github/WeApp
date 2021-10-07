@@ -8,6 +8,7 @@ import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Resources/functions.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:WE/models/model_user.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,17 @@ class _EditProfileState extends State<EditProfile> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: TextButton(
-                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage())),
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ActivateBracelet();
+                              },
+                            ),
+                          );
+                          setState(() {});
+                        },
                         style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
                         child: Row(
                           children: [
