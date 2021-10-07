@@ -48,6 +48,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    print(!_functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.userID));
     return !_functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.userID)
         ? Scaffold(appBar: _getAppBar(), body: _getDrawerItemWidget(_selectedDrawerIndex), drawer: _getDrawer(drawerOptions))
         : WESpinKit();

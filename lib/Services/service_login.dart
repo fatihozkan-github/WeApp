@@ -19,7 +19,7 @@ class LoginService extends ChangeNotifier {
     DocumentSnapshot rawUserData = await Provider.of<APIInitials>(context, listen: false).fetchUser(currentUserID);
     UserModel _currentUser = UserModel.fromDocument(rawUserData);
     // Provider.of<UserService>(context, listen: false).currentUser = _currentUser;
-    Provider.of<UserService>(context, listen: false).gotUser(loggedInUser: _currentUser);
+    await Provider.of<UserService>(context, listen: false).gotUser(loggedInUser: _currentUser);
     notifyListeners();
   }
 

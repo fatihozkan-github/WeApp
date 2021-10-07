@@ -5,6 +5,7 @@ import 'package:WE/Resources/components/pop_up.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/textOverFlowHandler.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
+import 'package:WE/Resources/functions.dart';
 import 'package:WE/Screens/ProfileDrawer/Badges/badges_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/second_edit_profile.dart';
@@ -22,6 +23,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserModel currentUser = UserModel();
+  Functions _functions = Functions();
 
   @override
   void initState() {
@@ -79,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 /// TODO: Check
                 Expanded(
-                    child: currentUser.avatar != null
+                    child: !_functions.nullCheck(currentUser.avatar)
                         ? Container(
                             height: 120,
                             decoration: BoxDecoration(
@@ -96,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: <Widget>[
                       TextOverFlowHandler(
                         child: Text(
-                          currentUser.name == null ? 'İsim Girilmedi!' : currentUser.name,
+                          _functions.nullCheck(currentUser.name) ? 'İsim Girilmedi!' : currentUser.name,
                           style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -108,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 3,
                             child: Text(
-                              currentUser.superhero == null ? 'Kahraman İsmi Girilmedi!' : currentUser.superhero,
+                              _functions.nullCheck(currentUser.superhero) ? 'Kahraman İsmi Girilmedi!' : currentUser.superhero,
                               style: TextStyle(color: Colors.black, fontSize: 15),
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,
@@ -129,15 +131,23 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Text(currentUser.coins.toString() ?? 0,
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)),
+                    !_functions.nullCheck(currentUser.coins.toString())
+                        ? currentUser.coins >= 0
+                            ? Text(currentUser.coins.toString() ?? 0,
+                                style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold))
+                            : Text('0', style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold))
+                        : Text('0', style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)),
                     Text("WE coin", style: TextStyle(color: Colors.black, fontSize: 15)),
                   ],
                 ),
                 Column(
                   children: <Widget>[
-                    Text(currentUser.recycled.toString() ?? 0,
-                        style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)),
+                    !_functions.nullCheck(currentUser.recycled.toString())
+                        ? currentUser.recycled >= 0
+                            ? Text(currentUser.recycled.toString() ?? 0,
+                                style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold))
+                            : Text('0', style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold))
+                        : Text('0', style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold)),
                     Text("Geri dönüştürülen", style: TextStyle(color: Colors.black, fontSize: 15)),
                   ],
                 ),
@@ -155,20 +165,20 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 190,
                   width: 190,
                   child: LiquidCircularProgressIndicator(
-                      value: currentUser.exp ?? 0,
+                      value: _functions.nullCheck(currentUser.exp.toString()) ? currentUser.exp ?? 0 : 0,
                       valueColor: AlwaysStoppedAnimation(Colors.lightBlue[200]),
                       backgroundColor: Colors.white,
                       borderColor: kPrimaryColor,
                       borderWidth: 10.0,
                       direction: Axis.vertical,
-                      center: currentUser.level.toString() != null
+                      center: !_functions.nullCheck(currentUser.level.toString())
                           ? Text("Seviye ${currentUser.level.toString()}")
                           : Text('Seviye 1')))),
           IconButton(
             icon: Image.asset("assets/question-mark.png"),
             iconSize: 60,
             onPressed: () {
-              currentUser.recycled.toString() != null
+              !_functions.nullCheck(currentUser.recycled.toString())
                   ? popUp(
                       context,
                       (currentUser.recycled * 5.774).toStringAsFixed(0).length == 4
