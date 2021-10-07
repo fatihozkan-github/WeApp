@@ -28,6 +28,14 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    // currentUser.name = null;
+    // currentUser.superhero = null;
+    // currentUser.coins = null;
+    // currentUser.recycled = null;
+    // currentUser.dailyCoins = null;
+    // currentUser.recycled = null;
+    // currentUser.forbadgecount = null;
+    // currentUser.avatar = null;
 
     /// TODO: Fix.
     // currentUser.calculateLevel();
@@ -37,6 +45,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     currentUser = Provider.of<UserService>(context, listen: true).currentUser;
+    print(currentUser.coins.toString());
+    print(!_functions.nullCheck(currentUser.coins.toString()));
     return currentUser.userID != null
         ? Scaffold(
             appBar: AppBar(
@@ -79,7 +89,6 @@ class _ProfilePageState extends State<ProfilePage> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                /// TODO: Check
                 Expanded(
                     child: !_functions.nullCheck(currentUser.avatar)
                         ? Container(
@@ -131,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    !_functions.nullCheck(currentUser.coins.toString())
+                    _functions.nullCheck(currentUser.coins.toString())
                         ? currentUser.coins >= 0
                             ? Text(currentUser.coins.toString() ?? 0,
                                 style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold))
@@ -142,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Column(
                   children: <Widget>[
-                    !_functions.nullCheck(currentUser.recycled.toString())
+                    _functions.nullCheck(currentUser.recycled.toString())
                         ? currentUser.recycled >= 0
                             ? Text(currentUser.recycled.toString() ?? 0,
                                 style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold))
@@ -178,7 +187,7 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: Image.asset("assets/question-mark.png"),
             iconSize: 60,
             onPressed: () {
-              !_functions.nullCheck(currentUser.recycled.toString())
+              _functions.nullCheck(currentUser.recycled.toString())
                   ? popUp(
                       context,
                       (currentUser.recycled * 5.774).toStringAsFixed(0).length == 4
@@ -208,8 +217,12 @@ class _ProfilePageState extends State<ProfilePage> {
               Image.asset(currentUser.badges["badge1"] ? allBadges[0][0] : allBadges[0][1]),
               Image.asset(currentUser.badges["badge2"] ? allBadges[1][0] : allBadges[1][1], scale: 8),
               Image.asset(currentUser.badges["badge3"] ? allBadges[2][0] : allBadges[2][1], scale: 8),
-              Image.asset(currentUser.forbadgecount >= 3 ? allBadges[3][0] : allBadges[3][1], scale: 8),
-              Image.asset(currentUser.recycled >= 800 ? allBadges[4][0] : allBadges[4][1], scale: 8),
+              _functions.nullCheck(currentUser.forbadgecount.toString())
+                  ? Image.asset(currentUser.forbadgecount >= 3 ? allBadges[3][0] : allBadges[3][1], scale: 8)
+                  : Image.asset(allBadges[3][1], scale: 8),
+              _functions.nullCheck(currentUser.recycled.toString())
+                  ? Image.asset(currentUser.recycled >= 800 ? allBadges[4][0] : allBadges[4][1], scale: 8)
+                  : Image.asset(allBadges[4][1], scale: 8),
               Image.asset(currentUser.badges["badge6"] ? allBadges[5][0] : allBadges[5][1], scale: 8),
             ],
           ),

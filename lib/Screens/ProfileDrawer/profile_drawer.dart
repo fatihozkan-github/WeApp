@@ -14,6 +14,7 @@ import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
 import 'package:WE/Screens/ProfileDrawer/training_set/page/training_set.dart';
 import 'package:WE/Services/service_login.dart';
 import 'package:WE/Services/service_user.dart';
+import 'package:WE/models/model_user.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +30,20 @@ class ProfileDrawerState extends State<ProfileDrawer> {
   Functions _functions = Functions();
   List<Widget> drawerOptions = [];
   int _selectedDrawerIndex = 0;
+  UserModel userModel = UserModel();
+
+  getData() async {
+    userModel = await Provider.of<UserService>(context, listen: true).currentUser;
+  }
 
   @override
   void initState() {
+    getData();
+    // userModel = Provider.of<UserService>(context, listen: false).currentUser;
+    // print('Init: ${userModel.name}');
+    // userModel.name = null;
+    // userModel.avatar = null;
+    // userModel.superhero = null;
     for (var i = 0; i < drawerItems.length; i++) {
       var d = drawerItems[i];
       drawerOptions.add(
@@ -48,7 +60,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    print(!_functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.userID));
+    // print(!_functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.userID));
     return !_functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.userID)
         ? Scaffold(appBar: _getAppBar(), body: _getDrawerItemWidget(_selectedDrawerIndex), drawer: _getDrawer(drawerOptions))
         : WESpinKit();
@@ -115,17 +127,20 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                 children: [
                   GestureDetector(
                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                      child: _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.avatar)
-                          ? Icon(Icons.account_circle_rounded, size: 80, color: Colors.white)
-                          : Container(
-                              height: 90,
-                              width: 90,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: NetworkImage(Provider.of<UserService>(context, listen: true).currentUser.avatar))),
-                            )),
+                      child:
+                          // _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.avatar)
+                          _functions.nullCheck(userModel.avatar)
+                              ? Icon(Icons.account_circle_rounded, size: 80, color: Colors.white)
+                              : Container(
+                                  height: 90,
+                                  width: 90,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image:
+                                              NetworkImage(Provider.of<UserService>(context, listen: true).currentUser.avatar))),
+                                )),
                   SizedBox(width: 20),
                   Expanded(
                     child: Column(
@@ -133,14 +148,16 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.superhero)
+                          // _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.superhero)
+                          _functions.nullCheck(userModel.superhero)
                               ? 'Kahraman İsmi Girilmedi!'
                               : Provider.of<UserService>(context, listen: true).currentUser.superhero,
                           style: TextStyle(color: kThirdColor),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.name)
+                          // _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.name)
+                          _functions.nullCheck(userModel.name)
                               ? 'İsim Girilmedi!'
                               : Provider.of<UserService>(context, listen: true).currentUser.name,
                           style: TextStyle(color: kThirdColor),

@@ -11,6 +11,7 @@ class UserService extends ChangeNotifier {
 
   Future gotUser({UserModel loggedInUser}) async {
     currentUser = loggedInUser;
+    print('Provider: ${currentUser.name}'); // works.
     notifyListeners();
   }
 
