@@ -25,7 +25,7 @@ class InvitePage extends StatelessWidget {
             Center(
               child: Text(
                 "Referans kodun ile arkadaşlarını davet et. Hem sen hem de onlar ekstra ayrıcalıklardan faydalanın.",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black, fontSize: 19),
                 textAlign: TextAlign.center,
               ),
             ),

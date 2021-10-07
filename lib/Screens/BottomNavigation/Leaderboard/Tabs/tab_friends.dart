@@ -1,4 +1,3 @@
-import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/global.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/hisprofile.dart';
 import 'package:WE/Resources/components/rounded_list_tile.dart';
 import 'package:WE/Services/service_user.dart';
@@ -18,17 +17,12 @@ class _FriendsTabState extends State<FriendsTab> {
 
   @override
   void initState() {
-    Provider.of<UserService>(context, listen: false).getFriends();
     localFriends = Provider.of<UserService>(context, listen: false).currentUser.friends;
-    // print('localFriends $localFriends');
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    localFriends = Provider.of<UserService>(context, listen: true).currentUser.friends;
-    return Scaffold(body: localFriends.isNotEmpty ? _bodyWithFriends() : _bodyWithOutFriends());
-  }
+  Widget build(BuildContext context) => Scaffold(body: localFriends.isNotEmpty ? _bodyWithFriends() : _bodyWithOutFriends());
 
   Widget _bodyWithFriends() => ListView.builder(
       itemCount: localFriends.length,
@@ -65,11 +59,18 @@ class _FriendsTabState extends State<FriendsTab> {
       );
 }
 
-final imagesPeople = [
-  "assets/Images/People/larryPage.png",
-  "assets/Images/People/alihan.png",
-  "assets/Images/People/aysu.png",
-  "assets/Images/People/sundarPichai.png",
+// final imagesPeople = [
+//   "assets/Images/People/larryPage.png",
+//   "assets/Images/People/alihan.png",
+//   "assets/Images/People/aysu.png",
+//   "assets/Images/People/sundarPichai.png",
+// ];
+
+final leaderboardIcons = [
+  "assets/Icons/first.png",
+  "assets/Icons/second.png",
+  "assets/Icons/third.png",
+  "assets/Icons/wreath.png",
 ];
 
 // Container(

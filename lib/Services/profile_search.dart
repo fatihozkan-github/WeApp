@@ -1,5 +1,6 @@
-import 'package:WE/Resources/components/rounded_input_field.dart';
-import 'package:WE/Services/user_service.dart';
+// ignore_for_file: omit_local_variable_types, prefer_single_quotes
+
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
@@ -21,11 +22,17 @@ class _SearchPageState extends State<SearchPage> {
     ["Larry Page", "X-man", "assets/Images/People/larryPage.png", "usixnrYluAelbadO68ABJz5AJ3u2"]
   ];
 
-  var items = List<List<String>>();
+  List<List<String>> items = [];
+
+  bool isLoading = true;
+
+  getData() {
+    getAllUsersData('');
+  }
 
   @override
   void initState() {
-    print("***************************");
+    getData();
     super.initState();
   }
 
@@ -36,8 +43,11 @@ class _SearchPageState extends State<SearchPage> {
     var collection = FirebaseFirestore.instance.collection('allUsers');
     var docSnapshot = await collection.doc("C9nvPCW2TwemcjSVgm04").get();
     if (docSnapshot.exists) {
-      for (var i = 1; i <= docSnapshot.data().keys.length; i++) {
-        Map<String, dynamic> data = docSnapshot.data()["user" + i.toString()];
+      Map<String, dynamic> data = docSnapshot.data();
+      List localList = data.keys.toList();
+      localList.sort();
+      for (int i = 0; i < localList.length; i++) {
+        Map<String, dynamic> data = docSnapshot.data()[localList[i]];
         subPeople.insert(0, data["name"]);
         subPeople.insert(1, data["superhero"]);
         subPeople.insert(2, data["avatar"]);
@@ -51,13 +61,12 @@ class _SearchPageState extends State<SearchPage> {
     for (var i = 0; i < subPeople.length; i += 8) {
       People2.add(subPeople.sublist(i, i + 8 > subPeople.length ? subPeople.length : i + 8));
     }
-    //print(People2);
     items.addAll(People2);
 
-    List<List<String>> firstList = List<List<String>>();
+    List<List<String>> firstList = [];
     firstList.addAll(People2);
     if (query.isNotEmpty) {
-      List<List<String>> secondList = List<List<String>>();
+      List<List<String>> secondList = [];
       firstList.forEach((item) {
         if (item[0].toUpperCase().contains(query.toUpperCase())) {
           secondList.add(item);
@@ -73,13 +82,15 @@ class _SearchPageState extends State<SearchPage> {
         items.addAll(firstList);
       });
     }
+
+    setState(() => isLoading = false);
   }
 
   void filterSearchResults(String query) {
-    List<List<String>> firstList = List<List<String>>();
+    List<List<String>> firstList = [];
     firstList.addAll(People);
     if (query.isNotEmpty) {
-      List<List<String>> secondList = List<List<String>>();
+      List<List<String>> secondList = [];
       firstList.forEach((item) {
         if (item[0].toUpperCase().contains(query.toUpperCase())) {
           secondList.add(item);
@@ -100,79 +111,68 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Profil ara", style: TextStyle(fontFamily: "Panthera", fontSize: 24)),
-        backgroundColor: kPrimaryColor,
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RoundedInputField(
-                icon: Icons.search,
-                hintText: "Ara",
-                onChanged: (value) {
-                  getAllUsersData(value);
-                },
-              ),
-              // TextField(
-              //   style: TextStyle(color: Colors.black),
-              //   onChanged: (value) {
-              //     getAllUsersData(value);
-              //   },
-              //   controller: editingController,
-              //   decoration: InputDecoration(
-              //     fillColor: kPrimaryColor,
-              //     hoverColor: kPrimaryColor,
-              //     focusColor: kPrimaryColor,
-              //     labelText: "Ara",
-              //     prefixIcon: Icon(Icons.search, color: kPrimaryColor),
-              //     focusedBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(color: kPrimaryColor),
-              //       borderRadius: BorderRadius.circular(25.0),
-              //     ),
-              //   ),
-              // ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    contentPadding: EdgeInsets.only(left: 15, top: 5),
-                    leading: items[index][2] == null ? Image.asset("assets/Icons/user.png") : Image.asset(items[index][2]),
-                    title: Text('${items[index][0]}', style: TextStyle(color: Colors.black, fontSize: 18)),
-                    subtitle: Text(items[index][1]),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return HerProfile(
-                              username: items[index][0],
-                              userPhoto: items[index][2],
-                              uid: items[index][3],
-                              level: int.parse(items[index][4]),
-                              coins: int.parse(items[index][5]),
-                              recycled: int.parse(items[index][6]),
-                              superhero: items[index][7],
+    return isLoading
+        ? WESpinKit()
+        : Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(centerTitle: true, title: Text("Profil ara"), backgroundColor: kPrimaryColor),
+            body: Container(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      style: TextStyle(color: Colors.black),
+                      onChanged: (value) => getAllUsersData(value),
+                      controller: editingController,
+                      decoration: InputDecoration(
+                        fillColor: kPrimaryColor,
+                        hoverColor: kPrimaryColor,
+                        focusColor: kPrimaryColor,
+                        labelText: "Ara",
+                        prefixIcon: Icon(Icons.search, color: kPrimaryColor),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: kPrimaryColor),
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          contentPadding: EdgeInsets.only(left: 15, top: 5),
+                          leading: items[index][2] == null ? Image.asset("assets/Icons/user.png") : Image.asset(items[index][2]),
+                          title: Text('${items[index][0]}', style: TextStyle(color: Colors.black, fontSize: 18)),
+                          subtitle: Text(items[index][1] ?? ''),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return HerProfile(
+                                    username: items[index][0],
+                                    userPhoto: items[index][2],
+                                    uid: items[index][3],
+                                    level: int.parse(items[index][4]),
+                                    coins: int.parse(items[index][5]),
+                                    recycled: int.parse(items[index][6]),
+                                    superhero: items[index][7],
+                                  );
+                                },
+                              ),
                             );
                           },
-                        ),
-                      );
-                    },
-                  );
-                },
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

@@ -6,6 +6,7 @@ import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
+import 'package:WE/Resources/functions.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:WE/models/model_user.dart';
@@ -21,6 +22,7 @@ class _EditProfileState extends State<EditProfile> {
   String _username, _city, _address, _superhero, _company;
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
   final GlobalKey<FormState> _formKey = GlobalKey();
+  Functions _functions = Functions();
   UserModel currentUser = UserModel();
   int _currentProgress = 0;
   bool _isLoading = false;
@@ -29,12 +31,12 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     currentUser = Provider.of<UserService>(context, listen: false).currentUser;
-    if (!(nullCheck(currentUser.avatar))) _currentProgress++;
-    if (!(nullCheck(currentUser.name))) _currentProgress++;
-    if (!(nullCheck(currentUser.city))) _currentProgress++;
-    if (!(nullCheck(currentUser.superhero))) _currentProgress++;
-    if (!(nullCheck(currentUser.address))) _currentProgress++;
-    if (!(nullCheck(currentUser.company))) _currentProgress++;
+    if (!(_functions.nullCheck(currentUser.avatar))) _currentProgress++;
+    if (!(_functions.nullCheck(currentUser.name))) _currentProgress++;
+    if (!(_functions.nullCheck(currentUser.city))) _currentProgress++;
+    if (!(_functions.nullCheck(currentUser.superhero))) _currentProgress++;
+    if (!(_functions.nullCheck(currentUser.address))) _currentProgress++;
+    if (!(_functions.nullCheck(currentUser.company))) _currentProgress++;
   }
 
   @override
@@ -165,6 +167,7 @@ class _EditProfileState extends State<EditProfile> {
           );
   }
 
+  /// TODO: Fix.
   /// • Adjusts progress bar and updates user.
   void _adjustProgressBar() async {
     setState(() {});
@@ -186,10 +189,10 @@ class _EditProfileState extends State<EditProfile> {
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
     setState(() {});
-    if (!nullCheck(_city) || _city != currentUser.city) {
-      if (!nullCheck(_city) && nullCheck(currentUser.city))
+    if (!_functions.nullCheck(_city) || _city != currentUser.city) {
+      if (!_functions.nullCheck(_city) && _functions.nullCheck(currentUser.city))
         _currentProgress++;
-      else if (nullCheck(_city) && !nullCheck(currentUser.city))
+      else if (_functions.nullCheck(_city) && !_functions.nullCheck(currentUser.city))
         _currentProgress--;
       else if (_city == currentUser.city) _currentProgress;
 
@@ -198,10 +201,10 @@ class _EditProfileState extends State<EditProfile> {
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
     setState(() {});
-    if (!nullCheck(_address) || _address != currentUser.address) {
-      if (!nullCheck(_address) && nullCheck(currentUser.address))
+    if (!_functions.nullCheck(_address) || _address != currentUser.address) {
+      if (!_functions.nullCheck(_address) && _functions.nullCheck(currentUser.address))
         _currentProgress++;
-      else if (nullCheck(_address) && !nullCheck(currentUser.address))
+      else if (_functions.nullCheck(_address) && !_functions.nullCheck(currentUser.address))
         _currentProgress--;
       else if (_address == currentUser.address) _currentProgress;
       await Provider.of<UserService>(context, listen: false)
@@ -209,10 +212,10 @@ class _EditProfileState extends State<EditProfile> {
           .then((value) => _scaffoldKey.currentState.showSnackBar(_snackBar(value)));
     }
     setState(() {});
-    if (!nullCheck(_company) || _company != currentUser.company) {
-      if (!nullCheck(_company) && nullCheck(currentUser.company))
+    if (!_functions.nullCheck(_company) || _company != currentUser.company) {
+      if (!_functions.nullCheck(_company) && _functions.nullCheck(currentUser.company))
         _currentProgress++;
-      else if (nullCheck(_company) && !nullCheck(currentUser.company))
+      else if (_functions.nullCheck(_company) && !_functions.nullCheck(currentUser.company))
         _currentProgress--;
       else if (_company == currentUser.company) _currentProgress;
       await Provider.of<UserService>(context, listen: false)
@@ -228,15 +231,6 @@ class _EditProfileState extends State<EditProfile> {
         elevation: 10,
         duration: Duration(milliseconds: 2000),
       );
-
-  bool nullCheck(String value) {
-    if (value == null || value?.trim() == '') {
-      return true;
-    } else if (value != null || value?.trim() != '') {
-      return false;
-    } else
-      return null;
-  }
 
   Future uploadImage() async {
     setState(() => _isLoading = true);

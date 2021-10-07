@@ -21,7 +21,16 @@ class APIUserService extends ChangeNotifier {
   Future fetchFriends({String userID}) async {
     CollectionReference friends = FirebaseFirestore.instance.collection('friends');
     DocumentSnapshot data = await friends.doc(userID).get();
-    return data;
+    Map<String, dynamic> y = data.data();
+    List<FriendModel> localList = [];
+    for (var value in y.values.toList()) {
+      FriendModel newFriend = FriendModel.fromJSONv2(value);
+      if (userID != newFriend.userID) {
+        localList.add(newFriend);
+      }
+    }
+    localList.sort((a, b) => b.recycled.compareTo(a.recycled));
+    return localList;
   }
 
   Future updateUserName({String userID, String newName}) async {

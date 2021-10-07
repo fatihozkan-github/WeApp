@@ -32,12 +32,10 @@ class _DelayPageState extends State<DelayPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SplashScreen(
-        loadingText: Text(
-          "Hesaplamalar yapılıyor...",
-          style: TextStyle(color: Colors.white),
-        ),
+        loadingText: Text("Hesaplamalar yapılıyor...", style: TextStyle(color: Colors.white)),
         photoSize: 240,
         seconds: 8,
+        loaderColor: Colors.orange,
         navigateAfterSeconds: CoinScreenExample(
           qrResult: widget.qrResult,
           currentText: widget.currentText,

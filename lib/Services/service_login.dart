@@ -22,10 +22,10 @@ class LoginService extends ChangeNotifier {
   /// • Login service for WE.
   Future login(BuildContext context, {String email, String password}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('PREF: ${prefs.getString('userID')}');
     if (prefs.getString('userID') == null) {
       await _apiLogin.APIServicesLogin(email, password, context);
     } else if (prefs.getString('userID') != null) {
+      /// TODO: Status check.
       initiateUser(prefs.getString('userID'), context);
     }
   }
@@ -34,12 +34,7 @@ class LoginService extends ChangeNotifier {
   ///
   /// • TODO: Write & implement
   Future sign_up(BuildContext context, {String email, String password}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('userID').isEmpty) {
-      await _apiLogin.APIServicesLogin(email, password, context);
-    } else if (prefs.getString('userID').isNotEmpty) {
-      initiateUser(prefs.getString('userID'), context);
-    }
+    await _apiLogin.APIServicesSignup();
   }
 
   Future log_out({Function function}) async => await _apiLogin.APILogout(function);

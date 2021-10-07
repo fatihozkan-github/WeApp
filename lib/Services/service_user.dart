@@ -11,18 +11,8 @@ class UserService extends ChangeNotifier {
   UserModel currentUser = UserModel();
 
   Future getFriends() async {
-    await _apiUserService.fetchFriends(userID: currentUser.userID);
-    DocumentSnapshot x = await _apiUserService.fetchFriends(userID: currentUser.userID);
-    Map<String, dynamic> y = x.data();
-    List<FriendModel> localList = [];
-    for (var value in y.values.toList()) {
-      FriendModel newFriend = FriendModel.fromJSON(value);
-      if (currentUser.userID != newFriend.userID) {
-        localList.add(newFriend);
-      }
-    }
-    localList.sort((a, b) => b.recycled.compareTo(a.recycled));
-    currentUser.friends = localList;
+    currentUser.friends = await _apiUserService.fetchFriends(userID: currentUser.userID);
+    notifyListeners();
   }
 
   /// TODO

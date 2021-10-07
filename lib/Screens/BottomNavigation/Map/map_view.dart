@@ -29,8 +29,8 @@ class _MapViewState extends State<MapView> {
 
   void setCustomMapPin() async {
     pinLocationIcon =
-        await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), 'assets/heroStationIcon.png');
-    setState(() => isCompleted = true);
+        await BitmapDescriptor.fromAssetImage(ImageConfiguration(devicePixelRatio: 2.5), 'assets/heroStationIcon.png')
+            .whenComplete(() => setState(() => isCompleted = true));
   }
 
   Future<void> _onMapCreated(GoogleMapController controller) async {
@@ -56,7 +56,6 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return isCompleted
         ? Scaffold(
             appBar: AppBar(

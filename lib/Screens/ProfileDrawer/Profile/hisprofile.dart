@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
 import 'package:WE/Resources/components/pop_up.dart';
+import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:WE/models/model_friend.dart';
 import 'package:WE/Resources/constants.dart';
@@ -31,16 +32,16 @@ class _HisProfileState extends State<HisProfile> {
           SizedBox(height: 30),
           Column(
             children: <Widget>[
-              Container(
-                height: 220,
-                width: 220,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            "https://firebasestorage.googleapis.com/v0/b/nodemcu-ac498.appspot.com/o/profilePhotos%2Fimage_picker7520950041675576623jpg?alt=media&token=0c07914f-e302-4708-9804-c709c9bcb9d8"))),
-              ),
+              widget.friend.avatar != null && widget.friend.avatar.isNotEmpty
+                  ? Container(
+                      height: 220,
+                      width: 220,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(widget.friend.avatar)),
+                      ),
+                    )
+                  : Icon(Icons.account_circle_rounded, size: 220, color: Colors.grey),
               SizedBox(height: 20),
               Text(widget.friend.name, style: TextStyle(color: kSecondaryColor, fontSize: 26, fontWeight: FontWeight.bold)),
               SizedBox(height: 5),
@@ -87,32 +88,54 @@ class _HisProfileState extends State<HisProfile> {
               Provider.of<UserService>(context).currentUser.friends.contains(widget.friend) ||
                       Provider.of<UserService>(context).currentUser.userID == widget.friend.userID
                   ? Container()
-                  : Container(
-                      height: 50,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: kPrimaryColor),
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                  : RoundedButton(
+                      useCustomChild: true,
+                      customChild: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 3.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.person_add_alt_1_rounded, color: kPrimaryColor),
+                            Icon(Icons.person_add_alt_1_rounded, color: Colors.white),
                             SizedBox(width: 10),
                             TextButton(
                               onPressed: () => Provider.of<UserService>(context, listen: false).addFriend(friend: widget.friend),
                               child: Text(
                                 "ARKADAŞ EKLE",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: kPrimaryColor, fontSize: 15),
+                                style: TextStyle(color: Colors.white, fontSize: 15),
                               ),
                             ),
                           ],
                         ),
                       ),
+                      onPressed: () => Provider.of<UserService>(context, listen: false).addFriend(friend: widget.friend),
                     ),
+              // : Container(
+              //     height: 50,
+              //     width: 200,
+              //     decoration: BoxDecoration(
+              //       border: Border.all(color: kPrimaryColor),
+              //       borderRadius: BorderRadius.circular(5.0),
+              //     ),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(8.0),
+              //       child: Row(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Icon(Icons.person_add_alt_1_rounded, color: kPrimaryColor),
+              //           SizedBox(width: 10),
+              //           TextButton(
+              //             onPressed: () => Provider.of<UserService>(context, listen: false).addFriend(friend: widget.friend),
+              //             child: Text(
+              //               "ARKADAŞ EKLE",
+              //               textAlign: TextAlign.center,
+              //               style: TextStyle(color: kPrimaryColor, fontSize: 15),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ),
             ],
           ),
           SizedBox(height: 40),

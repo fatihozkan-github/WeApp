@@ -2,6 +2,7 @@
 
 import 'package:WE/Resources/components/drawer_item.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
+import 'package:WE/Resources/functions.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
 import 'package:WE/Screens/ProfileDrawer/Badges/badges_page.dart';
@@ -10,9 +11,9 @@ import 'package:WE/Screens/ProfileDrawer/Invite/invite.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Feedback/feedback_page.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
+import 'package:WE/Screens/ProfileDrawer/training_set/page/training_set.dart';
 import 'package:WE/Services/service_login.dart';
 import 'package:WE/Services/service_user.dart';
-import 'package:WE/models/model_user.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:provider/provider.dart';
@@ -25,15 +26,13 @@ class ProfileDrawer extends StatefulWidget {
 }
 
 class ProfileDrawerState extends State<ProfileDrawer> {
-  UserModel currentUser = UserModel();
+  Functions _functions = Functions();
   List<Widget> drawerOptions = [];
   int _selectedDrawerIndex = 0;
-  bool _isLoading = true;
 
   @override
   void initState() {
-    currentUser = Provider.of<UserService>(context, listen: false).currentUser;
-    for (var i = 0; i < drawerItems.length - 1; i++) {
+    for (var i = 0; i < drawerItems.length; i++) {
       var d = drawerItems[i];
       drawerOptions.add(
         ListTile(
@@ -49,19 +48,9 @@ class ProfileDrawerState extends State<ProfileDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    currentUser = Provider.of<UserService>(context, listen: true).currentUser;
-    if (currentUser.userID == null && currentUser.userID == '') {
-      _isLoading = true;
-    } else {
-      _isLoading = false;
-    }
-    return _isLoading
-        ? WESpinKit()
-        : Scaffold(
-            appBar: _getAppBar(),
-            body: _getDrawerItemWidget(_selectedDrawerIndex),
-            drawer: _getDrawer(drawerOptions),
-          );
+    return !_functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.userID)
+        ? Scaffold(appBar: _getAppBar(), body: _getDrawerItemWidget(_selectedDrawerIndex), drawer: _getDrawer(drawerOptions))
+        : WESpinKit();
   }
 
   _getDrawerItemWidget(int pos) {
@@ -82,11 +71,13 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         return InvitePage();
       case 4:
         return FeedbackPage();
+      case 5:
+        return TrainingSet();
       //case 7:
       //return SupportPage();
 
       default:
-        return Text("Error");
+        return FeedPage();
     }
   }
 
@@ -122,17 +113,18 @@ class ProfileDrawerState extends State<ProfileDrawer> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                    child: currentUser.avatar != null
-                        ? Container(
-                            height: 90,
-                            width: 90,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(currentUser.avatar))),
-                          )
-                        : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
-                  ),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
+                      child: _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.avatar)
+                          ? Icon(Icons.account_circle_rounded, size: 80, color: Colors.white)
+                          : Container(
+                              height: 90,
+                              width: 90,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(Provider.of<UserService>(context, listen: true).currentUser.avatar))),
+                            )),
                   SizedBox(width: 20),
                   Expanded(
                     child: Column(
@@ -140,12 +132,16 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          currentUser.superhero == null ? 'Kahraman İsmi Girilmedi!' : currentUser.superhero,
+                          _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.superhero)
+                              ? 'Kahraman İsmi Girilmedi!'
+                              : Provider.of<UserService>(context, listen: true).currentUser.superhero,
                           style: TextStyle(color: kThirdColor),
                         ),
                         SizedBox(height: 5),
                         Text(
-                          currentUser.name == null ? 'İsim Girilmedi!' : currentUser.name,
+                          _functions.nullCheck(Provider.of<UserService>(context, listen: true).currentUser.name)
+                              ? 'İsim Girilmedi!'
+                              : Provider.of<UserService>(context, listen: true).currentUser.name,
                           style: TextStyle(color: kThirdColor),
                         ),
                       ],
@@ -186,7 +182,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     DrawerItem(title: "Düello", icon: Icons.local_police_rounded),
     DrawerItem(title: "Davet et ve Kazan", icon: Icons.share),
     DrawerItem(title: "Geri bildirim", icon: Icons.assistant_photo_rounded),
-    DrawerItem(title: "Home", icon: Icons.help),
+    // DrawerItem(title: "Home", icon: Icons.help),
+    DrawerItem(title: "Eğitim Seti", icon: Icons.collections_bookmark_outlined),
     //DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
     // DrawerItem(title: "Did you know these?", icon: Icons.wb_incandescent),
     //  DrawerItem(title: "Eğitim", icon: Icons.book_outlined),

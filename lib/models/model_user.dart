@@ -7,6 +7,7 @@ class UserModel {
   String userID;
   String name;
   String city;
+  String password;
   String avatar;
   String email;
   String superhero;
@@ -41,8 +42,9 @@ class UserModel {
   UserModel({
     this.userID,
     this.name,
+    this.password,
     this.city,
-    this.avatar = '',
+    this.avatar,
     this.email,
     this.superhero,
     this.level = 1,
@@ -87,6 +89,39 @@ class UserModel {
       raffle3: doc['raffle3'],
       company: doc['company'],
     );
+  }
+
+  Map<String, dynamic> newUserToJSON(newUser) {
+    return {
+      "name": newUser.name,
+      "password": newUser.password,
+      "email": newUser.email,
+      "city": newUser.city,
+      "exp": 0.1,
+      "superhero": newUser.superhero,
+      "level": 1,
+      "coins": 0,
+      "points": 0,
+      "raffle1": false,
+      "raffle2": false,
+      "raffle3": false,
+      "forbadgecount": 0,
+      "dailyCoins": 0,
+      "dailyRecycled": 0,
+      "uid": newUser.userID,
+      "recycled": 0,
+      "avatar": null,
+      "impact": ["Nothing", "2-hour bulb energy", "2 fish", "2kWh energy"],
+      "badges": {
+        "badge1": false,
+        "badge2": false,
+        "badge3": false,
+        "badge4": false,
+        "badge5": false,
+        "badge6": false,
+        "challenges": false,
+      },
+    };
   }
 
   /// TODO: Needs fix!
