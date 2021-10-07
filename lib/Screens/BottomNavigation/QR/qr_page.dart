@@ -2,6 +2,7 @@
 
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
+import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -94,6 +95,23 @@ class QRScanPageState extends State<QRScanPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // RoundedButton(
+              //   showGradient: true,
+              //   useCustomChild: true,
+              //   constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+              //   customChild: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //     children: [
+              //       Icon(Icons.qr_code_rounded, color: Colors.white),
+              //       Text(
+              //         "TARAT",
+              //         textAlign: TextAlign.center,
+              //         style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+              //       ),
+              //     ],
+              //   ),
+              //   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QRViewExample())),
+              // ),
               RoundedButton(
                 showGradient: true,
                 useCustomChild: true,
@@ -101,15 +119,15 @@ class QRScanPageState extends State<QRScanPage> {
                 customChild: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Icon(Icons.qr_code_rounded, color: Colors.white),
+                    Icon(Icons.password_rounded, color: Colors.white),
                     Text(
-                      "TARAT",
+                      "KOD GİR",
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QRViewExample())),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
               ),
               RoundedButton(
                 showGradient: true,
