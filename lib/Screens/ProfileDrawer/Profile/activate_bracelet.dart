@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:WE/Resources/components/rounded_button.dart';
+import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -19,23 +22,10 @@ class _ActivateBraceletState extends State<ActivateBracelet> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          "Bilekliği Etkinleştir",
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
+      appBar: AppBar(title: Text("Bilekliği Etkinleştir"), backgroundColor: kPrimaryColor, centerTitle: true),
       body: PageView(
         controller: controller,
-        children: [
-          ReadyPage(
-            controller: controller,
-          ),
-          ReadRf(
-            controller: controller,
-          ),
-          Complete()
-        ],
+        children: [ReadyPage(controller: controller), ReadRf(controller: controller), Complete()],
       ),
     );
   }
@@ -47,29 +37,24 @@ class ReadyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ListView(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       children: [
         Container(height: 300, child: Transform.scale(scale: 1.2, child: Lottie.asset('assets/7592-settings.json'))),
-        Column(
-          children: [
-            Text(
-              'Hazırlan',
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'HeroStation yakınlarında ol ve bilekliğini hazırla.Hazır olduğunda Devam tuşuna bas.',
-                textAlign: TextAlign.center,
-              ),
-            )
-          ],
+        Text('Hazırlan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28), textAlign: TextAlign.center),
+        SizedBox(height: 10),
+        Text(
+          'HeroStation yakınlarında ol ve bilekliğini hazırla. Hazır olduğunda devam butonuna bas.',
+          style: TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
         ),
-        TextButton(
-            onPressed: () {
-              controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
-            },
-            child: Text('Devam'))
+        SizedBox(height: 10),
+        RoundedButton(
+          text: 'DEVAM',
+          onPressed: () {
+            controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
+          },
+        ),
       ],
     );
   }
@@ -87,7 +72,6 @@ class ReadRf extends StatefulWidget {
 class _ReadRfState extends State<ReadRf> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print('hi');
     init();
@@ -114,24 +98,22 @@ class _ReadRfState extends State<ReadRf> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ListView(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       children: [
+        SizedBox(height: 30),
         Lottie.asset('assets/34878-scanner.json', height: 300),
-        Column(
-          children: [
-            Text(
-              'HeroStation\'a okut',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Bilekliğini HeroStation\'a okut ve onay bildirimini bekle.İşlem başarılı olunca bildirim gelecek.',
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
+        SizedBox(height: 20),
+        Text(
+          'HeroStation\'a okut',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 10),
+        Text(
+          'Bilekliğini HeroStation\'a okut ve onay bildirimini bekle.İşlem başarılı olunca bildirim gelecek.',
+          style: TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
         ),
       ],
     );
@@ -141,29 +123,29 @@ class _ReadRfState extends State<ReadRf> {
 class Complete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return ListView(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       children: [
+        SizedBox(height: 30),
         Lottie.asset('assets/16729-congratulation-icon.json', height: 300),
-        Column(
-          children: [
-            Text(
-              'Yupppii',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Artık bileklik ile giriş yapabileceksin. Kayıt tamamlama işlemi başarılı',
-                textAlign: TextAlign.center,
-              ),
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Ayarlara Dön'))
-          ],
+        SizedBox(height: 20),
+        Text(
+          'Yupppii',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 20),
+        Text(
+          'Artık bileklik ile giriş yapabileceksin. Kayıt tamamlama işlemi başarılı',
+          style: TextStyle(fontSize: 20),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 10),
+        RoundedButton(
+          text: 'Ayarlara Dön',
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ],
     );

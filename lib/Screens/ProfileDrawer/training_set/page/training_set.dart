@@ -1,3 +1,4 @@
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/ProfileDrawer/training_set/model/training_survey.dart';
 import 'package:WE/Screens/ProfileDrawer/training_set/model/training_video.dart';
@@ -79,15 +80,9 @@ class _TrainingSetState extends State<TrainingSet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Eğitim Seti'),
-        backgroundColor: kPrimaryColor,
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text('Eğitim Seti'), backgroundColor: kPrimaryColor, centerTitle: true),
       body: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? WESpinKit()
           : Column(
               children: [
                 YoutubePlayer(
@@ -120,13 +115,10 @@ class _TrainingSetState extends State<TrainingSet> {
                     child: ListView.separated(
                         itemCount: allVideo.length,
                         separatorBuilder: (c, i) {
-                          return Divider(
-                            color: Colors.grey,
-                          );
+                          return Divider(color: Colors.grey);
                         },
                         itemBuilder: (c, i) {
                           var video = allVideo[i];
-
                           return ListTile(
                             onTap: () {
                               selectedVideoIndex = i;
@@ -137,18 +129,28 @@ class _TrainingSetState extends State<TrainingSet> {
                             leading: Text(
                               '${i + 1}',
                               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
                             ),
-                            title: Text(
-                              video.title,
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            subtitle: Text(
-                              '${video.durationMinutes} dk ',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            trailing: Text(
-                              '${userVideoHistory.where((element) => element.videoId == video.youtubeId && element.completedVideo).isNotEmpty ? 'İzlendi' : 'izlenmedi'}',
-                              style: TextStyle(color: Colors.black),
+                            title: Text(video.title, style: TextStyle(color: Colors.black, fontSize: 16)),
+                            subtitle: Text('${video.durationMinutes} dk ', style: TextStyle(color: Colors.black, fontSize: 15)),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  '${userVideoHistory.where((element) => element.videoId == video.youtubeId && element.completedVideo).isNotEmpty ? 'İzlendi' : 'İzlenmedi'}',
+                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                ),
+                                SizedBox(height: 4),
+                                Text('10 Coin',
+                                    style: TextStyle(
+                                        color: userVideoHistory
+                                                .where((element) => element.videoId == video.youtubeId && element.completedVideo)
+                                                .isNotEmpty
+                                            ? Colors.grey
+                                            : Colors.black,
+                                        fontSize: 15)),
+                              ],
                             ),
                           );
                         })),

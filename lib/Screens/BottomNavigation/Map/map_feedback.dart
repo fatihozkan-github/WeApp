@@ -14,8 +14,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
-  String _infoMessage =
-      "Kirli olduğunu düşündüğün bölgeyi buradan bizlere bildirerek bu alanı WE topluluğu ile birlikte temizlemek için etkinlik düzenleme isteği gönderebilirsin.";
+  String _infoMessage = "WE topluluğu ile birlikte alanı temizlemek için etkinlik düzenleme isteği gönderebilirsin";
   String _subject;
   String _message;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -82,7 +81,17 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
                     boxShadow: [BoxShadow(color: kPrimaryColor, offset: Offset(15, 15))],
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(_infoMessage, style: TextStyle(fontSize: 15, color: Colors.white), textAlign: TextAlign.center),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Kirli Olduğunu Düşündüğün Bölgeyi Bize Bildir!',
+                        style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 5),
+                      Text(_infoMessage, style: TextStyle(fontSize: 15, color: Colors.white), textAlign: TextAlign.center),
+                    ],
+                  ),
                 ),
               ),
             ),

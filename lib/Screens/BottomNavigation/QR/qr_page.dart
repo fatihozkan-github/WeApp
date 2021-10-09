@@ -31,7 +31,7 @@ class QRScanPageState extends State<QRScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("HeroStation", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        title: Text("HeroStation"),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -52,9 +52,8 @@ class QRScanPageState extends State<QRScanPage> {
                   nip: BubbleNip.leftBottom,
                   color: kPrimaryColor,
                   child: Text(
-                    'Hoş geldin kahraman!',
-                    style: TextStyle(color: Colors.white),
-                    // maxLines: null,
+                    'Hoşgeldin WE kahramanı!',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -67,42 +66,37 @@ class QRScanPageState extends State<QRScanPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                "Lütfen dönüştürmeye başlamadan önce aşağıdaki görevleri tamamladığından emin ol!",
+                "Lütfen, dönüştürmeye başlarken bu görevleri tamamladığından emin ol!",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: kPrimaryColor, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, color: kPrimaryColor, fontWeight: FontWeight.bold),
               ),
             ),
           ),
           SizedBox(height: 40),
-          Column(
-            children: [
-              CarouselSlider(
-                items: instructionItems,
-                options: CarouselOptions(
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    // aspectRatio: 3,
-                    height: 125,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    }),
-              ),
-              SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: instructions.map((url) {
-                  int index = instructions.indexOf(url);
-                  return Container(
-                    width: 8.0,
-                    height: 8.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? kPrimaryColor : Colors.grey),
-                  );
-                }).toList(),
-              ),
-            ],
+          CarouselSlider(
+            items: instructionItems,
+            options: CarouselOptions(
+                autoPlay: true,
+                enlargeCenterPage: true,
+                height: 125,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                }),
+          ),
+          SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: instructions.map((url) {
+              int index = instructions.indexOf(url);
+              return Container(
+                width: 8.0,
+                height: 8.0,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? kPrimaryColor : Colors.grey),
+              );
+            }).toList(),
           ),
           SizedBox(height: 30),
           Row(
@@ -139,7 +133,7 @@ class QRScanPageState extends State<QRScanPage> {
                           Text(
                             "TARAT",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -213,7 +207,7 @@ class QRScanPageState extends State<QRScanPage> {
                           Text(
                             "OKUT",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Container(width: 30, child: Image.asset("assets/Icons/bracelet.png", color: Colors.white)),
                         ],
@@ -223,11 +217,20 @@ class QRScanPageState extends State<QRScanPage> {
                 ),
               ),
             ],
-          )
+          ),
+          SizedBox(height: 10),
         ],
       ),
     );
   }
+
+  List<Widget> instructionItems = instructions
+      .map((item) => Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: kPrimaryColor),
+            child: Center(child: Text(item, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.white))),
+          ))
+      .toList();
 }
 
 ///

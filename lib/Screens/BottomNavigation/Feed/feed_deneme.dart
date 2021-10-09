@@ -68,8 +68,7 @@ class FeedPage extends StatelessWidget {
                                   height: 350.0,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(25.0),
-                                    // boxShadow: [BoxShadow(color: Colors.black45, offset: Offset(0, 5), blurRadius: 8.0)],
-                                    image: DecorationImage(image: NetworkImage(post["asset"]), fit: BoxFit.fitWidth),
+                                    image: DecorationImage(image: NetworkImage(post["asset"]), fit: BoxFit.fitHeight),
                                   ),
                                 ),
                               ],

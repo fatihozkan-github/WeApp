@@ -268,7 +268,8 @@ class _BadgePageState extends State<BadgePage> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            popUp(context, "You will be able to see more badges after you reach Level 10.", true);
+                            popUp(context, "10. Seviyeye ulaştıktan sonra daha çok rozet görebileceksin!", true);
+                            // You will be able to see more badges after you reach Level 10
                           },
                           child: data["level"] < 10
                               ? Image.asset("assets/Images/Badges/Locked/inactiveBadgeX.png", scale: 8)
