@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_if_null_operators
 
 import 'package:WE/Resources/components/pop_up.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Services/ChatService/we_chat.dart';
 import 'package:WE/Services/challenge_service.dart';
@@ -168,15 +169,23 @@ class _HerProfileState extends State<HerProfile> {
                                     SizedBox(width: 10),
                                     TextButton(
                                       onPressed: () {
-                                        addFriend(
+                                        addKanka(
+                                          uid: widget.uid,
                                           name: widget.username,
-                                          superhero: widget.superhero,
-                                          level: widget.level,
-                                          coins: widget.coins,
-                                          dailyCoins: widget.dailyCoins,
-                                          dailyRecycled: widget.dailyRecycled,
                                           recycled: widget.recycled,
+                                          level: widget.level,
+                                          superhero: widget.superhero,
+                                          coins: widget.coins,
                                         );
+                                        // addFriend(
+                                        //   name: widget.username,
+                                        //   superhero: widget.superhero,
+                                        //   level: widget.level,
+                                        //   coins: widget.coins,
+                                        //   dailyCoins: widget.dailyCoins,
+                                        //   dailyRecycled: widget.dailyRecycled,
+                                        //   recycled: widget.recycled,
+                                        // );
                                       },
                                       child: Text("ARKADAŞ EKLE",
                                           textAlign: TextAlign.center, style: TextStyle(color: kPrimaryColor, fontSize: 15)),
@@ -214,7 +223,7 @@ class _HerProfileState extends State<HerProfile> {
               ),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return WESpinKit();
         });
   }
 }

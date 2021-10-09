@@ -156,6 +156,15 @@ class _HisProfileState extends State<HisProfile> {
                                     SizedBox(width: 10),
                                     TextButton(
                                       onPressed: () {
+                                        // addFriend(
+                                        //   name: data["name"],
+                                        //   recycled: data["recycled"],
+                                        //   level: data["level"],
+                                        //   superhero: data["superhero"],
+                                        //   coins: data["coins"],
+                                        //   dailyCoins: data["dailycoins"],
+                                        //   dailyRecycled: data["dailyrecycled"],
+                                        // );
                                         addKanka(
                                             uid: widget.uid,
                                             name: data["name"],

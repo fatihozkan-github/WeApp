@@ -78,9 +78,6 @@ class GlobalTab extends StatelessWidget {
             );
           }
           return WESpinKit();
-          // return Center(
-          //   child: CircularProgressIndicator(),
-          // );
         });
   }
 }
