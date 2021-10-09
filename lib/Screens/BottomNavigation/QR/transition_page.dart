@@ -50,8 +50,7 @@ class _TransitionPageState extends State<TransitionPage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                BottomNavigation(),
+                            builder: (BuildContext context) => BottomNavigation(),
                           ),
                           (route) => false,
                         );
@@ -76,7 +75,7 @@ class _TransitionPageState extends State<TransitionPage> {
                 padding: const EdgeInsets.all(24.0),
                 child: Text(
                   "Geri dönüştürmek istedğin atıkları çöp kutusuna attıktan sonra, aşağıdaki butona basarak onayla ve bitir.",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
             ),

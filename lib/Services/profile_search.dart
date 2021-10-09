@@ -23,9 +23,14 @@ class _SearchPageState extends State<SearchPage> {
 
   var items = List<List<String>>();
 
+  getData() {
+    getAllUsersData('');
+  }
+
   @override
   void initState() {
     print("***************************");
+    getData();
     super.initState();
   }
 
@@ -36,8 +41,11 @@ class _SearchPageState extends State<SearchPage> {
     var collection = FirebaseFirestore.instance.collection('allUsers');
     var docSnapshot = await collection.doc("C9nvPCW2TwemcjSVgm04").get();
     if (docSnapshot.exists) {
-      for (var i = 1; i <= docSnapshot.data().keys.length; i++) {
-        Map<String, dynamic> data = docSnapshot.data()["user" + i.toString()];
+      Map<String, dynamic> data = docSnapshot.data();
+      List localList = data.keys.toList();
+      localList.sort();
+      for (var i = 0; i < localList.length; i++) {
+        Map<String, dynamic> data = docSnapshot.data()[localList[i]];
         subPeople.insert(0, data["name"]);
         subPeople.insert(1, data["superhero"]);
         subPeople.insert(2, data["avatar"]);
@@ -101,10 +109,11 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Profil ara", style: TextStyle(fontFamily: "Panthera", fontSize: 24)),
+        title: Text("Profil ara"),
         backgroundColor: kPrimaryColor,
       ),
       body: Container(
@@ -147,7 +156,7 @@ class _SearchPageState extends State<SearchPage> {
                     contentPadding: EdgeInsets.only(left: 15, top: 5),
                     leading: items[index][2] == null ? Image.asset("assets/Icons/user.png") : Image.asset(items[index][2]),
                     title: Text('${items[index][0]}', style: TextStyle(color: Colors.black, fontSize: 18)),
-                    subtitle: Text(items[index][1]),
+                    subtitle: Text(items[index][1] ?? ''),
                     onTap: () {
                       Navigator.push(
                         context,

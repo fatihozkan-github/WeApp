@@ -33,7 +33,7 @@ apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -50,6 +50,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1"
+        multiDexEnabled true
     }
 
     signingConfigs {

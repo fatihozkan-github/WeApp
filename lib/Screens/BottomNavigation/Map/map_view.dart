@@ -57,51 +57,52 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return isCompleted
-        ? Scaffold(
-            appBar: AppBar(
-              title: Text("HeroStation", style: TextStyle(fontFamily: "Montserrat_Alternates", fontSize: 24)),
-              centerTitle: true,
-              actions: [
-                InkWell(
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapFeedbackPage())),
-                  child: Image.asset("assets/Icons/eventrequestwhite.png", scale: 1.1),
-                ),
-                SizedBox(width: size.width * 0.01)
-              ],
-              backgroundColor: kPrimaryColor,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("HeroStation", style: TextStyle(fontFamily: "Montserrat_Alternates", fontSize: 24)),
+          centerTitle: true,
+          actions: [
+            InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapFeedbackPage())),
+              child: Image.asset("assets/Icons/eventrequestwhite.png", scale: 1.1),
             ),
-            body: isCompleted
-                ? GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: CameraPosition(target: const LatLng(40.408418, 29.092993), zoom: 14),
-                    markers: _markers.values.toSet(),
-                  )
-                : WESpinKit(),
-          )
-        : WESpinKit();
+            SizedBox(width: size.width * 0.01)
+          ],
+          backgroundColor: kPrimaryColor,
+        ),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(target: const LatLng(40.408418, 29.092993), zoom: 14),
+          markers: _markers.values.toSet(),
+        ),
+      ),
+    );
   }
 }
 
-//   MaterialApp(
-//   debugShowCheckedModeBanner: false,
-//   home: Scaffold(
-//     appBar: AppBar(
-//       title: Text("HeroStation", style: TextStyle(fontFamily: "Montserrat_Alternates", fontSize: 24)),
-//       centerTitle: true,
-//       actions: [
-//         InkWell(
-//           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapFeedbackPage())),
-//           child: Image.asset("assets/Icons/eventrequestwhite.png", scale: 1.1),
+///
+// return isCompleted
+//     ? Scaffold(
+//         appBar: AppBar(
+//           title: Text("HeroStation", style: TextStyle(fontFamily: "Montserrat_Alternates", fontSize: 24)),
+//           centerTitle: true,
+//           actions: [
+//             InkWell(
+//               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MapFeedbackPage())),
+//               child: Image.asset("assets/Icons/eventrequestwhite.png", scale: 1.1),
+//             ),
+//             SizedBox(width: size.width * 0.01)
+//           ],
+//           backgroundColor: kPrimaryColor,
 //         ),
-//         SizedBox(width: size.width * 0.01)
-//       ],
-//       backgroundColor: kPrimaryColor,
-//     ),
-//     body: GoogleMap(
-//       onMapCreated: _onMapCreated,
-//       initialCameraPosition: CameraPosition(target: const LatLng(40.408418, 29.092993), zoom: 14),
-//       markers: _markers.values.toSet(),
-//     ),
-//   ),
-// );
+//         body: isCompleted
+//             ? GoogleMap(
+//                 onMapCreated: _onMapCreated,
+//                 initialCameraPosition: CameraPosition(target: const LatLng(40.408418, 29.092993), zoom: 14),
+//                 markers: _markers.values.toSet(),
+//               )
+//             : WESpinKit(),
+//       )
+//     : WESpinKit();

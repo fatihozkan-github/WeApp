@@ -1,6 +1,7 @@
 // ignore_for_file: omit_local_variable_types
 
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
+import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -146,6 +147,39 @@ class QRScanPageState extends State<QRScanPage> {
                   ),
                 ),
               ),
+              // Container(
+              //   height: 50.0,
+              //   margin: EdgeInsets.all(10),
+              //   child: RaisedButton(
+              //     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
+              //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+              //     padding: EdgeInsets.all(0.0),
+              //     child: Ink(
+              //       decoration: BoxDecoration(
+              //           gradient: LinearGradient(
+              //             colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
+              //             begin: Alignment.centerLeft,
+              //             end: Alignment.centerRight,
+              //           ),
+              //           borderRadius: BorderRadius.circular(30.0)),
+              //       child: Container(
+              //         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+              //         alignment: Alignment.center,
+              //         child: Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //           children: [
+              //             Icon(Icons.password_rounded, color: Colors.white),
+              //             Text(
+              //               "KOD GİR",
+              //               textAlign: TextAlign.center,
+              //               style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Container(
                 height: 50.0,
                 margin: EdgeInsets.all(10),

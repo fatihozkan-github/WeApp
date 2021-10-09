@@ -8,6 +8,7 @@ import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -144,7 +145,7 @@ class _EditProfileState extends State<EditProfile> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: TextButton(
-                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage())),
+                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet())),
                         style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
                         child: Row(
                           children: [

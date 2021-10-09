@@ -11,6 +11,7 @@ import 'package:WE/Screens/ProfileDrawer/Invite/invite.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Feedback/feedback_page.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
+import 'package:WE/Screens/ProfileDrawer/training_set/page/training_set.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +87,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
         return InvitePage();
       case 4:
         return FeedbackPage();
+      case 5:
+        return TrainingSet();
       //case 7:
       //return SupportPage();
 
@@ -128,7 +131,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: kPrimaryColor),
-              accountName: Text(data["superhero"].toString().trim().isEmpty ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
+              accountName: Text(
+                  data["superhero"] == null || data["superhero"] == '' ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
                   style: TextStyle(color: kThirdColor)),
               accountEmail: Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
                   style: TextStyle(color: kThirdColor)),
@@ -178,6 +182,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     DrawerItem(title: "Düello", icon: Icons.local_police_rounded),
     DrawerItem(title: "Davet et ve Kazan", icon: Icons.share),
     DrawerItem(title: "Geri bildirim", icon: Icons.assistant_photo_rounded),
+    DrawerItem(title: "Eğitim Seti", icon: Icons.collections_bookmark_outlined),
     DrawerItem(title: "Home", icon: Icons.help),
     //DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
     // DrawerItem(title: "Did you know these?", icon: Icons.wb_incandescent),

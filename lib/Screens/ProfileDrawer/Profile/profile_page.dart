@@ -116,7 +116,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 3,
                             child: Text(
-                              data["superhero"].toString().trim() == null ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
+                              data["superhero"] == null || data["superhero"] == ''
+                                  ? 'Kahraman İsmi Girilmedi!'
+                                  : data["superhero"],
                               style: TextStyle(color: Colors.black, fontSize: 15),
                               softWrap: true,
                               overflow: TextOverflow.ellipsis,

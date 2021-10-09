@@ -57,7 +57,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                         child: FutureBuilder(
                           future: controller?.getFlashStatus(),
                           builder: (context, snapshot) {
-                            return snapshot.data ? Icon(Icons.lightbulb) : Icon(Icons.lightbulb_outline);
+                            return snapshot.data.toString() != null ? Icon(Icons.lightbulb) : Icon(Icons.lightbulb_outline);
                           },
                         )),
                   ),
@@ -116,7 +116,8 @@ class _QRViewExampleState extends State<QRViewExample> {
     });
     controller.scannedDataStream.listen((scanData) {
       result = scanData;
-      print(result.code);
+      print('QR CODE: ${result.code}');
+      // if (result.code == "6G34") {
       if (result.code == "3566") {
         controller.stopCamera();
         Navigator.push(
