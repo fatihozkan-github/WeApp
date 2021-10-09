@@ -34,7 +34,6 @@ class _TransitionPageState extends State<TransitionPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Material(
       child: Container(
         child: Column(
@@ -63,19 +62,14 @@ class _TransitionPageState extends State<TransitionPage> {
                 )),
             //SizedBox(height: size.height * 0.02),
             Container(
-              width: size.width * 0.8,
-              height: size.height * 0.15,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: kPrimaryColor,
-                ),
-                borderRadius: BorderRadius.circular(32),
-              ),
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(border: Border.all(color: kPrimaryColor), borderRadius: BorderRadius.circular(20)),
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Text(
-                  "Geri dönüştürmek istedğin atıkları çöp kutusuna attıktan sonra, aşağıdaki butona basarak onayla ve bitir.",
+                  'Plastik atıklarını HeroStation\'a attıktan sonra onayla ve bitir.',
                   style: TextStyle(color: Colors.black),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
