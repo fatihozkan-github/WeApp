@@ -74,7 +74,7 @@ class _HisProfileState extends State<HisProfile> {
               backgroundColor: Colors.white,
               appBar: AppBar(
                 centerTitle: true,
-                title: Text("Profil Sayfasi", style: TextStyle(fontFamily: "Panthera", fontSize: 24)),
+                title: Text("Profil Sayfası"),
                 backgroundColor: kPrimaryColor,
               ),
               body: ListView(

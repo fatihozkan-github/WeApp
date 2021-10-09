@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_if_null_operators
+
 import 'package:WE/Resources/components/pop_up.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Services/ChatService/we_chat.dart';
@@ -83,142 +85,131 @@ class _HerProfileState extends State<HerProfile> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
             return Scaffold(
-              appBar: AppBar(
-                  centerTitle: true, title: Text("Profil Sayfasi", style: TextStyle(fontFamily: "Panthera", fontSize: 24))),
-              backgroundColor: Color(0xffF8F8FA),
-              body: Stack(
-                clipBehavior: Clip.none,
+              appBar: AppBar(centerTitle: true, title: Text("Profil Sayfası"), backgroundColor: kPrimaryColor),
+              backgroundColor: Colors.white,
+              body: ListView(
                 children: <Widget>[
-                  Container(
-                    color: kSecondaryColor,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 50),
-                      child: Column(
+                  SizedBox(height: 20),
+                  Column(
+                    children: <Widget>[
+                      widget.userPhoto == null
+                          ? Icon(Icons.account_circle_rounded, size: 200, color: Colors.grey)
+                          : widget.userPhoto,
+                      // Container(
+                      //   height: 110,
+                      //   width: 110,
+                      //   decoration: BoxDecoration(
+                      //       color: kSecondaryColor,
+                      //       shape: BoxShape.circle,
+                      //       image: DecorationImage(
+                      //         fit: BoxFit.cover,
+                      //         image: AssetImage(widget.userPhoto == null ? "assets/Icons/account.png" : widget.userPhoto),
+                      //       )),
+                      // ),
+                      SizedBox(height: 30),
+                      Text(
+                        widget.username,
+                        style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
                         children: <Widget>[
-                          Column(
-                            children: <Widget>[
-                              Container(
-                                height: 110,
-                                width: 110,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(widget.userPhoto == null ? "assets/Icons/account.png" : widget.userPhoto),
-                                    )),
-                              ),
-                              SizedBox(height: 70),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(widget.username,
-                                      style: TextStyle(color: Colors.white, fontSize: 60, fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 10),
-                                ],
-                              ),
-                            ],
+                          Text(
+                            "Seviye " + widget.level.toString(),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(height: 50),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Text(
-                                    "Seviye " + widget.level.toString(),
-                                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(widget.superhero.toString(), style: TextStyle(color: Colors.white70, fontSize: 10)),
-                                ],
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  Text(
-                                    widget.coins.toString(),
-                                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                  ),
-                                  Text("Toplam coin", style: TextStyle(color: Colors.white70, fontSize: 10)),
-                                ],
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  Text(
-                                    widget.recycled.toString(),
-                                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                                  ),
-                                  Text("Geri dönüştürülen", style: TextStyle(color: Colors.white70, fontSize: 10)),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 40),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              isFriend.contains(true)
-                                  ? Container()
-                                  : Container(
-                                      height: 50,
-                                      width: 200,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: kPrimaryColor),
-                                        borderRadius: BorderRadius.circular(5.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.person_add_alt_1_rounded, color: kPrimaryColor),
-                                            SizedBox(width: 10),
-                                            TextButton(
-                                              onPressed: () {
-                                                addFriend(
-                                                  name: widget.username,
-                                                  superhero: widget.superhero,
-                                                  level: widget.level,
-                                                  coins: widget.coins,
-                                                  dailyCoins: widget.dailyCoins,
-                                                  dailyRecycled: widget.dailyRecycled,
-                                                  recycled: widget.recycled,
-                                                );
-                                              },
-                                              child: Text("ARKADAŞ EKLE",
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(color: kPrimaryColor, fontSize: 15)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                              SizedBox(width: 10),
-                            ],
-                          ),
-                          SizedBox(height: 40),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              !_canShowButton
-                                  ? const SizedBox.shrink()
-                                  : Container(
-                                      width: 80,
-                                      height: 80,
-                                      child: IconButton(
-                                        icon: Image.asset("assets/Icons/swords.png"),
-                                        onPressed: () {
-                                          //checkChallenges(widget.username);
-                                          createChallenge(widget.uid, data["name"]);
-                                          popUp(context, widget.username + " düelloya davet edildi. Bol şans!", true);
-
-                                          //_number();
-                                        },
-                                      ),
-                                    ),
-                            ],
-                          )
+                          Text(widget.superhero.toString(), style: TextStyle(fontSize: 10)),
                         ],
                       ),
-                    ),
+                      Column(
+                        children: <Widget>[
+                          Text(
+                            widget.coins.toString(),
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          Text("Toplam coin", style: TextStyle(fontSize: 10)),
+                        ],
+                      ),
+                      Column(
+                        children: <Widget>[
+                          Text(
+                            widget.recycled.toString(),
+                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                          ),
+                          Text("Geri dönüştürülen", style: TextStyle(fontSize: 10)),
+                        ],
+                      ),
+                    ],
                   ),
+                  SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isFriend.contains(true)
+                          ? Container()
+                          : Container(
+                              height: 50,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: kPrimaryColor),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.person_add_alt_1_rounded, color: kPrimaryColor),
+                                    SizedBox(width: 10),
+                                    TextButton(
+                                      onPressed: () {
+                                        addFriend(
+                                          name: widget.username,
+                                          superhero: widget.superhero,
+                                          level: widget.level,
+                                          coins: widget.coins,
+                                          dailyCoins: widget.dailyCoins,
+                                          dailyRecycled: widget.dailyRecycled,
+                                          recycled: widget.recycled,
+                                        );
+                                      },
+                                      child: Text("ARKADAŞ EKLE",
+                                          textAlign: TextAlign.center, style: TextStyle(color: kPrimaryColor, fontSize: 15)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                  SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      !_canShowButton
+                          ? const SizedBox.shrink()
+                          : Container(
+                              width: 80,
+                              height: 80,
+                              child: IconButton(
+                                icon: Image.asset("assets/Icons/swords.png"),
+                                onPressed: () {
+                                  //checkChallenges(widget.username);
+                                  createChallenge(widget.uid, data["name"]);
+                                  popUp(context, widget.username + " düelloya davet edildi. Bol şans!", true);
+
+                                  //_number();
+                                },
+                              ),
+                            ),
+                    ],
+                  )
                 ],
               ),
             );
