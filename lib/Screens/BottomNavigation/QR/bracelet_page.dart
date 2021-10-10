@@ -8,26 +8,26 @@ class BraceletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: kPrimaryColor,
-          title: Text('Bileklik Tanımlama', style: TextStyle(fontWeight: FontWeight.bold)),
-          centerTitle: true,
-        ),
-        backgroundColor: Colors.white,
-        body: ListView(
-          children: [
-            SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 180),
-            Container(height: 250, child: Image.asset("assets/braceletwithhand.png")),
-            SizedBox(height: 50),
-            Text(
-              'Bilekliğinizi HeroStation üzerinde gösterilen alana okutun',
-              style: TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        title: Text('Bileklik Tanımlama',
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+      ),
+      backgroundColor: Colors.white,
+      body: ListView(
+        children: [
+          SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 180),
+          Container(
+              height: 250, child: Image.asset("assets/braceletwithhand.png")),
+          SizedBox(height: 50),
+          Text(
+            'Bilekliğinizi HeroStation üzerinde gösterilen alana okutun',
+            style: TextStyle(fontSize: 18),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

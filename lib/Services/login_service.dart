@@ -75,10 +75,16 @@ class LoginService extends ChangeNotifier {
       int recycled,
       int forbadgecount,
       String uid}) async {
-    DocumentSnapshot documentSnapshot;
-    documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
+    var documentSnapshot;
+    documentSnapshot = await FirebaseFirestore.instance
+        .collection('allUsers')
+        .doc('C9nvPCW2TwemcjSVgm04')
+        .get();
 
-    await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').set({
+    await FirebaseFirestore.instance
+        .collection('allUsers')
+        .doc('C9nvPCW2TwemcjSVgm04')
+        .set({
       // currentUid: {
       "user" + (documentSnapshot.data().keys.length + 1).toString(): {
         "name": name,

@@ -1,8 +1,7 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:async';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
 
@@ -56,7 +55,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    File file = await ImagePicker.pickImage(
+                    var file = await ImagePicker().pickImage(
                       source: ImageSource.gallery,
                     );
                     await SocialShare.shareInstagramStory(
@@ -72,7 +71,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 RaisedButton(
                   onPressed: () async {
-                    File file = await ImagePicker.pickImage(
+                    var file = await ImagePicker().pickImage(
                       source: ImageSource.gallery,
                     );
                     await screenshotController.capture().then((image) async {
