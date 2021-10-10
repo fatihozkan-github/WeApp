@@ -64,12 +64,14 @@ class _HisProfileState extends State<HisProfile> {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(widget.uid).get(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
+            print(data);
             return Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
@@ -83,18 +85,26 @@ class _HisProfileState extends State<HisProfile> {
                   SizedBox(height: 30),
                   Column(
                     children: <Widget>[
-                      Container(
-                        height: 220,
-                        width: 220,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    "https://firebasestorage.googleapis.com/v0/b/nodemcu-ac498.appspot.com/o/profilePhotos%2Fimage_picker7520950041675576623jpg?alt=media&token=0c07914f-e302-4708-9804-c709c9bcb9d8"))),
-                      ),
+                      data['avatar'] != null
+                          ? Container(
+                              height: 220,
+                              width: 220,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(data["avatar"]),
+                                ),
+                              ),
+                            )
+                          : Icon(Icons.account_circle_rounded,
+                              size: 220, color: Colors.grey),
                       SizedBox(height: 20),
-                      Text(data["name"], style: TextStyle(color: kSecondaryColor, fontSize: 26, fontWeight: FontWeight.bold)),
+                      Text(data["name"],
+                          style: TextStyle(
+                              color: kSecondaryColor,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold)),
                     ],
                   ),
                   SizedBox(height: 40),
@@ -109,27 +119,42 @@ class _HisProfileState extends State<HisProfile> {
                         children: <Widget>[
                           Text(
                             "Seviye " + data["level"].toString(),
-                            style: TextStyle(color: kSecondaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: kSecondaryColor,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Text(data["superhero"].toString(), style: TextStyle(color: kSecondaryColor, fontSize: 12)),
+                          Text(data["superhero"].toString(),
+                              style: TextStyle(
+                                  color: kSecondaryColor, fontSize: 12)),
                         ],
                       ),
                       Column(
                         children: <Widget>[
                           Text(
                             data["coins"].toString(),
-                            style: TextStyle(color: kSecondaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: kSecondaryColor,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Text("Toplam coin", style: TextStyle(color: kSecondaryColor, fontSize: 12)),
+                          Text("Toplam coin",
+                              style: TextStyle(
+                                  color: kSecondaryColor, fontSize: 12)),
                         ],
                       ),
                       Column(
                         children: <Widget>[
                           Text(
                             data["recycled"].toString(),
-                            style: TextStyle(color: kSecondaryColor, fontSize: 30, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: kSecondaryColor,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Text("Geri dönüştürülen", style: TextStyle(color: kSecondaryColor, fontSize: 12)),
+                          Text("Geri dönüştürülen",
+                              style: TextStyle(
+                                  color: kSecondaryColor, fontSize: 12)),
                         ],
                       ),
                     ],
@@ -152,7 +177,8 @@ class _HisProfileState extends State<HisProfile> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.person_add_alt_1_rounded, color: kPrimaryColor),
+                                    Icon(Icons.person_add_alt_1_rounded,
+                                        color: kPrimaryColor),
                                     SizedBox(width: 10),
                                     TextButton(
                                       onPressed: () {
@@ -176,7 +202,8 @@ class _HisProfileState extends State<HisProfile> {
                                       child: Text(
                                         "ARKADAŞ EKLE",
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(color: kPrimaryColor, fontSize: 15),
+                                        style: TextStyle(
+                                            color: kPrimaryColor, fontSize: 15),
                                       ),
                                     ),
                                   ],
@@ -199,7 +226,11 @@ class _HisProfileState extends State<HisProfile> {
                                 onPressed: () {
                                   //checkChallenges(widget.username);
                                   createChallenge(widget.uid, data["name"]);
-                                  popUp(context, data["name"] + " düelloya davet edildi. Bol şans!", true);
+                                  popUp(
+                                      context,
+                                      data["name"] +
+                                          " düelloya davet edildi. Bol şans!",
+                                      true);
 
                                   //_number();
                                 },

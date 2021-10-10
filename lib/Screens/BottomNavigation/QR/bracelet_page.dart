@@ -20,7 +20,7 @@ class BraceletPage extends StatelessWidget {
         children: [
           SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 180),
           Container(
-              height: 250, child: Image.asset("assets/braceletwithhand.png")),
+              height: 250, child: Image.asset("assets/bileklik.png")),
           SizedBox(height: 50),
           Text(
             'Bilekliğinizi HeroStation üzerinde gösterilen alana okutun',

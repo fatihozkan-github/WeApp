@@ -7,10 +7,24 @@ var instructions = [
   "Küçük atıkları büyük atıkların içine koy.",
   "Poşetlerini bağlayarak at.",
   // "HeroStation’ın üstünde bulunan QR kodu okut.",
-  "Kapağın kapandığından emin ol."
+  "Kapağın kapandığından emin ol.",
 ];
 
-var instructionTitles = ["Geri dönüşüme uygun", "Tamamen temiz", "QR kodu okut", "Kapağı kapat"];
+var instruction_images = [
+  'assets/plastik_atik.png',
+  'assets/temiz.png',
+  'assets/kucuk.png',
+  'assets/poset.png',
+  //'',
+  '',
+];
+
+var instructionTitles = [
+  "Geri dönüşüme uygun",
+  "Tamamen temiz",
+  "QR kodu okut",
+  "Kapağı kapat"
+];
 
 // final List<Widget> instructionItems = instructions
 //     .map((item) => Container(
