@@ -48,8 +48,8 @@ android {
         applicationId "com.we.werecyclemobile"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1"
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
         multiDexEnabled true
     }
 
@@ -75,5 +75,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:26.6.0')
+    implementation platform('com.google.firebase:firebase-bom:28.4.2')
+    implementation "io.grpc:grpc-okhttp:1.32.2"
 }

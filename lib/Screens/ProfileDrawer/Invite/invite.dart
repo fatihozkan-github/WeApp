@@ -15,7 +15,10 @@ class InvitePage extends StatelessWidget {
     return ScaffoldMessenger(
       key: _scaffoldKey,
       child: Scaffold(
-        appBar: AppBar(backgroundColor: kPrimaryColor, title: Text("Davet et ve Kazan"), centerTitle: true),
+        appBar: AppBar(
+            backgroundColor: kPrimaryColor,
+            title: Text("Davet et ve Kazan"),
+            centerTitle: true),
         body: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           children: [
@@ -28,7 +31,7 @@ class InvitePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Image.asset("assets/invite.png", scale: 5),
+            Image.asset("assets/davet_et.png"),
             SizedBox(height: 10),
             GestureDetector(
               onTap: () async {
@@ -42,12 +45,17 @@ class InvitePage extends StatelessWidget {
               child: Container(
                 width: size.width * 0.6,
                 height: size.height * 0.1,
-                decoration: BoxDecoration(border: Border.all(color: kPrimaryColor), borderRadius: BorderRadius.circular(32)),
+                decoration: BoxDecoration(
+                    border: Border.all(color: kPrimaryColor),
+                    borderRadius: BorderRadius.circular(32)),
                 child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: Center(
                         child: Text(firebaseUser.uid.substring(0, 6),
-                            style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 24)))),
+                            style: TextStyle(
+                                color: kPrimaryColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24)))),
               ),
             ),
             SizedBox(height: 5),

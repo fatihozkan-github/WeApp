@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class FBD extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class FBD extends StatefulWidget {
 class _FBDState extends State<FBD> {
   StreamSubscription<QuerySnapshot> subscription;
 
-  List<DocumentSnapshot> snapshot;
+  List<DocumentSnapshot<Map<String, dynamic>>> snapshot;
 
   Query collectionReference =
       FirebaseFirestore.instance.collection("users").orderBy('coins');

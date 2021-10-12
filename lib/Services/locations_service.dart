@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
@@ -85,7 +86,7 @@ Future<Locations> getHeroStations() async {
   const heroStationLocations =
       'https://my-json-server.typicode.com/alihansoykal/we/db';
 
-  final response = await http.get(heroStationLocations);
+  final response = await http.get(Uri.parse(heroStationLocations));
   if (response.statusCode == 200) {
     return Locations.fromJson(json.decode(response.body));
   } else {

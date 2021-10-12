@@ -43,7 +43,8 @@ class QRScanPageState extends State<QRScanPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(width: 10),
-              Expanded(child: Image.asset("assets/instruction.png", height: 220)),
+              Expanded(
+                  child: Image.asset("assets/instruction.png", height: 220)),
               Expanded(
                 child: Bubble(
                   margin: BubbleEdges.only(top: 10),
@@ -53,7 +54,7 @@ class QRScanPageState extends State<QRScanPage> {
                   color: kPrimaryColor,
                   child: Text(
                     'Hoşgeldin WE kahramanı!',
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 22),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -66,9 +67,12 @@ class QRScanPageState extends State<QRScanPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                "Lütfen, dönüştürmeye başlarken bu görevleri tamamladığından emin ol!",
+                "Lütfen dönüştürmeye başlarken bu görevleri tamamladığından emin ol!",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, color: kPrimaryColor, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 18,
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -94,7 +98,9 @@ class QRScanPageState extends State<QRScanPage> {
                 width: 8.0,
                 height: 8.0,
                 margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                decoration: BoxDecoration(shape: BoxShape.circle, color: _current == index ? kPrimaryColor : Colors.grey),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _current == index ? kPrimaryColor : Colors.grey),
               );
             }).toList(),
           ),
@@ -116,15 +122,18 @@ class QRScanPageState extends State<QRScanPage> {
                       ),
                     );
                   },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80.0)),
                   padding: EdgeInsets.all(0.0),
                   child: Ink(
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xFFff4d00), Color(0xFFff9a00)]),
+                      gradient: LinearGradient(
+                          colors: [Color(0xFFff4d00), Color(0xFFff9a00)]),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     child: Container(
-                      constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                      constraints:
+                          BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
                       alignment: Alignment.center,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,7 +142,10 @@ class QRScanPageState extends State<QRScanPage> {
                           Text(
                             "TARAT",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -188,7 +200,8 @@ class QRScanPageState extends State<QRScanPage> {
                       ),
                     );
                   },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(80.0)),
                   padding: EdgeInsets.all(0.0),
                   child: Ink(
                     decoration: BoxDecoration(
@@ -199,7 +212,8 @@ class QRScanPageState extends State<QRScanPage> {
                         ),
                         borderRadius: BorderRadius.circular(30.0)),
                     child: Container(
-                      constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                      constraints:
+                          BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
                       alignment: Alignment.center,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -207,9 +221,15 @@ class QRScanPageState extends State<QRScanPage> {
                           Text(
                             "OKUT",
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Container(width: 30, child: Image.asset("assets/Icons/bracelet.png", color: Colors.white)),
+                          Container(
+                              width: 30,
+                              child: Image.asset("assets/Icons/bracelet.png",
+                                  color: Colors.white)),
                         ],
                       ),
                     ),
@@ -227,8 +247,39 @@ class QRScanPageState extends State<QRScanPage> {
   List<Widget> instructionItems = instructions
       .map((item) => Container(
             padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: kPrimaryColor),
-            child: Center(child: Text(item, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.white))),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(20.0),
+              ),
+              color: kPrimaryColor,
+            ),
+            child: Center(
+              child: Row(
+                children: [
+                  if (instruction_images[instructions.indexOf(item)] != '')
+                    Container(
+                      margin: EdgeInsets.all(8),
+                      child: Image.asset(
+                        instruction_images[instructions.indexOf(item)],
+                        height: 120,
+                        width: 100,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  Expanded(
+                    child: Text(
+                      item,
+                      textAlign: TextAlign.center,
+                      maxLines: 4,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ))
       .toList();
 }

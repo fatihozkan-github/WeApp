@@ -102,7 +102,7 @@ class MessagesStream extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore.collection('messages').snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
@@ -110,8 +110,9 @@ class MessagesStream extends StatelessWidget {
             ),
           );
         }
-        final messages = snapshot.data.docs;
-        List<MessageBubble> messageBubbles = [];
+        List<QueryDocumentSnapshot<Map<String, dynamic>>> messages =
+            snapshot.data.docs;
+        var messageBubbles = <MessageBubble>[];
         for (var message in messages) {
           final messageText = message.data()["text"];
           final messageSender = message.data()['sender'];

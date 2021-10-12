@@ -1,7 +1,6 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final firestoreInstance = FirebaseFirestore.instance;
@@ -81,10 +80,16 @@ void create(
     int recycled,
     int forbadgecount,
     String uid}) async {
-  DocumentSnapshot documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
+  var documentSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('allUsers')
+      .doc('C9nvPCW2TwemcjSVgm04')
+      .get();
 
-  await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').set({
+  await FirebaseFirestore.instance
+      .collection('allUsers')
+      .doc('C9nvPCW2TwemcjSVgm04')
+      .set({
     // currentUid: {
     "user" + (documentSnapshot.data().keys.length + 1).toString(): {
       "name": name,
@@ -120,21 +125,35 @@ void create(
 }
 
 void addReferralData({String referralId, String uid}) async {
-  DocumentSnapshot documentSnapshot;
+  var documentSnapshot;
 
-  documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').get();
-  DocumentSnapshot docSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('referralCodes')
+      .doc('referrals')
+      .get();
+  var docSnapshot;
 
-  docSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('list').get();
+  docSnapshot = await FirebaseFirestore.instance
+      .collection('referralCodes')
+      .doc('list')
+      .get();
 
   if (documentSnapshot.data()[referralId] != null) {
-    await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').set({
+    await FirebaseFirestore.instance
+        .collection('referralCodes')
+        .doc('referrals')
+        .set({
       referralId: {
-        "user" + (documentSnapshot.data()[referralId].keys.length + 1).toString(): uid,
+        "user" +
+            (documentSnapshot.data()[referralId].keys.length + 1)
+                .toString(): uid,
       },
     }, SetOptions(merge: true));
   } else {
-    await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').set({
+    await FirebaseFirestore.instance
+        .collection('referralCodes')
+        .doc('referrals')
+        .set({
       referralId: {
         "user1": uid,
       },
@@ -143,7 +162,8 @@ void addReferralData({String referralId, String uid}) async {
 
   await FirebaseFirestore.instance.collection('referralCodes').doc('list').set({
     "listOfReferrals": {
-      (docSnapshot.data()["listOfReferrals"].length).toString(): uid.substring(0, 6),
+      (docSnapshot.data()["listOfReferrals"].length).toString():
+          uid.substring(0, 6),
     },
   }, SetOptions(merge: true));
   print("****************************");
@@ -157,8 +177,11 @@ void addReferralData({String referralId, String uid}) async {
 ///
 /// TODO: Rework. This function does not work as intended.
 void checkReferralData({String referralId, String uid}) async {
-  DocumentSnapshot documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').get();
+  var documentSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('referralCodes')
+      .doc('referrals')
+      .get();
   // print('doc: ${documentSnapshot.data().keys.length}');
   // print(currentUid.substring(0, 6));
   // print(documentSnapshot.data());
@@ -201,12 +224,24 @@ void checkReferralData({String referralId, String uid}) async {
   // TODO: opsiyonel (digit code Upper case'le, burda olmak zorunda değil ama bunu da)
 }
 
-void addKanka({String uid, String name, dynamic recycled, dynamic level, dynamic coins, String superhero}) async {
-  DocumentSnapshot documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+void addKanka(
+    {String uid,
+    String name,
+    dynamic recycled,
+    dynamic level,
+    dynamic coins,
+    String superhero}) async {
+  var documentSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUid)
+      .get();
   int check = 0;
-  DocumentSnapshot docSnapshot;
-  docSnapshot = await FirebaseFirestore.instance.collection('friends').doc(currentUid).get();
+  var docSnapshot;
+  docSnapshot = await FirebaseFirestore.instance
+      .collection('friends')
+      .doc(currentUid)
+      .get();
   if (docSnapshot.data() != null) {
     for (var i = 1; i <= docSnapshot.data().length; i++) {
       if (docSnapshot.data()["friend" + i.toString()].containsValue(uid)) {
@@ -217,7 +252,9 @@ void addKanka({String uid, String name, dynamic recycled, dynamic level, dynamic
 
   if (check == 0) {
     await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
-      "friend" + (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1).toString(): {
+      "friend" +
+          (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1)
+              .toString(): {
         "uid": uid,
         "name": name,
         "recycled": recycled,
@@ -240,15 +277,25 @@ void addFriend(
     int recycled,
     bool isFriend,
     String uid}) async {
-  DocumentSnapshot documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
-  DocumentSnapshot docSnapshot;
+  var documentSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('allUsers')
+      .doc('C9nvPCW2TwemcjSVgm04')
+      .get();
+  var docSnapshot;
 
-  docSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+  docSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUid)
+      .get();
 
   await FirebaseFirestore.instance.collection('users').doc(currentUid).set({
     "friends": {
-      "friend" + (docSnapshot.data()["friends"] == null ? 1 : docSnapshot.data()["friends"].length + 1).toString(): {
+      "friend" +
+          (docSnapshot.data()["friends"] == null
+                  ? 1
+                  : docSnapshot.data()["friends"].length + 1)
+              .toString(): {
         "name": name,
         "isFriend": isFriend,
         "superhero": superhero,
@@ -267,37 +314,46 @@ void addFriend(
 
 /// TODO: ???
 void getIsFriendData() async {
-  DocumentSnapshot docSnapshot;
-  docSnapshot = await FirebaseFirestore.instance.collection('users').doc("zag8tuPzwKMWqD2m4uU6conEoSB2").get();
+  var docSnapshot;
+  docSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc("zag8tuPzwKMWqD2m4uU6conEoSB2")
+      .get();
   for (var i = 1; i <= docSnapshot.data()["friends"].length; i++) {
     if (docSnapshot.data()["friends"]["friend" + i.toString()]["isFriend"] &&
         docSnapshot.data()["friends"]["friend" + i.toString()]["name"] == "x") {
-      var isFriend = docSnapshot.data()["friends"]["friend" + i.toString()]["isFriend"];
+      var isFriend =
+          docSnapshot.data()["friends"]["friend" + i.toString()]["isFriend"];
       return isFriend;
     }
   }
 }
 
 void update100gData(currentUser) async {
-  DocumentSnapshot documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUser).get();
-  await FirebaseFirestore.instance
+  var documentSnapshot;
+  documentSnapshot = await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUser)
-      .update({"forbadgecount": (documentSnapshot.data()["forbadgecount"] + 1)});
+      .get();
+  await FirebaseFirestore.instance.collection('users').doc(currentUser).update(
+      {"forbadgecount": (documentSnapshot.data()["forbadgecount"] + 1)});
 }
 
 void getUserDataForL(uid) async {
-  DocumentSnapshot documentSnapshot;
+  var documentSnapshot;
 
-  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  documentSnapshot =
+      await FirebaseFirestore.instance.collection('users').doc(uid).get();
   return documentSnapshot.data()["name"];
 }
 
 void read() async {
-  DocumentSnapshot documentSnapshot;
+  var documentSnapshot;
 
-  documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('allUsers')
+      .doc('C9nvPCW2TwemcjSVgm04')
+      .get();
   print(documentSnapshot.data().keys.length);
   //documentSnapshot.data().keys=="user"+documentSnapshot.data().keys.length.toString()?print("var"):print("user"+documentSnapshot.data().keys.length.toString());
   //for (var i = 0; i <= 10; i++) {
@@ -314,7 +370,7 @@ void read() async {
 ///
 /// TODO: Null error fixed. Test it.
 void calculateLevel(currentUser) async {
-  DocumentSnapshot documentSnapshot;
+  var documentSnapshot;
 
   final Map<int, int> expTable = {
     0: 5,
@@ -344,7 +400,10 @@ void calculateLevel(currentUser) async {
     24: 15000,
   };
   var counter = 0;
-  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUser).get();
+  documentSnapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(currentUser)
+      .get();
   print(documentSnapshot["recycled"]);
   print(documentSnapshot.data()["recycled"]);
 
@@ -357,7 +416,8 @@ void calculateLevel(currentUser) async {
   }
   await FirebaseFirestore.instance.collection('users').doc(currentUser).update({
     "level": counter + 1,
-    "exp": (documentSnapshot.data()["recycled"] + (expTable[counter])) / ((expTable[counter + 1]) - (expTable[counter]))
+    "exp": (documentSnapshot.data()["recycled"] + (expTable[counter])) /
+        ((expTable[counter + 1]) - (expTable[counter]))
   });
 
   ///

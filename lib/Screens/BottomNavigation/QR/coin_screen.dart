@@ -399,8 +399,8 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
                                       SocialIcon(
                                         iconSrc: "assets/Icons/instagram2.png",
                                         press: () async {
-                                          File file =
-                                              await ImagePicker.pickImage(
+                                          var file =
+                                              await ImagePicker().pickImage(
                                             source: ImageSource.gallery,
                                           );
                                           await SocialShare.shareInstagramStory(

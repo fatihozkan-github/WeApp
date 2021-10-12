@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 void createChallenge(name, currentUser) async {
-  DocumentSnapshot documentSnapshot;
+  var documentSnapshot;
   DateTime now = DateTime.now();
   String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
 
@@ -31,7 +31,7 @@ void createChallenge(name, currentUser) async {
 }
 
 void approveChallenge(name, currentUser) async {
-  DocumentSnapshot documentSnapshot;
+  var documentSnapshot;
   DateTime now = DateTime.now();
   String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
 

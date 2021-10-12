@@ -54,13 +54,13 @@ class _EditProfileState extends State<EditProfile> {
 
   Future uploadImage() async {
     final _storage = FirebaseStorage.instance;
-    File image;
+    var image;
     await Permission.photos.request();
     var permissionStatus = await Permission.photos.status;
     print(permissionStatus);
     if (permissionStatus == PermissionStatus.granted) {
       try {
-        image = await ImagePicker.pickImage(source: ImageSource.gallery);
+        image = await ImagePicker().pickImage(source: ImageSource.gallery);
         File file = File(image.path);
 
         if (image != null) {
