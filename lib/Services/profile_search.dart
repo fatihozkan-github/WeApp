@@ -1,4 +1,5 @@
 import 'package:WE/Resources/components/rounded_input_field.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/hisprofile.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,8 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController editingController = TextEditingController();
 
   List<List<String>> People = [
-    ['Aysu Keçeci', "Wonder woman", "assets/Images/People/aysu.png", "usixnrYluAelbadO68ABJz5AJ3u2"],
-    ["Larry Page", "X-man", "assets/Images/People/larryPage.png", "usixnrYluAelbadO68ABJz5AJ3u2"]
+    ['Aysu Keçeci', 'Wonder woman', 'assets/Images/People/aysu.png', 'usixnrYluAelbadO68ABJz5AJ3u2'],
+    ['Larry Page', 'X-man', 'assets/Images/People/larryPage.png', 'usixnrYluAelbadO68ABJz5AJ3u2']
   ];
 
   var items = List<List<String>>();
@@ -29,7 +30,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    print("***************************");
+    print('***************************');
     getData();
     super.initState();
   }
@@ -39,21 +40,21 @@ class _SearchPageState extends State<SearchPage> {
     List<List<String>> People2 = [];
 
     var collection = FirebaseFirestore.instance.collection('allUsers');
-    var docSnapshot = await collection.doc("C9nvPCW2TwemcjSVgm04").get();
+    var docSnapshot = await collection.doc('C9nvPCW2TwemcjSVgm04').get();
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data();
       List localList = data.keys.toList();
       localList.sort();
       for (var i = 0; i < localList.length; i++) {
         Map<String, dynamic> data = docSnapshot.data()[localList[i]];
-        subPeople.insert(0, data["name"]);
-        subPeople.insert(1, data["superhero"]);
-        subPeople.insert(2, data["avatar"]);
-        subPeople.insert(3, data["uid"]);
-        subPeople.insert(4, data["level"].toString());
-        subPeople.insert(5, data["coins"].toString());
-        subPeople.insert(6, data["recycled"].toString());
-        subPeople.insert(7, data["superhero"]);
+        subPeople.insert(0, data['name']);
+        subPeople.insert(1, data['superhero']);
+        subPeople.insert(2, data['avatar']);
+        subPeople.insert(3, data['uid']);
+        subPeople.insert(4, data['level'].toString());
+        subPeople.insert(5, data['coins'].toString());
+        subPeople.insert(6, data['recycled'].toString());
+        subPeople.insert(7, data['superhero']);
       }
     }
     for (var i = 0; i < subPeople.length; i += 8) {
@@ -113,7 +114,7 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Profil ara"),
+        title: Text('Profil ara'),
         backgroundColor: kPrimaryColor,
       ),
       body: Container(
@@ -123,7 +124,7 @@ class _SearchPageState extends State<SearchPage> {
               padding: const EdgeInsets.all(8.0),
               child: RoundedInputField(
                 icon: Icons.search,
-                hintText: "Ara",
+                hintText: 'Ara',
                 onChanged: (value) {
                   getAllUsersData(value);
                 },
@@ -154,7 +155,7 @@ class _SearchPageState extends State<SearchPage> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     contentPadding: EdgeInsets.only(left: 15, top: 5),
-                    leading: items[index][2] == null ? Image.asset("assets/Icons/user.png") : Image.asset(items[index][2]),
+                    leading: items[index][2] == null ? Image.asset('assets/Icons/user.png') : Image.asset(items[index][2]),
                     title: Text('${items[index][0]}', style: TextStyle(color: Colors.black, fontSize: 18)),
                     subtitle: Text(items[index][1] ?? ''),
                     onTap: () {
@@ -162,14 +163,14 @@ class _SearchPageState extends State<SearchPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return HerProfile(
-                              username: items[index][0],
-                              userPhoto: items[index][2],
+                            return HisProfile(
+                              // username: items[index][0],
+                              // userPhoto: items[index][2],
                               uid: items[index][3],
-                              level: int.parse(items[index][4]),
-                              coins: int.parse(items[index][5]),
-                              recycled: int.parse(items[index][6]),
-                              superhero: items[index][7],
+                              // level: int.parse(items[index][4]),
+                              // coins: int.parse(items[index][5]),
+                              // recycled: int.parse(items[index][6]),
+                              // superhero: items[index][7],
                             );
                           },
                         ),

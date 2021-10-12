@@ -22,6 +22,7 @@ class WelcomeScreen extends StatelessWidget {
               text: "GİRİŞ YAP",
               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
             ),
+            SizedBox(height: 10),
             RoundedButton(
               text: "KAYIT OL",
               color: kSecondaryColor,

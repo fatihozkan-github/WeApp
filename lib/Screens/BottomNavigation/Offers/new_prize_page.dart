@@ -70,12 +70,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Ayrıcalıklar'),
-        backgroundColor: kPrimaryColor,
-      ),
+      appBar: AppBar(title: Text('Ayrıcalıklar')),
       body: ListView(
         children: [
           Container(

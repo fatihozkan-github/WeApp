@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_double_quotes, prefer_single_quotes, prefer_final_fields, always_declare_return_types
+// ignore_for_file: prefer_double_quotes, prefer_single_quotes, prefer_final_fields, always_declare_return_types, omit_local_variable_types
 
-import 'dart:io';
 import 'package:WE/Resources/components/drawer_item.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Screens/BottomNavigation/Leaderboard/leaderboard.dart';
@@ -12,6 +11,7 @@ import 'package:WE/Screens/ProfileDrawer/Profile/profile_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Feedback/feedback_page.dart';
 import 'package:WE/Screens/BottomNavigation/Feed/feed_deneme.dart';
 import 'package:WE/Screens/ProfileDrawer/training_set/page/training_set.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +27,8 @@ class ProfileDrawer extends StatefulWidget {
 
 class ProfileDrawerState extends State<ProfileDrawer> {
   var firebaseUser = FirebaseAuth.instance.currentUser;
-  int _selectedDrawerIndex = 0;
   List<Widget> drawerOptions = [];
+  int _selectedDrawerIndex = 0;
 
   @override
   void initState() {
@@ -59,6 +59,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
+            print(data);
             return Scaffold(
               appBar: _getAppBar(),
               body: _getDrawerItemWidget(_selectedDrawerIndex),
@@ -73,22 +74,22 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     switch (pos) {
       case 0:
         return FeedPage();
-      //  case 1:
-      //  return ChallengePage();
       case 1:
         return BadgePage();
       case 2:
         return DuelsPage();
-      //case 4:
-      //return EntertainmentPage();
-      // case 4:
-      //   return LessonsPage();
       case 3:
         return InvitePage();
       case 4:
         return FeedbackPage();
       case 5:
         return TrainingSet();
+      //  case 1:
+      //  return ChallengePage();
+      //case 4:
+      //return EntertainmentPage();
+      // case 4:
+      //   return LessonsPage();
       //case 7:
       //return SupportPage();
 
@@ -97,12 +98,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     }
   }
 
-  _onSelectItem(int index) {
-    // setState(() => _selectedDrawerIndex = index);
-
-    // Navigator.of(context).pop();
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => _getDrawerItemWidget(index)));
-  }
+  _onSelectItem(int index) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => _getDrawerItemWidget(index)));
 
   _getAppBar() => AppBar(
         actions: [
@@ -118,35 +114,52 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                   highlightColor: kPrimaryColor,
                   child: Image.asset("assets/Images/BottomNavigation/leaderboardIcon.png", color: Colors.white),
                 )),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Leaderboard())),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LeaderBoard())),
           )
         ],
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
         title: Text("WE"),
       );
 
   _getDrawer(data, drawerOptions) => Drawer(
         child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(color: kPrimaryColor),
-              accountName: Text(
-                  data["superhero"] == null || data["superhero"] == '' ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
-                  style: TextStyle(color: kThirdColor)),
-              accountEmail: Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
-                  style: TextStyle(color: kThirdColor)),
-              currentAccountPicture: GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                child: data["avatar"] != null
-                    ? Container(
-                        height: 110,
-                        width: 220,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
-                      )
-                    : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
+                    child: data["avatar"] != null || data["avatar"] != '' || data.toString().contains('avatar')
+                        ? Container(
+                            height: 110,
+                            width: 110,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(shape: BoxShape.circle),
+                            child: CachedNetworkImage(
+                              imageUrl: data["avatar"].toString(),
+                              progressIndicatorBuilder: (context, url, progress) => WESpinKit(color: Colors.white),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
+                            style: TextStyle(color: kThirdColor, fontSize: 19)),
+                        SizedBox(height: 5),
+                        Text(
+                            data["superhero"] == null || data["superhero"] == '' ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
+                            style: TextStyle(color: kThirdColor, fontSize: 16)),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             Column(children: drawerOptions),
@@ -154,9 +167,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
               child: GestureDetector(
                 onTap: () async {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
-                  prefs.remove('isLoggedIn');
-                  logout();
-                  exit(0);
+                  await prefs.remove('isLoggedIn');
+                  await logout();
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -182,7 +194,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     DrawerItem(title: "Düello", icon: Icons.local_police_rounded),
     DrawerItem(title: "Davet et ve Kazan", icon: Icons.share),
     DrawerItem(title: "Geri bildirim", icon: Icons.assistant_photo_rounded),
-    DrawerItem(title: "Eğitim Seti", icon: Icons.collections_bookmark_outlined),
+    DrawerItem(title: "Eğitim Seti", icon: Icons.collections_bookmark),
     DrawerItem(title: "Home", icon: Icons.help),
     //DrawerItem(title: "Meydan oku", icon: Icons.whatshot),
     // DrawerItem(title: "Did you know these?", icon: Icons.wb_incandescent),
@@ -208,3 +220,24 @@ class ProfileDrawerState extends State<ProfileDrawer> {
 //   // DrawerItem(title: "Destek", icon: Icons.help),
 //   DrawerItem(title: "Home", icon: Icons.help),
 // ];
+///
+// UserAccountsDrawerHeader(
+//   decoration: BoxDecoration(color: kPrimaryColor),
+//   accountName: Text(
+//       data["superhero"] == null || data["superhero"] == '' ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
+//       style: TextStyle(color: kThirdColor)),
+//   accountEmail: Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
+//       style: TextStyle(color: kThirdColor)),
+//   currentAccountPicture: GestureDetector(
+//     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
+//     child: data["avatar"] != null
+//         ? Container(
+//             height: 110,
+//             width: 220,
+//             decoration: BoxDecoration(
+//                 shape: BoxShape.circle,
+//                 image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
+//           )
+//         : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+//   ),
+// ),

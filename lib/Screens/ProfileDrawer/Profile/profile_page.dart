@@ -9,6 +9,7 @@ import 'package:WE/Screens/ProfileDrawer/Badges/badges_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/second_edit_profile.dart';
 import 'package:WE/Services/user_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,9 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Map<String, dynamic> data = snapshot?.data.data();
             return Scaffold(
               appBar: AppBar(
-                centerTitle: true,
                 title: Text("Profil Sayfası"),
-                backgroundColor: Color(0xFFFF6B00),
                 actions: [
                   IconButton(
                       onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SecondEditProfile())),
@@ -89,9 +88,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: data["avatar"] != null
                       ? Container(
                           height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"])),
+                          width: 120,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(shape: BoxShape.circle),
+                          child: CachedNetworkImage(
+                            imageUrl: data["avatar"].toString(),
+                            progressIndicatorBuilder: (context, url, progress) => WESpinKit(),
+                            errorWidget: (context, url, error) => Icon(Icons.error_rounded, color: Colors.red, size: 120),
+                            fit: BoxFit.cover,
                           ),
                         )
                       : Icon(Icons.account_circle_rounded, size: 120, color: Colors.grey),
@@ -215,11 +219,11 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 }
 
-List<List<String>> allBadges = [
-  ["assets/Images/Badges/Unlocked/activeBadge1.png", "assets/Images/Badges/Locked/inactiveBadge1.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge2.png", "assets/Images/Badges/Locked/inactiveBadge2.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge3.png", "assets/Images/Badges/Locked/inactiveBadge3.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge4.png", "assets/Images/Badges/Locked/inactiveBadge4.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge5.png", "assets/Images/Badges/Locked/inactiveBadge5.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge6.png", "assets/Images/Badges/Locked/inactiveBadge6.png"],
-];
+// List<List<String>> allBadges = [
+//   ["assets/Images/Badges/Unlocked/activeBadge1.png", "assets/Images/Badges/Locked/inactiveBadge1.png"],
+//   ["assets/Images/Badges/Unlocked/activeBadge2.png", "assets/Images/Badges/Locked/inactiveBadge2.png"],
+//   ["assets/Images/Badges/Unlocked/activeBadge3.png", "assets/Images/Badges/Locked/inactiveBadge3.png"],
+//   ["assets/Images/Badges/Unlocked/activeBadge4.png", "assets/Images/Badges/Locked/inactiveBadge4.png"],
+//   ["assets/Images/Badges/Unlocked/activeBadge5.png", "assets/Images/Badges/Locked/inactiveBadge5.png"],
+//   ["assets/Images/Badges/Unlocked/activeBadge6.png", "assets/Images/Badges/Locked/inactiveBadge6.png"],
+// ];

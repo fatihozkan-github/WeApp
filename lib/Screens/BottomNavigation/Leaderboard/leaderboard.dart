@@ -1,45 +1,33 @@
+import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/tab_leader_board.dart';
+import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/tab_friends.dart';
 import 'package:WE/Resources/constants.dart';
-import 'package:WE/Screens/BottomNavigation/Leaderboard/Tabs/friends.dart';
-import 'package:WE/example.dart';
 import 'package:flutter/material.dart';
 
-class Leaderboard extends StatelessWidget {
+class LeaderBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text("Lider Tablosu", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-          backgroundColor: kPrimaryColor),
-      body: Stack(
-        children: [
-          Container(
+      appBar: AppBar(title: Text('Lider Tablosu')),
+      body: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            Container(
               color: Colors.white,
-              child: DefaultTabController(
-                length: 2,
-                child: Column(
-                  children: [
-                    SafeArea(
-                      child: Container(
-                        color: Colors.white,
-                        height: 50,
-                        child: TabBar(
-                          tabs: [
-                            Tab(child: Text("WE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-                            Tab(child: Text("Arkadaşlar", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-                          ],
-                          labelColor: kPrimaryColor,
-                          unselectedLabelColor: Colors.black,
-                          indicatorColor: kPrimaryColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(child: Container(color: Colors.white, child: TabBarView(children: [Example(), FriendsTab()])))
-                  ],
-                ),
-              )),
-        ],
+              height: 50,
+              child: TabBar(
+                tabs: [
+                  Tab(child: Text("WE", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+                  Tab(child: Text("Arkadaşlar", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+                ],
+                labelColor: kPrimaryColor,
+                unselectedLabelColor: Colors.black,
+                indicatorColor: kPrimaryColor,
+              ),
+            ),
+            Expanded(child: TabBarView(children: [LeaderBoardTab(), FriendsTab()]))
+          ],
+        ),
       ),
     );
   }

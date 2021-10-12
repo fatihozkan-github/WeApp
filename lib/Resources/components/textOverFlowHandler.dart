@@ -1,11 +1,13 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, sort_child_properties_last
 
+import 'package:WE/Resources/components/overScrollHandler.dart';
 import 'package:flutter/material.dart';
 
 class TextOverFlowHandler extends StatefulWidget {
   final Widget child;
   final Axis direction;
   final Duration animationDuration, backDuration, pauseDuration;
+  final double initialScrollOffset;
 
   /// • This widget automatically detects if a text widget reaches its overflow
   /// limit and makes the text slide.
@@ -14,10 +16,11 @@ class TextOverFlowHandler extends StatefulWidget {
   ///
   TextOverFlowHandler({
     @required this.child,
+    this.initialScrollOffset = 0,
     this.direction = Axis.horizontal,
+    this.pauseDuration = const Duration(seconds: 1),
     this.animationDuration = const Duration(seconds: 4),
     this.backDuration = const Duration(milliseconds: 800),
-    this.pauseDuration = const Duration(seconds: 1),
   });
 
   @override
@@ -29,7 +32,7 @@ class _TextOverFlowHandlerState extends State<TextOverFlowHandler> {
 
   @override
   void initState() {
-    scrollController = ScrollController(initialScrollOffset: 50.0);
+    scrollController = ScrollController(initialScrollOffset: widget.initialScrollOffset ?? 0.0);
     WidgetsBinding.instance.addPostFrameCallback(scroll);
     super.initState();
   }
@@ -42,10 +45,12 @@ class _TextOverFlowHandlerState extends State<TextOverFlowHandler> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: widget.child,
-      scrollDirection: widget.direction,
-      controller: scrollController,
+    return OverScroll(
+      child: SingleChildScrollView(
+        child: widget.child,
+        scrollDirection: widget.direction,
+        controller: scrollController,
+      ),
     );
   }
 

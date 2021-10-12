@@ -24,10 +24,10 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   String _username, _city, _address, _superhero, _company, _referral, _bracelet, imageUrl;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DocumentReference sightingRef = FirebaseFirestore.instance.collection("users").doc();
   final CollectionReference brewCollection = FirebaseFirestore.instance.collection('users');
+  DocumentReference sightingRef = FirebaseFirestore.instance.collection("users").doc();
   CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var firebaseUser = FirebaseAuth.instance.currentUser;
   DocumentSnapshot snapshot;
   int _currentProgress = 0;
@@ -89,13 +89,11 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    print(snapshot.data().keys.toList());
     return snapshot != null
         ? UnFocuser(
             child: Scaffold(
-              backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Profilini Düzenle'), centerTitle: true),
+              appBar: AppBar(title: Text('Profilini Düzenle')),
               body: Form(
                 key: _formKey,
                 child: ListView(

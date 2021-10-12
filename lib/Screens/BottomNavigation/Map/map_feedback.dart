@@ -1,6 +1,7 @@
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:WE/Resources/constants.dart';
@@ -11,39 +12,39 @@ class MapFeedbackPage extends StatefulWidget {
 }
 
 class _MapFeedbackPageState extends State<MapFeedbackPage> {
-  final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
   String _infoMessage = "WE topluluğu ile birlikte alanı temizlemek için etkinlik düzenleme isteği gönderebilirsin.";
   String _subject;
   String _message;
   final GlobalKey<FormState> _formKey = GlobalKey();
-
-  _getCurrentLocation() {
-    geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
-      setState(() {
-        _currentPosition = position;
-      });
-
-      _getAddressFromLatLng();
-    }).catchError((e) {
-      print(e);
-    });
-  }
-
-  _getAddressFromLatLng() async {
-    try {
-      List<Placemark> p = await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
-
-      Placemark place = p[0];
-
-      setState(() {
-        _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+  //
+  // _getCurrentLocation() {
+  //   geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best).then((Position position) {
+  //     setState(() {
+  //       _currentPosition = position;
+  //     });
+  //
+  //     _getAddressFromLatLng();
+  //   }).catchError((e) {
+  //     print(e);
+  //   });
+  // }
+  //
+  // _getAddressFromLatLng() async {
+  //   try {
+  //     List<Placemark> p = await geolocator.placemarkFromCoordinates(_currentPosition.latitude, _currentPosition.longitude);
+  //
+  //     Placemark place = p[0];
+  //
+  //     setState(() {
+  //       _currentAddress = "${place.locality}, ${place.postalCode}, ${place.country}";
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   launchUrl(String url) async {
     if (await canLaunch(url)) {
@@ -56,7 +57,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    // _getCurrentLocation();
   }
 
   @override

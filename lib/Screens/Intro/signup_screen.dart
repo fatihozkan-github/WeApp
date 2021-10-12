@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:WE/Resources/components/already_have_an_account_acheck.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
@@ -16,7 +18,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  String _username, _email, _password, _city, _superhero, _referral;
+  String _username, _email, _password, _city = '', _superhero = '', _referral, _avatar = '';
   final auth = FirebaseAuth.instance;
   Map<String, dynamic> codes = {};
   bool isInclude = false;
@@ -37,10 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     /// TODO: Fix
     ///
     /// Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
-    documentSnapshot = await FirebaseFirestore.instance
-        .collection('referralCodes')
-        .doc('list')
-        .get();
+    documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('list').get();
     codes.addAll(documentSnapshot.data()['listOfReferrals']);
     print(codes);
   }
@@ -56,7 +55,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return UnFocuser(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
         body: Form(
           key: _formKey,
           child: Center(
@@ -67,8 +65,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Image.asset('assets/we2.png', scale: 1.4),
                 RoundedInputField(
                   hintText: 'İsim',
-                  onChanged: (value) =>
-                      setState(() => _username = value.trim()),
+                  onChanged: (value) => setState(() => _username = value.trim()),
                 ),
                 RoundedInputField(
                   hintText: 'E-posta',
@@ -86,17 +83,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 RoundedInputField(
                   hintText: 'Şifreniz',
                   icon: Icons.lock,
-                  onChanged: (value) =>
-                      setState(() => _password = value.trim()),
+                  onChanged: (value) => setState(() => _password = value.trim()),
                   obscureText: _obscureText,
                   onEditingComplete: () {
                     FocusScope.of(context).nextFocus();
                     FocusScope.of(context).nextFocus();
                   },
-                  suffixIcon: IconButton(
-                      onPressed: _toggle,
-                      icon: Icon(Icons.visibility),
-                      color: kPrimaryColor),
+                  suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
                   validator: (_typed) {
                     if (_typed.isEmpty) {
                       return 'Boş bırakılamaz';
@@ -121,35 +114,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     if (_referral.isNotEmpty) {
                       for (var i = 0; i <= codes.length; i++) {
                         if (_referral == codes[i.toString()]) {
-                          auth
-                              .createUserWithEmailAndPassword(
-                                  email: _email, password: _password)
-                              .then((_) {
+                          auth.createUserWithEmailAndPassword(email: _email, password: _password).then((_) {
                             create(
-                                name: _username,
-                                email: _email,
-                                password: _password,
-                                city: _city,
-                                uid: currentUid,
-                                superhero: _superhero);
-                            addReferralData(
-                                referralId: _referral.substring(0, 6),
-                                uid: currentUid);
-
+                              name: _username,
+                              email: _email,
+                              password: _password,
+                              city: _city,
+                              uid: currentUid,
+                              superhero: _superhero,
+                              avatar: _avatar,
+                            );
+                            addReferralData(referralId: _referral.substring(0, 6), uid: currentUid);
                             Navigator.pushAndRemoveUntil<dynamic>(
                               context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      BottomNavigation()),
+                              MaterialPageRoute<dynamic>(builder: (BuildContext context) => LoginScreen()),
                               (route) => false,
                             );
                             signUp(
-                                name: _username,
-                                email: _email,
-                                password: _password,
-                                city: _city,
-                                uid: currentUid,
-                                superhero: _superhero);
+                              name: _username,
+                              email: _email,
+                              password: _password,
+                              city: _city,
+                              uid: currentUid,
+                              superhero: _superhero,
+                              avatar: _avatar,
+                            );
                           }).catchError((err) {
                             return showDialog(
                                 context: context,
@@ -158,12 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   return AlertDialog(
                                     title: Text('Hata'),
                                     content: Text(err.message),
-                                    actions: [
-                                      TextButton(
-                                          child: Text('Tamam'),
-                                          onPressed: () =>
-                                              Navigator.of(context).pop())
-                                    ],
+                                    actions: [TextButton(child: Text('Tamam'), onPressed: () => Navigator.of(context).pop())],
                                   );
                                 });
                           });
@@ -176,8 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 20),
                 AlreadyHaveAnAccountCheck(
                   login: false,
-                  press: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen())),
+                  press: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
                 ),
                 SizedBox(height: 20),
               ],
