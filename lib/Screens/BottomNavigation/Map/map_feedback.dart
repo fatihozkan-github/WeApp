@@ -14,7 +14,7 @@ class _MapFeedbackPageState extends State<MapFeedbackPage> {
   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
   Position _currentPosition;
   String _currentAddress;
-  String _infoMessage = "WE topluluğu ile birlikte alanı temizlemek için etkinlik düzenleme isteği gönderebilirsin";
+  String _infoMessage = "WE topluluğu ile birlikte alanı temizlemek için etkinlik düzenleme isteği gönderebilirsin.";
   String _subject;
   String _message;
   final GlobalKey<FormState> _formKey = GlobalKey();

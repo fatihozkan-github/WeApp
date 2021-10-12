@@ -101,7 +101,8 @@ class _BadgePageState extends State<BadgePage> {
                                                 iconSrc: "assets/Icons/facebook64.png",
                                                 press: () async {
                                                   await screenshotController.capture().then((image) async {
-                                                    await SocialShare.shareOptions(" ").then((data) {
+                                                    print('IMAGE: $image');
+                                                    await SocialShare.shareOptions("We").then((data) {
                                                       print(data);
                                                     });
                                                   });
@@ -127,7 +128,7 @@ class _BadgePageState extends State<BadgePage> {
                                                 iconSrc: "assets/Icons/twitter.png",
                                                 press: () async {
                                                   await SocialShare.shareTwitter(
-                                                    "",
+                                                    "We",
                                                     hashtags: ["we", "recycle", "we-recycle-team"],
                                                     url: "",
                                                     trailingText: "",
@@ -145,7 +146,7 @@ class _BadgePageState extends State<BadgePage> {
                                                 iconSrc: "assets/Icons/linkedin.png",
                                                 press: () async {
                                                   await screenshotController.capture().then((image) async {
-                                                    await SocialShare.shareOptions(" ").then((data) {
+                                                    await SocialShare.shareOptions("We").then((data) {
                                                       print(data);
                                                     });
                                                   });
@@ -155,7 +156,7 @@ class _BadgePageState extends State<BadgePage> {
                                                 iconSrc: "assets/Icons/upload.png",
                                                 press: () async {
                                                   await screenshotController.capture().then((image) async {
-                                                    await SocialShare.shareOptions(" ").then((data) {
+                                                    await SocialShare.shareOptions("We").then((data) {
                                                       print(data);
                                                     });
                                                   });
@@ -281,7 +282,7 @@ class _BadgePageState extends State<BadgePage> {
                   ],
                 ));
           }
-          return Center(child: WESpinKit());
+          return WESpinKit();
         });
   }
 }

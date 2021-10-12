@@ -7,7 +7,6 @@ import 'package:WE/Resources/components/rounded_input_field.dart';
 import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
-import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -90,6 +89,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    print(snapshot.data().keys.toList());
     return snapshot != null
         ? UnFocuser(
             child: Scaffold(
@@ -151,11 +151,10 @@ class _EditProfileState extends State<EditProfile> {
                           children: [
                             SizedBox(width: 5),
                             Container(width: 20, child: Image.asset("assets/Icons/bracelet.png", color: kPrimaryColor)),
-                            SizedBox(width: 10),
+                            SizedBox(width: 15),
                             Expanded(
                               child: Text(
-                                "Bileklik Sayfasına Gitmek için Tıklayınız",
-                                textAlign: TextAlign.center,
+                                "Bileklik Tanımlamak İçin Tıklayınız",
                                 style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,
                               ),

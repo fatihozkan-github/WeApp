@@ -62,7 +62,6 @@ class ReadyPage extends StatelessWidget {
 
 class ReadRf extends StatefulWidget {
   final PageController controller;
-
   const ReadRf({Key key, this.controller}) : super(key: key);
 
   @override
@@ -70,13 +69,6 @@ class ReadRf extends StatefulWidget {
 }
 
 class _ReadRfState extends State<ReadRf> {
-  @override
-  void initState() {
-    super.initState();
-    print('hi');
-    init();
-  }
-
   Future<void> init() async {
     StreamSubscription streamEvent;
     final databaseReference = FirebaseDatabase.instance.reference();
@@ -94,6 +86,13 @@ class _ReadRfState extends State<ReadRf> {
         streamEvent.cancel();
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print('hi');
+    init();
   }
 
   @override

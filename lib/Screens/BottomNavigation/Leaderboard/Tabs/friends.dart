@@ -33,7 +33,6 @@ class FriendsTab extends StatelessWidget {
                 friends.add(map);
                 // TODO: implement points and friends tab
                 friends.sort((a, b) => b["recycled"].compareTo(a["recycled"]));
-                print(friends);
               }
             }
 
@@ -53,33 +52,36 @@ class FriendsTab extends StatelessWidget {
                               ),
                             ),
                             child: Card(
-                                child: ListTile(
-                              onTap: () {
-                                Navigator.push(
-                                    context, MaterialPageRoute(builder: (context) => HisProfile(uid: friends[index]["uid"])));
-                              },
-                              trailing: Container(
-                                height: 48,
-                                width: 48,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage(index < 3 ? leaderboardIcons[index] : leaderboardIcons[3]))),
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HisProfile(uid: friends[index]["uid"], friends: friends)));
+                                },
+                                trailing: Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(index < 3 ? leaderboardIcons[index] : leaderboardIcons[3]))),
+                                ),
+                                leading: Container(
+                                  height: 48,
+                                  width: 48,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: data["avatar"] == null
+                                              ? AssetImage("assets/Icons/user.png")
+                                              : NetworkImage(data["avatar"]))),
+                                ),
+                                title: Text(friends[index]["name"]),
                               ),
-                              leading: Container(
-                                height: 48,
-                                width: 48,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: data["avatar"] == null
-                                            ? AssetImage("assets/Icons/user.png")
-                                            : NetworkImage(data["avatar"]))),
-                              ),
-                              title: Text(friends[index]["name"]),
-                            )),
+                            ),
                           );
                         },
                       )
@@ -106,7 +108,6 @@ class FriendsTab extends StatelessWidget {
                       ));
           }
           return WESpinKit();
-          // return Center(child: Image.asset("assets/giftir.gif", height: 250.0, width: 250.0));
         });
   }
 }
