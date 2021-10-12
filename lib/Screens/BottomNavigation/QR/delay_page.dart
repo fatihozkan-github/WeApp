@@ -36,8 +36,8 @@ class _DelayPageState extends State<DelayPage> {
           "Hesaplamalar yapılıyor...",
           style: TextStyle(color: Colors.white),
         ),
-        photoSize: 240,
-        seconds: 8,
+        photoSize: 100,
+        seconds: 80,
         navigateAfterSeconds: CoinScreenExample(
           qrResult: widget.qrResult,
           currentText: widget.currentText,

@@ -135,6 +135,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             addReferralData(
                                 referralId: _referral.substring(0, 6),
                                 uid: currentUid);
+                            signUp(
+                                name: _username,
+                                email: _email,
+                                password: _password,
+                                city: _city,
+                                uid: currentUid,
+                                superhero: _superhero);
 
                             Navigator.pushAndRemoveUntil<dynamic>(
                               context,
@@ -143,13 +150,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       BottomNavigation()),
                               (route) => false,
                             );
-                            signUp(
-                                name: _username,
-                                email: _email,
-                                password: _password,
-                                city: _city,
-                                uid: currentUid,
-                                superhero: _superhero);
                           }).catchError((err) {
                             return showDialog(
                                 context: context,

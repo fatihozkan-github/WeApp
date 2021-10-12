@@ -20,9 +20,11 @@ class UserService extends ChangeNotifier {
     final _storage = FirebaseStorage.instance;
     var image;
     await Permission.photos.request();
+    await Permission.mediaLibrary.request();
     var permissionStatus = await Permission.photos.status;
+    var mediaLibrary = await Permission.mediaLibrary.status;
 
-    if (permissionStatus.isGranted) {
+    if (permissionStatus.isGranted && mediaLibrary.isGranted) {
       image = await ImagePicker().pickImage(source: ImageSource.gallery);
       print(image);
       print('ch2');

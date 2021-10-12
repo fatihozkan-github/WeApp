@@ -3,6 +3,8 @@
 import 'package:WE/Resources/components/progress_bar.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
+import 'package:WE/Resources/components/unFocuser.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Services/service_user.dart';
@@ -28,6 +30,124 @@ class _EditProfileState extends State<EditProfile> {
       FirebaseFirestore.instance.collection("users").doc();
   final CollectionReference brewCollection =
       FirebaseFirestore.instance.collection('users');
+  var firebaseUser = FirebaseAuth.instance.currentUser;
+  String currentUid = FirebaseAuth.instance.currentUser.uid;
+  DocumentSnapshot snapshot;
+  int _currentProgress = 0;
+  Map<String, dynamic> data;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  void getData() async {
+    snapshot = await brewCollection.doc(firebaseUser.uid).get();
+    data = snapshot.data();
+    print(snapshot.data());
+    _currentProgress = 0;
+    if (data["name"] != null && data["name"].toString().isNotEmpty) {
+      _currentProgress++;
+      _username = data['name'];
+    }
+    if (data["city"] != null && data["city"].toString().isNotEmpty) {
+      _currentProgress++;
+      _city = data['city'];
+    }
+    if (data["superhero"] != null && data["superhero"].toString().isNotEmpty) {
+      _currentProgress++;
+      _superhero = data['superhero'];
+    }
+    if (data["address"] != null && data["address"].toString().isNotEmpty) {
+      _currentProgress++;
+      _address = data['address'];
+    }
+    if (data["company"] != null && data["company"].toString().isNotEmpty) {
+      _currentProgress++;
+      _company = data['company'];
+    }
+    if (data["avatar"] != null && data["avatar"].toString().isNotEmpty) {
+      _currentProgress++;
+      imageUrl = data['avatar'];
+    }
+    setState(() {});
+  }
+
+  /// • Adjusts progress bar and updates user.
+  void _adjustProgressBar() async {
+    /// TODO: Update user.
+    if (_username != null && _username != data["name"]) {
+      print('ch1');
+      setState(() {
+        if (_currentProgress < 7 && data["name"].toString().isEmpty)
+          _currentProgress++;
+        if (_currentProgress < 7 &&
+            data["name"].toString().isNotEmpty &&
+            _username.isEmpty) _currentProgress--;
+      });
+      await brewCollection.doc(currentUid).update({
+        "name": _username,
+      });
+    }
+
+    if (_city != null && _city != data["city"]) {
+      print('ch2');
+      setState(() {
+        if (_currentProgress < 7 && data["city"].toString().isEmpty)
+          _currentProgress++;
+        if (_currentProgress < 7 &&
+            data["city"].toString().isNotEmpty &&
+            _city.isEmpty) _currentProgress--;
+      });
+      await brewCollection.doc(currentUid).update({
+        "city": _city,
+      });
+    }
+
+    if (_superhero != null && _superhero != data["superhero"]) {
+      print('ch3');
+      setState(() {
+        if (_currentProgress < 7 && data["superhero"].toString().isEmpty)
+          _currentProgress++;
+        if (_currentProgress < 7 &&
+            data["superhero"].toString().isNotEmpty &&
+            _superhero.isEmpty) _currentProgress--;
+      });
+      await brewCollection.doc(currentUid).update({
+        "superhero": _superhero,
+      });
+    }
+
+    if (_address != null && _address != data["address"]) {
+      print('ch4');
+      setState(() {
+        if (_currentProgress < 7 && data["address"].toString().isEmpty)
+          _currentProgress++;
+        if (_currentProgress < 7 &&
+            data["address"].toString().isNotEmpty &&
+            _address.isEmpty) _currentProgress--;
+      });
+      await brewCollection.doc(currentUid).update({
+        "address": _address,
+      });
+    }
+
+    if (_company != null && _company != data["company"]) {
+      print('ch5');
+      setState(() {
+        if (_currentProgress < 7 && data["company"].toString().isEmpty)
+          _currentProgress++;
+        if (_currentProgress < 7 &&
+            data["company"].toString().isNotEmpty &&
+            _company.isEmpty) _currentProgress--;
+      });
+      await brewCollection.doc(currentUid).update({
+        "company": _company,
+      });
+    }
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,160 +158,184 @@ class _EditProfileState extends State<EditProfile> {
     final width = MediaQuery.of(context).size.width;
     // CollectionReference users = FirebaseFirestore.instance.collection('users');
     // var firebaseUser = FirebaseAuth.instance.currentUser;
-    return Center(
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          children: [
-            /// TODO: Fix initial values.
-            SizedBox(height: 50),
-            GestureDetector(
-              onTap: () => Provider.of<UserService>(context, listen: false)
-                  .uploadImage(),
-              child: Column(
-                children: [
-                  /// TODO: Null path error!
-                  imageUrl != null
-                      ? Container(
-                          height: 220,
-                          // width: 440,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            // image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
-                          ))
-                      : Icon(Icons.account_circle_rounded,
-                          size: 150, color: Colors.grey),
-                  Text(
-                    "Profil fotoğrafını değiştirmek için avatara dokun.",
-                    style: TextStyle(
-                        fontSize: width / 40,
-                        color: Colors.grey,
-                        decoration: TextDecoration.none),
+    return snapshot != null
+        ? UnFocuser(
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              resizeToAvoidBottomInset: false,
+              appBar: AppBar(
+                  backgroundColor: kPrimaryColor,
+                  title: Text('Profilini Düzenle'),
+                  centerTitle: true),
+              body: Center(
+                child: Form(
+                  key: _formKey,
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    children: [
+                      /// TODO: Fix initial values.
+                      SizedBox(height: 18),
+                      GestureDetector(
+                        onTap: () =>
+                            Provider.of<UserService>(context, listen: false)
+                                .uploadImage(),
+                        child: Column(
+                          children: [
+                            /// TODO: Null path error!
+                            (imageUrl != null && imageUrl != '')
+                                ? Container(
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            fit: BoxFit.contain,
+                                            image: NetworkImage(imageUrl))),
+                                  )
+                                : Icon(Icons.account_circle_rounded,
+                                    size: 150, color: Colors.grey),
+                            Text(
+                              "Profil fotoğrafını değiştirmek için avatara dokun.",
+                              style: TextStyle(
+                                  fontSize: width / 40,
+                                  color: Colors.grey,
+                                  decoration: TextDecoration.none),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ProgressBar(currentValue: _currentProgress),
+                      SizedBox(height: 20),
+
+                      RoundedInputField(
+                        hintText: "Kullanıcı Adı",
+                        initialValue: _username,
+                        onChanged: (value) =>
+                            setState(() => _username = value.trim()),
+                      ),
+                      RoundedInputField(
+                        hintText: "Şehir",
+                        initialValue: _city,
+                        icon: Icons.location_city_outlined,
+                        onChanged: (value) => _city = value.trim(),
+                      ),
+                      RoundedInputField(
+                        hintText: "Adres",
+                        initialValue: _address,
+                        icon: Icons.location_city_outlined,
+                        onChanged: (value) => _address = value.trim(),
+                      ),
+                      RoundedInputField(
+                        hintText: "Şirket",
+                        initialValue: _company,
+                        icon: Icons.local_fire_department_outlined,
+                        onChanged: (value) => _company = value.trim(),
+                      ),
+                      RoundedInputField(
+                        hintText: "Favori süper kahraman",
+                        initialValue: _superhero,
+                        icon: Icons.local_fire_department_outlined,
+                        onChanged: (value) => _superhero = value.trim(),
+                      ),
+                      FutureBuilder<DocumentSnapshot>(
+                          future: users.doc(firebaseUser.uid).get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                            if (snapshot.hasError) {
+                              return Text("Hata oluştu :(");
+                            }
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              Map<String, dynamic> data = snapshot.data.data();
+                              return Material(
+                                color: Colors.white24,
+                                child: Column(
+                                  children: [
+                                    data['rfId'] != null
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              color: kPrimaryColor,
+                                              child: ListTile(
+                                                title: Center(
+                                                  child: Wrap(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                          right: 8.0,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.check,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'Bileklik Etkin',
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        : TextButton(
+                                            onPressed: () async {
+                                              await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return ActivateBracelet();
+                                                  },
+                                                ),
+                                              ).then((value) {
+                                                setState(() {});
+                                              });
+                                            },
+                                            child: Container(
+                                              color: kPrimaryColor,
+                                              child: ListTile(
+                                                title: Center(
+                                                  child: Text(
+                                                    'Bilekliği Etkinleştir',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                  ],
+                                ),
+                              );
+                            }
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }),
+                      RoundedButton(
+                        text: "KAYDET",
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            await _adjustProgressBar();
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-            ProgressBar(currentValue: 4),
-            SizedBox(height: 20),
-
-            RoundedInputField(
-              hintText: "Kullanıcı Adı",
-              onChanged: (value) => setState(() => _username = value.trim()),
-            ),
-            RoundedInputField(
-              hintText: "Şehir",
-              icon: Icons.location_city_outlined,
-              onChanged: (value) => _city = value.trim(),
-            ),
-            RoundedInputField(
-              hintText: "Adres",
-              icon: Icons.location_city_outlined,
-              onChanged: (value) => _address = value.trim(),
-            ),
-            RoundedInputField(
-              hintText: "Şirket",
-              icon: Icons.local_fire_department_outlined,
-              onChanged: (value) => _company = value.trim(),
-            ),
-            RoundedInputField(
-              hintText: "Favori süper kahraman",
-              icon: Icons.local_fire_department_outlined,
-              onChanged: (value) => _superhero = value.trim(),
-            ),
-            SizedBox(height: 20),
-            FutureBuilder<DocumentSnapshot>(
-                future: users.doc(firebaseUser.uid).get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Something went wrong");
-                  }
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    var data = snapshot.data.data();
-                    return Material(
-                      color: Colors.white24,
-                      child: Column(
-                        children: [
-                          data['rfId'] != null
-                              ? Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Container(
-                                    color: kPrimaryColor,
-                                    height: size.height * 0.05,
-                                    width: size.width * 0.9,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.check,color: Colors.green,),
-                                          SizedBox(width: 8,),
-                                          Text('Bileklik Etkin',style: TextStyle(color: Colors.white,fontSize: 18),)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : TextButton(
-                                  onPressed: () {
-                                    setState(() async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return ActivateBracelet();
-                                          },
-                                        ),
-                                      );
-                                      setState(() {});
-                                    });
-                                  },
-                                  child: Container(
-                                    color: kPrimaryColor,
-                                    height: size.height * 0.05,
-                                    width: size.width * 0.9,
-                                    child: Center(
-                                      child: Text(
-                                        "Bilekliği Etkinleştir",
-                                        style: TextStyle(color: Colors.black, fontSize: 16),
-                                      ),
-                                    ),
-                                  )),
-
-                        ],
-                      ),
-                    );
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }),
-            RoundedButton(
-              text: "KAYDET",
-              onPressed: () {
-                _formKey.currentState.validate();
-
-                /// TODO: Update user.
-                // setState(() {});
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-    //   FutureBuilder<DocumentSnapshot>(
-    //   future: users.doc(firebaseUser.uid).get(),
-    //   builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-    //     if (snapshot.hasError) {
-    //       return Text("Something went wrong");
-    //     }
-    //     if (snapshot.connectionState == ConnectionState.done) {
-    //       Map<String, dynamic> data = snapshot.data.data();
-    //       return _getBody(data, context, size);
-    //     }
-    //     return Center(child: CircularProgressIndicator());
-    //   },
-    // );
+          )
+        : Scaffold(
+            body: WESpinKit(),
+          );
   }
 
   /// Olds

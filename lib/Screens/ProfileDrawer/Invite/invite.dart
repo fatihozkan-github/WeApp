@@ -44,7 +44,7 @@ class InvitePage extends StatelessWidget {
               },
               child: Container(
                 width: size.width * 0.6,
-                height: size.height * 0.1,
+                // height: size.height * 0.1,
                 decoration: BoxDecoration(
                     border: Border.all(color: kPrimaryColor),
                     borderRadius: BorderRadius.circular(32)),
@@ -64,6 +64,7 @@ class InvitePage extends StatelessWidget {
               style: TextStyle(color: Colors.grey, fontSize: 12),
               textAlign: TextAlign.right,
             ),
+            SizedBox(height: 20),
           ],
         ),
       ),

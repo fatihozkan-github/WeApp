@@ -43,12 +43,6 @@
 		</array>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>NSBluetoothAlwaysUsageDescription</key>
-		<string>This app needs access to BLE permission.</string>
-		<key>NSBluetoothPeripheralUsageDescription</key>
-		<string>This app needs access to BLE permission.</string>
-		<key>NSCameraUsageDescription</key>
-		<string>This app needs access to camera for taking picture.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>This app needs access to Location permission.</string>
 		<key>NSLocationAlwaysUsageDescription</key>

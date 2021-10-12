@@ -37,6 +37,7 @@ class _TransitionPageState extends State<TransitionPage> {
     return Material(
       child: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(height: size.height * 0.04),
             Align(
@@ -49,7 +50,8 @@ class _TransitionPageState extends State<TransitionPage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => BottomNavigation(),
+                            builder: (BuildContext context) =>
+                                BottomNavigation(),
                           ),
                           (route) => false,
                         );
@@ -63,18 +65,20 @@ class _TransitionPageState extends State<TransitionPage> {
             //SizedBox(height: size.height * 0.02),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(border: Border.all(color: kPrimaryColor), borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: kPrimaryColor),
+                  borderRadius: BorderRadius.circular(20)),
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Text(
                   'Plastik atıklarını HeroStation\'a attıktan sonra onayla ve bitir.',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
             SizedBox(height: size.height * 0.04),
-            Lottie.asset('assets/lottie.json'),
+            Lottie.asset('assets/lottie.json', height: 250),
             SizedBox(height: size.height * 0.05),
             NiceButton(
               width: size.width * 0.85,
@@ -95,6 +99,7 @@ class _TransitionPageState extends State<TransitionPage> {
               },
               background: kSecondaryColor,
             ),
+            SizedBox(height: size.height * 0.04),
           ],
         ),
       ),

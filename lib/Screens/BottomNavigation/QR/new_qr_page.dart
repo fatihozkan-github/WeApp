@@ -2,7 +2,9 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:WE/Resources/constants.dart';
+import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/transition_page.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,6 +20,7 @@ class _QRViewExampleState extends State<QRViewExample> {
   QRViewController controller;
   PermissionStatus permissionStatus;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  int count = 0;
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -42,6 +45,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       });
     }
     if (!init) {
+      count += 1;
       setState(() {});
     }
   }
@@ -135,18 +139,82 @@ class _QRViewExampleState extends State<QRViewExample> {
     if (!permissionStatus.isGranted) {
       return Container(
         width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.all(8),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'QR kod taraması için kamera izninize ihtiyacımız var.',
-              textAlign: TextAlign.center,
+            Column(
+              children: [
+                Text(
+                  'QR kod taraması için \nkamera izninize ihtiyacımız var.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async => checkPermissions(init: false),
+                  child: Text(
+                    'Kontrol Et',
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () async => checkPermissions(init: false),
-              child: Text('Kontrol Et'),
-            ),
+            if (count > 4)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    color: Colors.grey,
+                    width: MediaQuery.of(context).size.width / 2 - 50,
+                    height: 2,
+                  ),
+                  Text(' yada '),
+                  Container(
+                    color: Colors.grey,
+                    width: MediaQuery.of(context).size.width / 2 - 50,
+                    height: 2,
+                  ),
+                ],
+              ),
+            if (count > 4)
+              Column(
+                children: [
+                  Text(
+                    'QR kodu okuyamıyorsan \n4 haneli kodu girerek devam edebilirsin.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return CodePage();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Kodu Gir',
+                      style: TextStyle(
+                        color: kPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
           ],
         ),
       );

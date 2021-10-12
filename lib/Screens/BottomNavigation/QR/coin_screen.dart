@@ -113,6 +113,7 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: kPrimaryColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
@@ -172,269 +173,279 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
                           color: Colors.grey[850],
                           child: Align(
                             alignment: Alignment(0, -0.5),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: size.height * 0.025,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        PhysicalModel(
-                                          elevation: 20.0,
-                                          shape: BoxShape.circle,
-                                          shadowColor: Colors.green,
-                                          color: kSecondaryColor,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(90)),
-                                            child: Container(
-                                              width: 170,
-                                              height: 170,
-                                              color: Colors.white,
-                                              child: Image.asset(
-                                                "assets/Icons/approved.png",
-                                                scale: 0.7,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: size.height * 0.005,
-                                        ),
-                                        Container(
-                                          child: Text(
-                                            "Başarılı.",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: size.height * 0.025,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          PhysicalModel(
+                                            elevation: 20.0,
+                                            shape: BoxShape.circle,
+                                            shadowColor: Colors.green,
+                                            color: kSecondaryColor,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(90)),
+                                              child: Container(
+                                                width: 170,
+                                                height: 170,
                                                 color: Colors.white,
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.07,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        PhysicalModel(
-                                          elevation: 20.0,
-                                          shape: BoxShape.circle,
-                                          shadowColor: Colors.yellow,
-                                          color: kSecondaryColor,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(90)),
-                                            child: Container(
-                                              width: 90,
-                                              height: 90,
-                                              color: Colors.white,
-                                              child: Image.asset(
-                                                "assets/Icons/coin.png",
-                                                scale: 1.2,
+                                                child: Image.asset(
+                                                  "assets/Icons/approved.png",
+                                                  scale: 0.7,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            "Kazanılan coin",
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                          SizedBox(
+                                            height: size.height * 0.005,
                                           ),
-                                        ),
-                                        Text(
-                                          measuredCoin.toString(),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        PhysicalModel(
-                                          elevation: 20.0,
-                                          shape: BoxShape.circle,
-                                          shadowColor: Colors.yellow,
-                                          color: kSecondaryColor,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(90)),
-                                            child: Container(
-                                              width: 90,
-                                              height: 90,
-                                              color: Colors.white,
-                                              child: Image.asset(
-                                                "assets/Icons/recycle-sign.png",
-                                                scale: 1.8,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Dönüştürülen",
+                                          Container(
+                                            child: Text(
+                                              "Başarılı.",
+                                              textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                  color: Colors.white)),
-                                        ),
-                                        Text(measuredWeight.toString() + " g",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24)),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        PhysicalModel(
-                                          elevation: 20.0,
-                                          shape: BoxShape.circle,
-                                          shadowColor: Colors.yellow,
-                                          color: kSecondaryColor,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(90)),
-                                            child: Container(
-                                              width: 90,
-                                              height: 90,
-                                              color: Colors.white,
-                                              child: Image.asset(
-                                                "assets/Icons/renewable-energy.png",
-                                                scale: 1.8,
-                                              ),
+                                                  color: Colors.white,
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold),
                                             ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Etkin",
-                                              style: TextStyle(
-                                                  color: Colors.white)),
-                                        ),
-                                        Text(
-                                            (measuredWeight * 5.774)
-                                                    .toStringAsFixed(0) +
-                                                " Wh",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24))
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.008,
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.035,
-                                ),
-                                NiceButton(
-                                  width: size.width * 0.6,
-                                  radius: 10,
-                                  text: "Onayla ve bitir",
-                                  icon: Icons.check,
-                                  gradientColors: [
-                                    Color(0xFFff4d00),
-                                    Color(0xFFff9a00)
-                                  ],
-                                  onPressed: () {
-                                    getReward();
-
-                                    if (measuredWeight >= 100) {
-                                      update100gData(currentUid);
-                                    }
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return BottomNavigation();
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  background: kSecondaryColor,
-                                ),
-                                SizedBox(
-                                  height: size.height * 0.012,
-                                ),
-                                OrDivider(text: "Paylaş!"),
-                                SizedBox(
-                                  height: size.height * 0.015,
-                                ),
-                                Screenshot(
-                                  controller: screenshotController,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      SocialIcon(
-                                        iconSrc: "assets/Icons/facebook64.png",
-                                        press: () async {
-                                          await screenshotController
-                                              .capture()
-                                              .then((image) async {
-                                            await SocialShare.shareOptions(" ")
-                                                .then((data) {
-                                              print(data);
-                                            });
-                                          });
-                                        },
-                                      ),
-                                      SocialIcon(
-                                        iconSrc: "assets/Icons/instagram2.png",
-                                        press: () async {
-                                          var file =
-                                              await ImagePicker().pickImage(
-                                            source: ImageSource.gallery,
-                                          );
-                                          await SocialShare.shareInstagramStory(
-                                            file.path,
-                                            backgroundTopColor: "#ffffff",
-                                            backgroundBottomColor: "#FF6B00",
-                                            attributionURL:
-                                                "https://deep-link-url",
-                                          ).then((data) {
-                                            print(data);
-                                          });
-                                        },
-                                      ),
-                                      SocialIcon(
-                                        iconSrc: "assets/Icons/twitter.png",
-                                        press: () async {
-                                          await SocialShare.shareTwitter(
-                                            "",
-                                            hashtags: [
-                                              "we",
-                                              "recycle",
-                                              "we.recycle.team"
-                                            ],
-                                            url: "",
-                                            trailingText: "",
-                                          ).then((data) {
-                                            print(data);
-                                          });
-                                        },
+                                          )
+                                        ],
                                       ),
                                     ],
                                   ),
-                                )
-                              ],
+                                  SizedBox(
+                                    height: size.height * 0.07,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          PhysicalModel(
+                                            elevation: 20.0,
+                                            shape: BoxShape.circle,
+                                            shadowColor: Colors.yellow,
+                                            color: kSecondaryColor,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(90)),
+                                              child: Container(
+                                                width: 90,
+                                                height: 90,
+                                                color: Colors.white,
+                                                child: Image.asset(
+                                                  "assets/Icons/coin.png",
+                                                  scale: 1.2,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Kazanılan coin",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          Text(
+                                            measuredCoin.toString(),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 24),
+                                          )
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          PhysicalModel(
+                                            elevation: 20.0,
+                                            shape: BoxShape.circle,
+                                            shadowColor: Colors.yellow,
+                                            color: kSecondaryColor,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(90)),
+                                              child: Container(
+                                                width: 90,
+                                                height: 90,
+                                                color: Colors.white,
+                                                child: Image.asset(
+                                                  "assets/Icons/recycle-sign.png",
+                                                  scale: 1.8,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Dönüştürülen",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ),
+                                          Text(measuredWeight.toString() + " g",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 24)),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          PhysicalModel(
+                                            elevation: 20.0,
+                                            shape: BoxShape.circle,
+                                            shadowColor: Colors.yellow,
+                                            color: kSecondaryColor,
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(90)),
+                                              child: Container(
+                                                width: 90,
+                                                height: 90,
+                                                color: Colors.white,
+                                                child: Image.asset(
+                                                  "assets/Icons/renewable-energy.png",
+                                                  scale: 1.8,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text("Etkin",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                          ),
+                                          Text(
+                                              (measuredWeight * 5.774)
+                                                      .toStringAsFixed(0) +
+                                                  " Wh",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 24))
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.008,
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.035,
+                                  ),
+                                  NiceButton(
+                                    width: size.width * 0.6,
+                                    radius: 10,
+                                    text: "Onayla ve bitir",
+                                    icon: Icons.check,
+                                    gradientColors: [
+                                      Color(0xFFff4d00),
+                                      Color(0xFFff9a00)
+                                    ],
+                                    onPressed: () {
+                                      getReward();
+
+                                      if (measuredWeight >= 100) {
+                                        update100gData(currentUid);
+                                      }
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return BottomNavigation();
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    background: kSecondaryColor,
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.012,
+                                  ),
+                                  OrDivider(text: "Paylaş!"),
+                                  SizedBox(
+                                    height: size.height * 0.015,
+                                  ),
+                                  Screenshot(
+                                    controller: screenshotController,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        SocialIcon(
+                                          iconSrc:
+                                              "assets/Icons/facebook64.png",
+                                          press: () async {
+                                            await screenshotController
+                                                .capture()
+                                                .then((image) async {
+                                              await SocialShare.shareOptions(
+                                                      " ")
+                                                  .then((data) {
+                                                print(data);
+                                              });
+                                            });
+                                          },
+                                        ),
+                                        SocialIcon(
+                                          iconSrc:
+                                              "assets/Icons/instagram2.png",
+                                          press: () async {
+                                            var file =
+                                                await ImagePicker().pickImage(
+                                              source: ImageSource.gallery,
+                                            );
+                                            await SocialShare
+                                                .shareInstagramStory(
+                                              file.path,
+                                              backgroundTopColor: "#ffffff",
+                                              backgroundBottomColor: "#FF6B00",
+                                              attributionURL:
+                                                  "https://deep-link-url",
+                                            ).then((data) {
+                                              print(data);
+                                            });
+                                          },
+                                        ),
+                                        SocialIcon(
+                                          iconSrc: "assets/Icons/twitter.png",
+                                          press: () async {
+                                            await SocialShare.shareTwitter(
+                                              "",
+                                              hashtags: [
+                                                "we",
+                                                "recycle",
+                                                "we.recycle.team"
+                                              ],
+                                              url: "",
+                                              trailingText: "",
+                                            ).then((data) {
+                                              print(data);
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: size.height * 0.015,
+                                  ),
+                                ],
+                              ),
                             ),
                           )),
                     ),

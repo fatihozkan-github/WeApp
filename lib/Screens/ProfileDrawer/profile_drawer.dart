@@ -156,7 +156,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                   SharedPreferences prefs = await SharedPreferences.getInstance();
                   prefs.remove('isLoggedIn');
                   logout();
-                  exit(0);
+                  //exit(0);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
