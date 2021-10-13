@@ -53,6 +53,8 @@
 		<string>This app needs access to microphone for taking picture.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This app needs access to your photo library.</string>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>This app needs access to your Apple Music usage.</string>
 		<key>io.flutter.embedded_views_preview</key>
         <true/>
         <key>NSCameraUsageDescription</key>

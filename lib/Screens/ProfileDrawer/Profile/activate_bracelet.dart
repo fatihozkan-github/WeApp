@@ -35,7 +35,7 @@ class _ActivateBraceletState extends State<ActivateBracelet> {
         ),
       ),
       body: PageView(
-        // physics: NeverScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
         controller: controller,
         children: [
           ReadyPage(

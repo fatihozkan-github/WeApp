@@ -1,5 +1,7 @@
 // ignore_for_file: omit_local_variable_types, prefer_single_quotes
 
+import 'dart:io';
+
 import 'package:WE/Resources/components/progress_bar.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
@@ -10,7 +12,11 @@ import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Services/service_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import 'activate_bracelet.dart';
@@ -149,6 +155,38 @@ class _EditProfileState extends State<EditProfile> {
     getData();
   }
 
+  Future uploadImage() async {
+    print('ch1');
+    var image;
+    try {
+      final _storage = FirebaseStorage.instance;
+      await Permission.photos.request();
+      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      print(image);
+      print('ch2');
+      print(File(image.path));
+      var file = File(image.path);
+
+      if (image != null) {
+        var snapshot = await _storage
+            .ref()
+            .child('profilePhotos/${basename(image.path)}')
+            .putFile(file);
+        var downloadUrl = await snapshot.ref.getDownloadURL();
+        await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
+          'avatar': downloadUrl,
+        });
+        setState(() {
+          imageUrl = downloadUrl;
+        });
+      } else {
+        print('No Path Received');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -176,9 +214,7 @@ class _EditProfileState extends State<EditProfile> {
                       /// TODO: Fix initial values.
                       SizedBox(height: 18),
                       GestureDetector(
-                        onTap: () =>
-                            Provider.of<UserService>(context, listen: false)
-                                .uploadImage(),
+                        onTap: () async => await uploadImage(),
                         child: Column(
                           children: [
                             /// TODO: Null path error!
