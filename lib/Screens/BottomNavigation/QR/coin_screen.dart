@@ -36,8 +36,8 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
 
   bool allowClose = false;
 
-  int measuredWeight;
-  int measuredCoin;
+  int measuredWeight = 0;
+  int measuredCoin = 0;
   final databaseReference = FirebaseDatabase.instance.reference();
   final currentUid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference users = FirebaseFirestore.instance.collection("users");
@@ -64,20 +64,20 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
       print(data.key);
       setState(() {
         measuredWeight =
-            int.parse(data.value["WEIGHT_ADDED"].toStringAsFixed(0));
+            int.tryParse(data.value["WEIGHT_ADDED"].toStringAsFixed(0));
         measuredCoin = measuredWeight + measuredWeight;
       });
       getUserData("coins").then((value) {
         coinsList.clear();
-        coinsList.add(int.parse(value));
+        coinsList.add(int.tryParse(value));
       });
       getUserData("exp").then((value) {
         expList.clear();
-        expList.add(int.parse(value));
+        expList.add(int.tryParse(value));
       });
       getUserData("recycled").then((value) {
         recycledList.clear();
-        recycledList.add(int.parse(value));
+        recycledList.add(int.tryParse(value));
       });
     });
     print("burası");
@@ -101,11 +101,13 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
         .doc(currentUid)
         .update({
           'recycled': measuredWeight + recycledList.first,
-          "coins": measuredWeight * 2 + coinsList.first,
+          "coins": (measuredWeight * 2 + coinsList.first).round(),
           // "exp": expList.first+ measuredWeight/100,
         })
         .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
+        .catchError((error) {
+          print("Failed to update user: $error");
+        });
   }
 
   @override
@@ -116,9 +118,9 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
         backgroundColor: kPrimaryColor,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            getReward();
-            Navigator.push(
+          onPressed: () async {
+            await getReward();
+            await Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) {
@@ -356,13 +358,13 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
                                       Color(0xFFff4d00),
                                       Color(0xFFff9a00)
                                     ],
-                                    onPressed: () {
-                                      getReward();
+                                    onPressed: () async {
+                                      await getReward();
 
                                       if (measuredWeight >= 100) {
                                         update100gData(currentUid);
                                       }
-                                      Navigator.push(
+                                      await Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) {

@@ -37,7 +37,7 @@ class _DelayPageState extends State<DelayPage> {
           style: TextStyle(color: Colors.white),
         ),
         photoSize: 100,
-        seconds: 80,
+        seconds: 8,
         navigateAfterSeconds: CoinScreenExample(
           qrResult: widget.qrResult,
           currentText: widget.currentText,

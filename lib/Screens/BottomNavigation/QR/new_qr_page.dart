@@ -34,9 +34,9 @@ class _QRViewExampleState extends State<QRViewExample> {
   }
 
   Future checkPermissions({bool init}) async {
+    await Permission.camera.request();
     permissionStatus = await Permission.camera.status;
     print(permissionStatus);
-    await Permission.camera.request();
     if (await Permission.camera.isPermanentlyDenied) {
       await openAppSettings().then((value) async {
         if (await Permission.camera.isGranted) {
@@ -48,6 +48,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       count += 1;
       setState(() {});
     }
+    setState(() {});
   }
 
   @override
@@ -136,7 +137,8 @@ class _QRViewExampleState extends State<QRViewExample> {
         : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
-    if (!permissionStatus.isGranted) {
+    print(permissionStatus);
+    if (permissionStatus.isGranted) {
       return Container(
         width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.all(8),
@@ -262,7 +264,9 @@ class _QRViewExampleState extends State<QRViewExample> {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('no Permission')),
+        SnackBar(
+            content: Text(
+                'QR kodu okutmak için lütfen uygulama ayarlarından Kamera Erişimine izin verin.')),
       );
     }
   }

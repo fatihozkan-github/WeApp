@@ -24,7 +24,7 @@ class _NewPrizePageState extends State<NewPrizePage> {
     super.initState();
     getCoinData().then((value) {
       coinsList.clear();
-      coinsList.add(int.parse(value));
+      coinsList.add(int.tryParse(value));
     });
   }
 
@@ -33,11 +33,17 @@ class _NewPrizePageState extends State<NewPrizePage> {
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   CollectionReference prizes = FirebaseFirestore.instance.collection('prizes');
 
-  Future<void> updateCoins(int i, int decrease, bool isRegistered1, bool isRegistered2, bool isRegistered3) {
+  Future<void> updateCoins(int i, int decrease, bool isRegistered1,
+      bool isRegistered2, bool isRegistered3) {
     isRegistered1;
     return users
         .doc(currentUid)
-        .update({'coins': i - decrease, "raffle1": isRegistered1, "raffle2": isRegistered2, "raffle3": isRegistered3})
+        .update({
+          'coins': i - decrease,
+          "raffle1": isRegistered1,
+          "raffle2": isRegistered2,
+          "raffle3": isRegistered3
+        })
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
   }
@@ -86,7 +92,8 @@ class _NewPrizePageState extends State<NewPrizePage> {
               children: [
                 FutureBuilder<DocumentSnapshot>(
                     future: users.doc(currentUid).get(),
-                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> snapshot) {
                       if (snapshot.hasError) {
                         return Text("Something went wrong");
                       }
@@ -94,19 +101,27 @@ class _NewPrizePageState extends State<NewPrizePage> {
                         Map<String, dynamic> data = snapshot.data.data();
                         return Text(
                           data["coins"].toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 50.0, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 50.0,
+                              fontWeight: FontWeight.bold),
                         );
                       }
                       return WESpinKit();
                     }),
-                Text('WE Coin', style: TextStyle(color: Colors.white, fontSize: 26.0, fontWeight: FontWeight.bold)),
+                Text('WE Coin',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           SizedBox(height: 10),
           FutureBuilder<DocumentSnapshot>(
               future: prizes.doc("1pHYVNY6et3U7RcVIiJp").get(),
-              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Text("Something went wrong");
                 }
@@ -119,36 +134,54 @@ class _NewPrizePageState extends State<NewPrizePage> {
                         height: size.height * 0.3,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(1, 1), blurRadius: 2)]),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 2)
+                            ]),
                         child: Column(
                           children: [
                             Expanded(
                                 flex: 4,
                                 child: Center(
-                                    child: Text(prizeData["prize1"]["title"], style: TextStyle(fontWeight: FontWeight.bold)))),
+                                    child: Text(prizeData["prize1"]["title"],
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)))),
                             Expanded(
                               flex: 10,
                               child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                                  child: Image.network(prizeData["prize1"]["photo"])),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 12.0),
+                                  child: Image.network(
+                                      prizeData["prize1"]["photo"])),
                             ),
                             Expanded(
                                 flex: 5,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                        onPressed: () => popUp(context, prizeData["prize1"]["subtitle"], true),
+                                        onPressed: () => popUp(
+                                            context,
+                                            prizeData["prize1"]["subtitle"],
+                                            true),
                                         icon: Icon(Icons.info_outline)),
                                     FutureBuilder<DocumentSnapshot>(
                                         future: users.doc(currentUid).get(),
-                                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<DocumentSnapshot>
+                                                snapshot) {
                                           if (snapshot.hasError) {
                                             return Text("Something went wrong");
                                           }
-                                          if (snapshot.connectionState == ConnectionState.done) {
-                                            Map<String, dynamic> data = snapshot.data.data();
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            Map<String, dynamic> data =
+                                                snapshot.data.data();
                                             // try {
                                             //   data.update("coins", (value) => 999);
                                             // } catch (e) {
@@ -158,16 +191,28 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                             return Padding(
                                                 padding: EdgeInsets.all(7.0),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(Radius.circular(510.0)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              510.0)),
                                                   child: GestureDetector(
                                                     onTap: () {
                                                       /// TODO: Fix
-                                                      if (data["coins"] >= 50 && data["raffle1"] == false) {
-                                                        updateCoins(data["coins"], 50, true, data["raffle2"], data["raffle3"]);
+                                                      if (data["coins"] >= 50 &&
+                                                          data["raffle1"] ==
+                                                              false) {
+                                                        updateCoins(
+                                                            data["coins"],
+                                                            50,
+                                                            true,
+                                                            data["raffle2"],
+                                                            data["raffle3"]);
                                                         popUp(
                                                             context,
                                                             "Çekilişe kaydınız başarıyla alınmıştır. Kalan WE Coin: " +
-                                                                (data["coins"] - 50).toString(),
+                                                                (data["coins"] -
+                                                                        50)
+                                                                    .toString(),
                                                             false);
                                                       } else {
                                                         popUp(
@@ -179,9 +224,14 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                     child: Container(
                                                         width: 100,
                                                         height: 30,
-                                                        alignment: Alignment.center,
+                                                        alignment:
+                                                            Alignment.center,
                                                         color: kPrimaryColor,
-                                                        child: Text("50 WE Coin", style: TextStyle(color: Colors.white))),
+                                                        child: Text(
+                                                            "50 WE Coin",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white))),
                                                   ),
                                                 ));
                                           }
@@ -197,7 +247,8 @@ class _NewPrizePageState extends State<NewPrizePage> {
               }),
           FutureBuilder<DocumentSnapshot>(
               future: prizes.doc("1pHYVNY6et3U7RcVIiJp").get(),
-              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Text("Something went wrong");
                 }
@@ -210,8 +261,14 @@ class _NewPrizePageState extends State<NewPrizePage> {
                         height: size.height * 0.3,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(1, 1), blurRadius: 2)]),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 2)
+                            ]),
                         child: Column(
                           children: [
                             Expanded(
@@ -222,7 +279,8 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                   child: Center(
                                       child: Text(
                                     prizeData["prize2"]["title"],
-                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   )),
                                 )),
                             Expanded(
@@ -231,7 +289,8 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                   width: size.width,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Image.network(prizeData["prize2"]["photo"]),
+                                    child: Image.network(
+                                        prizeData["prize2"]["photo"]),
                                   ),
                                 )),
                             Expanded(
@@ -239,34 +298,56 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                 child: Container(
                                   width: size.width,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       IconButton(
                                           onPressed: () {
-                                            popUp(context, prizeData["prize2"]["subtitle"], true);
+                                            popUp(
+                                                context,
+                                                prizeData["prize2"]["subtitle"],
+                                                true);
                                           },
                                           icon: Icon(Icons.info_outline)),
                                       FutureBuilder<DocumentSnapshot>(
                                           future: users.doc(currentUid).get(),
-                                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<DocumentSnapshot>
+                                                  snapshot) {
                                             if (snapshot.hasError) {
-                                              return Text("Something went wrong");
+                                              return Text(
+                                                  "Something went wrong");
                                             }
-                                            if (snapshot.connectionState == ConnectionState.done) {
-                                              Map<String, dynamic> data = snapshot.data.data();
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.done) {
+                                              Map<String, dynamic> data =
+                                                  snapshot.data.data();
 
                                               return Padding(
                                                   padding: EdgeInsets.all(7.0),
                                                   child: ClipRRect(
-                                                    borderRadius: BorderRadius.all(Radius.circular(510.0)),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                510.0)),
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        if (data["coins"] >= 500 && data["raffle2"] == false) {
-                                                          updateCoins(data["coins"], 500, data["raffle1"], true, data["raffle3"]);
+                                                        if (data["coins"] >=
+                                                                500 &&
+                                                            data["raffle2"] ==
+                                                                false) {
+                                                          updateCoins(
+                                                              data["coins"],
+                                                              500,
+                                                              data["raffle1"],
+                                                              true,
+                                                              data["raffle3"]);
                                                           popUp(
                                                               context,
                                                               "Çekilişe kaydınız başarıyla alınmıştır. Kalan WE Coin: " +
-                                                                  (data["coins"] - 500).toString(),
+                                                                  (data["coins"] -
+                                                                          500)
+                                                                      .toString(),
                                                               false);
                                                         } else {
                                                           popUp(
@@ -282,7 +363,9 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                         child: Center(
                                                             child: Text(
                                                           "500 WE Coin",
-                                                          style: TextStyle(color: Colors.white),
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
                                                         )),
                                                       ),
                                                     ),
@@ -301,7 +384,8 @@ class _NewPrizePageState extends State<NewPrizePage> {
               }),
           FutureBuilder<DocumentSnapshot>(
               future: prizes.doc("1pHYVNY6et3U7RcVIiJp").get(),
-              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Text("Something went wrong");
                 }
@@ -314,8 +398,14 @@ class _NewPrizePageState extends State<NewPrizePage> {
                         height: size.height * 0.3,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(1, 1), blurRadius: 2)]),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 2)
+                            ]),
                         child: Column(
                           children: [
                             Expanded(
@@ -324,44 +414,70 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                     width: size.width,
                                     color: Colors.white,
                                     child: Center(
-                                        child:
-                                            Text(prizeData["prize3"]["title"], style: TextStyle(fontWeight: FontWeight.bold))))),
+                                        child: Text(
+                                            prizeData["prize3"]["title"],
+                                            style: TextStyle(
+                                                fontWeight:
+                                                    FontWeight.bold))))),
                             Expanded(
                                 flex: 10,
                                 child: Container(
                                   width: size.width,
                                   child: Padding(
-                                      padding: const EdgeInsets.all(8.0), child: Image.network(prizeData["prize3"]["photo"])),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.network(
+                                          prizeData["prize3"]["photo"])),
                                 )),
                             Expanded(
                                 flex: 5,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                        onPressed: () => popUp(context, prizeData["prize3"]["subtitle"], true),
+                                        onPressed: () => popUp(
+                                            context,
+                                            prizeData["prize3"]["subtitle"],
+                                            true),
                                         icon: Icon(Icons.info_outline)),
                                     FutureBuilder<DocumentSnapshot>(
                                         future: users.doc(currentUid).get(),
-                                        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<DocumentSnapshot>
+                                                snapshot) {
                                           if (snapshot.hasError) {
                                             return Text("Something went wrong");
                                           }
-                                          if (snapshot.connectionState == ConnectionState.done) {
-                                            Map<String, dynamic> data = snapshot.data.data();
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            Map<String, dynamic> data =
+                                                snapshot.data.data();
 
                                             return Padding(
                                                 padding: EdgeInsets.all(7.0),
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(Radius.circular(510.0)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              510.0)),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      if (data["coins"] >= 5000 && data["raffle3"] == false) {
-                                                        updateCoins(data["coins"], 5000, data["raffle1"], data["raffle2"], true);
+                                                      if (data["coins"] >=
+                                                              5000 &&
+                                                          data["raffle3"] ==
+                                                              false) {
+                                                        updateCoins(
+                                                            data["coins"],
+                                                            5000,
+                                                            data["raffle1"],
+                                                            data["raffle2"],
+                                                            true);
                                                         popUp(
                                                             context,
                                                             "Çekilişe kaydınız başarıyla alınmıştır. Kalan WE Coin: " +
-                                                                (data["coins"] - 5000).toString(),
+                                                                (data["coins"] -
+                                                                        5000)
+                                                                    .toString(),
                                                             true);
                                                       } else {
                                                         popUp(
@@ -375,7 +491,11 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                         height: 30,
                                                         color: kPrimaryColor,
                                                         child: Center(
-                                                            child: Text("5000 WE Coin", style: TextStyle(color: Colors.white)))),
+                                                            child: Text(
+                                                                "5000 WE Coin",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white)))),
                                                   ),
                                                 ));
                                           }
