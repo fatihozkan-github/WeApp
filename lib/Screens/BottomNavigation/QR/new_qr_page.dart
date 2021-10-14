@@ -138,7 +138,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     print(permissionStatus);
-    if (permissionStatus.isGranted) {
+    if (!permissionStatus.isGranted) {
       return Container(
         width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.all(8),
