@@ -19,15 +19,6 @@ class _NewPrizePageState extends State<NewPrizePage> {
   int _current = 0;
   var items = [1, 2, 3];
 
-  @override
-  void initState() {
-    super.initState();
-    getCoinData().then((value) {
-      coinsList.clear();
-      coinsList.add(int.parse(value));
-    });
-  }
-
   final databaseReference = FirebaseDatabase.instance.reference();
   final currentUid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -64,6 +55,15 @@ class _NewPrizePageState extends State<NewPrizePage> {
       var raffle = data["raffle" + i.toString()];
       return raffle;
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCoinData().then((value) {
+      coinsList.clear();
+      coinsList.add(int.parse(value));
+    });
   }
 
   @override
@@ -144,19 +144,12 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                           }
                                           if (snapshot.connectionState == ConnectionState.done) {
                                             Map<String, dynamic> data = snapshot.data.data();
-                                            // try {
-                                            //   data.update("coins", (value) => 999);
-                                            // } catch (e) {
-                                            //   print(e);
-                                            // }
-                                            print(data["coins"]);
                                             return Padding(
                                                 padding: EdgeInsets.all(7.0),
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.all(Radius.circular(510.0)),
                                                   child: GestureDetector(
                                                     onTap: () {
-                                                      /// TODO: Fix
                                                       if (data["coins"] >= 50 && data["raffle1"] == false) {
                                                         updateCoins(data["coins"], 50, true, data["raffle2"], data["raffle3"]);
                                                         popUp(
@@ -164,6 +157,10 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                             "Çekilişe kaydınız başarıyla alınmıştır. Kalan WE Coin: " +
                                                                 (data["coins"] - 50).toString(),
                                                             false);
+                                                      } else if (data["raffle1"] == true) {
+                                                        popUp(context, "Zaten bu çekilişe katıldınız.", true);
+                                                      } else if (data["coins"] < 50) {
+                                                        popUp(context, "Yeterli WE Coine sahip değilsiniz.", true);
                                                       } else {
                                                         popUp(
                                                             context,
@@ -263,6 +260,10 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                               "Çekilişe kaydınız başarıyla alınmıştır. Kalan WE Coin: " +
                                                                   (data["coins"] - 500).toString(),
                                                               false);
+                                                        } else if (data["raffle2"] == true) {
+                                                          popUp(context, "Zaten bu çekilişe katıldınız.", true);
+                                                        } else if (data["coins"] < 500) {
+                                                          popUp(context, "Yeterli WE Coine sahip değilsiniz.", true);
                                                         } else {
                                                           popUp(
                                                               context,
@@ -358,6 +359,10 @@ class _NewPrizePageState extends State<NewPrizePage> {
                                                             "Çekilişe kaydınız başarıyla alınmıştır. Kalan WE Coin: " +
                                                                 (data["coins"] - 5000).toString(),
                                                             true);
+                                                      } else if (data["raffle3"] == true) {
+                                                        popUp(context, "Zaten bu çekilişe katıldınız.", true);
+                                                      } else if (data["coins"] < 5000) {
+                                                        popUp(context, "Yeterli WE Coine sahip değilsiniz.", true);
                                                       } else {
                                                         popUp(
                                                             context,
