@@ -14,6 +14,8 @@ class RoundedButton extends StatelessWidget {
   final bool useCustomChild;
   final Widget customChild;
   final BoxConstraints constraints;
+  final BorderRadius borderRadius;
+  final EdgeInsets margin;
 
   const RoundedButton({
     Key key,
@@ -26,6 +28,8 @@ class RoundedButton extends StatelessWidget {
     this.useCustomChild = false,
     this.customChild,
     this.constraints,
+    this.borderRadius,
+    this.margin,
   })  : assert(useCustomChild == false || customChild != null, '\nIf useCustomChild parameter is true, then set a custom child.'),
         super(key: key);
 
@@ -33,10 +37,11 @@ class RoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: constraints,
+      margin: margin ?? EdgeInsets.zero,
       decoration: BoxDecoration(
         color: color,
+        borderRadius: borderRadius ?? BorderRadius.circular(20),
         gradient: showGradient ? gradient ?? LinearGradient(colors: [Color(0xFFff4d00), Color(0xFFff9a00)]) : null,
-        borderRadius: BorderRadius.circular(20),
       ),
       child: TextButton(
         onPressed: onPressed,
@@ -47,19 +52,20 @@ class RoundedButton extends StatelessWidget {
         ),
       ),
     );
-
-    // return Container(
-    //   margin: EdgeInsets.symmetric(vertical: 10),
-    //   width: size.width * 0.8,
-    //   child: ClipRRect(
-    //     borderRadius: BorderRadius.circular(20),
-    //     child: FlatButton(
-    //       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-    //       color: color,
-    //       onPressed: onPressed,
-    //       child: Text(text, style: TextStyle(color: textColor)),
-    //     ),
-    //   ),
-    // );
   }
 }
+
+///
+// return Container(
+//   margin: EdgeInsets.symmetric(vertical: 10),
+//   width: size.width * 0.8,
+//   child: ClipRRect(
+//     borderRadius: BorderRadius.circular(20),
+//     child: FlatButton(
+//       padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
+//       color: color,
+//       onPressed: onPressed,
+//       child: Text(text, style: TextStyle(color: textColor)),
+//     ),
+//   ),
+// );

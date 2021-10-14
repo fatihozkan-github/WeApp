@@ -37,7 +37,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   Future<String> getData() async {
     var document = await users.doc(currentUid);
-    document.get().then((value) => print(value));
+    await document.get();
     var collection = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collection.doc(currentUid).get();
     if (docSnapshot.exists) {

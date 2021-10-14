@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class FriendsTab extends StatelessWidget {
+  CollectionReference users = FirebaseFirestore.instance.collection('friends');
   var firebaseUser = FirebaseAuth.instance.currentUser;
   List<dynamic> localFriendList = [];
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('friends');
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(firebaseUser.uid).get(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {

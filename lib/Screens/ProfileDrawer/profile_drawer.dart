@@ -59,7 +59,6 @@ class ProfileDrawerState extends State<ProfileDrawer> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data = snapshot.data.data();
-            print(data);
             return Scaffold(
               appBar: _getAppBar(),
               body: _getDrawerItemWidget(_selectedDrawerIndex),
@@ -129,7 +128,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                    child: data["avatar"] != null || data["avatar"] != '' || data.toString().contains('avatar')
+                    child: data["avatar"] != null || data["avatar"] != ''
                         ? Container(
                             height: 110,
                             width: 110,

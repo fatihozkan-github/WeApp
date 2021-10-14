@@ -1,40 +1,27 @@
 // ignore_for_file: omit_local_variable_types
 
+import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
-import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/instructions.dart';
-// class IconDt {
-//   static const IconData bracelet = IconData(0xf523, fontFamily: 'Bracelet');
-// //static const Icon bracelet2 = Icon();
-//
-// }
 
 class QRScanPage extends StatefulWidget {
   @override
-  QRScanPageState createState() {
-    return QRScanPageState();
-  }
+  QRScanPageState createState() => QRScanPageState();
 }
 
-final databaseReference = FirebaseDatabase.instance.reference();
-
 class QRScanPageState extends State<QRScanPage> {
+  final TextStyle _buttonTextStyle = TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
   int _current = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("HeroStation"),
-        centerTitle: true,
-        backgroundColor: kPrimaryColor,
-      ),
+      appBar: AppBar(title: Text('HeroStation')),
       body: ListView(
         children: [
           SizedBox(height: 30),
@@ -43,7 +30,7 @@ class QRScanPageState extends State<QRScanPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(width: 10),
-              Expanded(child: Image.asset("assets/instruction.png", height: 220)),
+              Expanded(child: Image.asset('assets/instruction.png', height: 220)),
               Expanded(
                 child: Bubble(
                   margin: BubbleEdges.only(top: 10),
@@ -66,7 +53,7 @@ class QRScanPageState extends State<QRScanPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Text(
-                "Lütfen dönüştürmeye başlarken bu görevleri tamamladığından emin ol!",
+                'Lütfen dönüştürmeye başlarken bu görevleri tamamladığından emin ol!',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, color: kPrimaryColor, fontWeight: FontWeight.bold),
               ),
@@ -76,14 +63,10 @@ class QRScanPageState extends State<QRScanPage> {
           CarouselSlider(
             items: instructionItems,
             options: CarouselOptions(
+                height: 125,
                 autoPlay: true,
                 enlargeCenterPage: true,
-                height: 125,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                }),
+                onPageChanged: (index, reason) => setState(() => _current = index)),
           ),
           SizedBox(height: 5),
           Row(
@@ -102,119 +85,31 @@ class QRScanPageState extends State<QRScanPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                height: 50.0,
-                margin: EdgeInsets.all(10),
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return QRViewExample();
-                        },
-                      ),
-                    );
-                  },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                  padding: EdgeInsets.all(0.0),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xFFff4d00), Color(0xFFff9a00)]),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: Container(
-                      constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(Icons.qr_code_rounded, color: Colors.white),
-                          Text(
-                            "TARAT",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+              RoundedButton(
+                showGradient: true,
+                useCustomChild: true,
+                constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                customChild: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(Icons.qr_code_rounded, color: Colors.white),
+                    Text('TARAT', textAlign: TextAlign.center, style: _buttonTextStyle),
+                  ],
                 ),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QRViewExample())),
               ),
-              // Container(
-              //   height: 50.0,
-              //   margin: EdgeInsets.all(10),
-              //   child: RaisedButton(
-              //     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
-              //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-              //     padding: EdgeInsets.all(0.0),
-              //     child: Ink(
-              //       decoration: BoxDecoration(
-              //           gradient: LinearGradient(
-              //             colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
-              //             begin: Alignment.centerLeft,
-              //             end: Alignment.centerRight,
-              //           ),
-              //           borderRadius: BorderRadius.circular(30.0)),
-              //       child: Container(
-              //         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-              //         alignment: Alignment.center,
-              //         child: Row(
-              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //           children: [
-              //             Icon(Icons.password_rounded, color: Colors.white),
-              //             Text(
-              //               "KOD GİR",
-              //               textAlign: TextAlign.center,
-              //               style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              Container(
-                height: 50.0,
-                margin: EdgeInsets.all(10),
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return BraceletPage();
-                        },
-                      ),
-                    );
-                  },
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                  padding: EdgeInsets.all(0.0),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Container(
-                      constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            "OKUT",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
-                          Container(width: 30, child: Image.asset("assets/Icons/bracelet.png", color: Colors.white)),
-                        ],
-                      ),
-                    ),
-                  ),
+              RoundedButton(
+                showGradient: true,
+                useCustomChild: true,
+                constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                customChild: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text('OKUT', textAlign: TextAlign.center, style: _buttonTextStyle),
+                    Container(width: 30, child: Image.asset('assets/Icons/bracelet.png', color: Colors.white)),
+                  ],
                 ),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage())),
               ),
             ],
           ),
@@ -304,3 +199,136 @@ class QRScanPageState extends State<QRScanPage> {
 //                     },
 //                     background: kSecondaryColor,
 //                   ),
+///
+// Container(
+//   height: 50.0,
+//   margin: EdgeInsets.all(10),
+//   child: RaisedButton(
+//     onPressed: () {
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) {
+//             return QRViewExample();
+//           },
+//         ),
+//       );
+//     },
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+//     padding: EdgeInsets.all(0.0),
+//     child: Ink(
+//       decoration: BoxDecoration(
+//         gradient: LinearGradient(colors: [Color(0xFFff4d00), Color(0xFFff9a00)]),
+//         borderRadius: BorderRadius.circular(20.0),
+//       ),
+//       child: Container(
+//         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+//         alignment: Alignment.center,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//           children: [
+//             Icon(Icons.qr_code_rounded, color: Colors.white),
+//             Text(
+//               "TARAT",
+//               textAlign: TextAlign.center,
+//               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   ),
+// ),
+// // Container(
+// //   height: 50.0,
+// //   margin: EdgeInsets.all(10),
+// //   child: RaisedButton(
+// //     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
+// //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+// //     padding: EdgeInsets.all(0.0),
+// //     child: Ink(
+// //       decoration: BoxDecoration(
+// //           gradient: LinearGradient(
+// //             colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
+// //             begin: Alignment.centerLeft,
+// //             end: Alignment.centerRight,
+// //           ),
+// //           borderRadius: BorderRadius.circular(30.0)),
+// //       child: Container(
+// //         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+// //         alignment: Alignment.center,
+// //         child: Row(
+// //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+// //           children: [
+// //             Icon(Icons.password_rounded, color: Colors.white),
+// //             Text(
+// //               "KOD GİR",
+// //               textAlign: TextAlign.center,
+// //               style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+// //             ),
+// //           ],
+// //         ),
+// //       ),
+// //     ),
+// //   ),
+// // ),
+// Container(
+//   height: 50.0,
+//   margin: EdgeInsets.all(10),
+//   child: RaisedButton(
+//     onPressed: () {
+//       Navigator.push(
+//         context,
+//         MaterialPageRoute(
+//           builder: (context) {
+//             return BraceletPage();
+//           },
+//         ),
+//       );
+//     },
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+//     padding: EdgeInsets.all(0.0),
+//     child: Ink(
+//       decoration: BoxDecoration(
+//           gradient: LinearGradient(
+//             colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
+//             begin: Alignment.centerLeft,
+//             end: Alignment.centerRight,
+//           ),
+//           borderRadius: BorderRadius.circular(30.0)),
+//       child: Container(
+//         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+//         alignment: Alignment.center,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//           children: [
+//             Text(
+//               "OKUT",
+//               textAlign: TextAlign.center,
+//               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+//             ),
+//             Container(width: 30, child: Image.asset("assets/Icons/bracelet.png", color: Colors.white)),
+//           ],
+//         ),
+//       ),
+//     ),
+//   ),
+// ),
+///
+// RoundedButton(
+//   showGradient: true,
+//   useCustomChild: true,
+//   constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+//   customChild: Row(
+//     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//     children: [
+//       Icon(Icons.password_rounded, color: Colors.white),
+//       Text(
+//         'KOD GİR',
+//         textAlign: TextAlign.center,
+//         style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+//       ),
+//     ],
+//   ),
+//   onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
+// ),
