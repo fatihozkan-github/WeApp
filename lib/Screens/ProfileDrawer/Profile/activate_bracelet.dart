@@ -152,7 +152,13 @@ class _ReadRfState extends State<ReadRf> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Lottie.asset('assets/34878-scanner.json', height: 300),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(height: 200, child: Image.asset("assets/bileklik.png")),
+            SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 90)
+          ],
+        ),
         Column(
           children: [
             Text(

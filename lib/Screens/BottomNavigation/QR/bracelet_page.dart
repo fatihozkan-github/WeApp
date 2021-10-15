@@ -22,7 +22,15 @@ class BraceletPage extends StatelessWidget {
           Container(height: 200, child: Image.asset("assets/bileklik.png")),
           SizedBox(height: 50),
           Text(
-            'Bilekliğinizi HeroStation üzerinde gösterilen alana okutun.\n\n Siz olduğunuzu anlayacak ve bilekliğinizi tanımlayacağız :)',
+            'Telefonun Yanında Olmasa da Geri Dönüştürebilirsin\n',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          Text(
+            'Bilekliğini HeroStation üzerinde gösterilen alana okutarak plastik atıklarını atabilirsin.',
             style: TextStyle(fontSize: 18),
             textAlign: TextAlign.center,
           ),

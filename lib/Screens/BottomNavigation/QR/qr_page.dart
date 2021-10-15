@@ -3,8 +3,11 @@
 import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
+import 'package:WE/Services/user_service.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -194,15 +197,53 @@ class QRScanPageState extends State<QRScanPage> {
                   height: 50.0,
                   margin: EdgeInsets.all(10),
                   child: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return BraceletPage();
-                          },
-                        ),
-                      );
+                    onPressed: () async {
+                      var userData = await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(currentUid)
+                          .get();
+                      print(userData.data());
+                      if (userData.data().containsKey('rfId')) {
+                        if (userData.data()['rfId'] != null) {
+                          if (userData.data()['rfId'] != '') {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return BraceletPage();
+                                },
+                              ),
+                            );
+                          } else {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ActivateBracelet();
+                                },
+                              ),
+                            );
+                          }
+                        } else {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ActivateBracelet();
+                              },
+                            ),
+                          );
+                        }
+                      } else {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ActivateBracelet();
+                            },
+                          ),
+                        );
+                      }
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(80.0)),
@@ -266,8 +307,7 @@ class QRScanPageState extends State<QRScanPage> {
                       margin: EdgeInsets.all(8),
                       child: Image.asset(
                         instruction_images[instructions.indexOf(item)],
-                        height: 120,
-                        width: 100,
+                        width: 60,
                         fit: BoxFit.contain,
                       ),
                     ),

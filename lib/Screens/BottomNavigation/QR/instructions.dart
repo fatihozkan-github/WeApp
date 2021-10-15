@@ -7,16 +7,14 @@ var instructions = [
   "Küçük atıkları büyük atıkların içine koy.",
   "Poşetlerini bağlayarak at.",
   // "HeroStation’ın üstünde bulunan QR kodu okut.",
-  "Kapağın kapandığından emin ol.",
 ];
 
 var instruction_images = [
   'assets/plastik_atik.png',
-  'assets/temiz.png',
+  'assets/kuru.png',
   'assets/kucuk.png',
   'assets/poset.png',
   //'',
-  '',
 ];
 
 var instructionTitles = [
