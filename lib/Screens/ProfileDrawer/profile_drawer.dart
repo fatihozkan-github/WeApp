@@ -53,7 +53,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     /// TODO: Move
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(firebaseUser.uid).get(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
@@ -101,14 +102,16 @@ class ProfileDrawerState extends State<ProfileDrawer> {
     // setState(() => _selectedDrawerIndex = index);
 
     // Navigator.of(context).pop();
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => _getDrawerItemWidget(index)));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => _getDrawerItemWidget(index)));
   }
 
   _getAppBar() => AppBar(
         actions: [
           IconButton(
             icon: Icon(Icons.search_rounded, color: Colors.white, size: 30),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage())),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => SearchPage())),
           ),
           IconButton(
             icon: Container(
@@ -116,9 +119,12 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                 child: Shimmer.fromColors(
                   baseColor: Colors.white,
                   highlightColor: kPrimaryColor,
-                  child: Image.asset("assets/Images/BottomNavigation/leaderboardIcon.png", color: Colors.white),
+                  child: Image.asset(
+                      "assets/Images/BottomNavigation/leaderboardIcon.png",
+                      color: Colors.white),
                 )),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => Leaderboard())),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => Leaderboard())),
           )
         ],
         centerTitle: true,
@@ -132,28 +138,38 @@ class ProfileDrawerState extends State<ProfileDrawer> {
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: kPrimaryColor),
               accountName: Text(
-                  data["superhero"] == null || data["superhero"] == '' ? 'Kahraman İsmi Girilmedi!' : data["superhero"],
+                  data["superhero"] == null || data["superhero"] == ''
+                      ? 'Kahraman İsmi Girilmedi!'
+                      : data["superhero"],
                   style: TextStyle(color: kThirdColor)),
-              accountEmail: Text(data["name"].toString().trim().isEmpty ? 'İsim Girilmedi!' : data["name"],
+              accountEmail: Text(
+                  data["name"].toString().trim().isEmpty
+                      ? 'İsim Girilmedi!'
+                      : data["name"],
                   style: TextStyle(color: kThirdColor)),
               currentAccountPicture: GestureDetector(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                child: data["avatar"] != null
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage())),
+                child: (data["avatar"] != null && data['avatar'] != '')
                     ? Container(
                         height: 110,
                         width: 220,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(data["avatar"]))),
                       )
-                    : Icon(Icons.account_circle_rounded, size: 80, color: Colors.white),
+                    : Icon(Icons.account_circle_rounded,
+                        size: 80, color: Colors.white),
               ),
             ),
             Column(children: drawerOptions),
             Expanded(
               child: GestureDetector(
                 onTap: () async {
-                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
                   prefs.remove('isLoggedIn');
                   logout();
                   //exit(0);
@@ -165,7 +181,8 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text("Çıkış yap ", style: TextStyle(color: Colors.grey)),
+                        Text("Çıkış yap ",
+                            style: TextStyle(color: Colors.grey)),
                         Icon(Icons.cancel_presentation, color: Colors.grey),
                       ],
                     ),
@@ -191,8 +208,10 @@ class ProfileDrawerState extends State<ProfileDrawer> {
   ];
 
   Future logout() async {
-    await FirebaseAuth.instance.signOut().then((value) =>
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => WelcomeScreen()), (route) => false));
+    await FirebaseAuth.instance.signOut().then((value) => Navigator.of(context)
+        .pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => WelcomeScreen()),
+            (route) => false));
   }
 }
 

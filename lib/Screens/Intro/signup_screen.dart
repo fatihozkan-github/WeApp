@@ -2,6 +2,7 @@ import 'package:WE/Resources/components/already_have_an_account_acheck.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
 import 'package:WE/Resources/components/unFocuser.dart';
+import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Screens/Intro/login_screen.dart';
@@ -18,10 +19,11 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   String _username, _email, _password, _city, _superhero, _referral;
   final auth = FirebaseAuth.instance;
-  Map<String, dynamic> codes = {};
+  List<String> codes = [];
   bool isInclude = false;
   bool _obscureText = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   bool isValidEmail() {
     return RegExp(
@@ -41,7 +43,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         .collection('referralCodes')
         .doc('list')
         .get();
-    codes.addAll(documentSnapshot.data()['listOfReferrals']);
+    Map<String, dynamic> data = documentSnapshot.data()['listOfReferrals'];
+    codes.addAll(data.values.map((e) => e.toString()).toList());
+    // codes.addAll(documentSnapshot.data()['listOfReferrals']);
     print(codes);
   }
 
@@ -51,139 +55,177 @@ class _SignUpScreenState extends State<SignUpScreen> {
     getCodes();
   }
 
+  Future signUpFunction() async {
+    if (_referral.isNotEmpty && codes.isNotEmpty) {
+      if (codes.contains(_referral)) {
+        setState(() => isLoading = true);
+        await auth
+            .createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        )
+            .then(
+          (UserCredential userCredential) async {
+            await create(
+                name: _username,
+                email: _email,
+                password: _password,
+                city: _city,
+                uid: userCredential.user.uid,
+                superhero: _superhero);
+            await addReferralData(
+                referralId: _referral.substring(0, 6),
+                uid: userCredential.user.uid);
+            await signUp(
+                name: _username,
+                email: _email,
+                password: _password,
+                city: _city,
+                uid: userCredential.user.uid,
+                superhero: _superhero);
+
+            setState(() => isLoading = false);
+            await Navigator.pushAndRemoveUntil<dynamic>(
+              context,
+              MaterialPageRoute<dynamic>(
+                builder: (BuildContext context) => BottomNavigation(),
+              ),
+              (route) => false,
+            );
+          },
+        ).catchError(
+          (err) {
+            setState(() => isLoading = false);
+            return showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                print(err.message);
+                return AlertDialog(
+                  title: Text('Hata'),
+                  content: Text(err.message),
+                  actions: [
+                    TextButton(
+                      child: Text('Tamam'),
+                      onPressed: () => Navigator.of(context).pop(),
+                    )
+                  ],
+                );
+              },
+            );
+          },
+        );
+      } else {
+        setState(() => isLoading = false);
+        print('Problem!');
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Hata'),
+              content: Text(
+                'Referans kodunuz hatalı. Lütfen kontrol edip tekrar deneyin.',
+              ),
+              actions: [
+                TextButton(
+                  child: Text('Tamam'),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return UnFocuser(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.white,
-        body: Form(
-          key: _formKey,
-          child: Center(
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              children: <Widget>[
-                SizedBox(height: 20),
-                Image.asset('assets/we2.png', scale: 1.4),
-                RoundedInputField(
-                  hintText: 'İsim',
-                  onChanged: (value) =>
-                      setState(() => _username = value.trim()),
+        body: isLoading
+            ? WESpinKit()
+            : Form(
+                key: _formKey,
+                child: Center(
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                      Image.asset('assets/we2.png', scale: 1.4),
+                      RoundedInputField(
+                        hintText: 'İsim',
+                        onChanged: (value) =>
+                            setState(() => _username = value.trim()),
+                      ),
+                      RoundedInputField(
+                        hintText: 'E-posta',
+                        icon: Icons.mail,
+                        onChanged: (value) =>
+                            setState(() => _email = value.trim()),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (_typedValue) {
+                          return (_typedValue.isEmpty)
+                              ? 'Boş bırakılamaz'
+                              : isValidEmail()
+                                  ? null
+                                  : 'Lütfen geçerli bir mail adresi giriniz';
+                        },
+                      ),
+                      RoundedInputField(
+                        hintText: 'Şifreniz',
+                        icon: Icons.lock,
+                        onChanged: (value) =>
+                            setState(() => _password = value.trim()),
+                        obscureText: _obscureText,
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
+                          FocusScope.of(context).nextFocus();
+                        },
+                        suffixIcon: IconButton(
+                            onPressed: _toggle,
+                            icon: Icon(Icons.visibility),
+                            color: kPrimaryColor),
+                        validator: (_typed) {
+                          if (_typed.isEmpty) {
+                            return 'Boş bırakılamaz';
+                          } else if (_typed.length < 6) {
+                            return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      RoundedInputField(
+                        hintText: 'Referans kodu zorunludur',
+                        icon: Icons.lock,
+                        onChanged: (value) => _referral = value.trim(),
+                        textInputAction: TextInputAction.done,
+                      ),
+                      SizedBox(height: 10),
+                      RoundedButton(
+                        text: 'KAYIT OL',
+                        onPressed: () async {
+                          _formKey.currentState.validate();
+                          await signUpFunction();
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      AlreadyHaveAnAccountCheck(
+                        login: false,
+                        press: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
                 ),
-                RoundedInputField(
-                  hintText: 'E-posta',
-                  icon: Icons.mail,
-                  onChanged: (value) => setState(() => _email = value.trim()),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (_typedValue) {
-                    return (_typedValue.isEmpty)
-                        ? 'Boş bırakılamaz'
-                        : isValidEmail()
-                            ? null
-                            : 'Lütfen geçerli bir mail adresi giriniz';
-                  },
-                ),
-                RoundedInputField(
-                  hintText: 'Şifreniz',
-                  icon: Icons.lock,
-                  onChanged: (value) =>
-                      setState(() => _password = value.trim()),
-                  obscureText: _obscureText,
-                  onEditingComplete: () {
-                    FocusScope.of(context).nextFocus();
-                    FocusScope.of(context).nextFocus();
-                  },
-                  suffixIcon: IconButton(
-                      onPressed: _toggle,
-                      icon: Icon(Icons.visibility),
-                      color: kPrimaryColor),
-                  validator: (_typed) {
-                    if (_typed.isEmpty) {
-                      return 'Boş bırakılamaz';
-                    } else if (_typed.length < 6) {
-                      return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-                RoundedInputField(
-                  hintText: 'Referans kodu zorunludur',
-                  icon: Icons.lock,
-                  onChanged: (value) => _referral = value.trim(),
-                  textInputAction: TextInputAction.done,
-                ),
-                SizedBox(height: 10),
-                RoundedButton(
-                  text: 'KAYIT OL',
-                  onPressed: () {
-                    _formKey.currentState.validate();
-                    if (_referral.isNotEmpty) {
-                      for (var i = 0; i <= codes.length; i++) {
-                        if (_referral == codes[i.toString()]) {
-                          auth
-                              .createUserWithEmailAndPassword(
-                                  email: _email, password: _password)
-                              .then((_) {
-                            create(
-                                name: _username,
-                                email: _email,
-                                password: _password,
-                                city: _city,
-                                uid: currentUid,
-                                superhero: _superhero);
-                            addReferralData(
-                                referralId: _referral.substring(0, 6),
-                                uid: currentUid);
-                            signUp(
-                                name: _username,
-                                email: _email,
-                                password: _password,
-                                city: _city,
-                                uid: currentUid,
-                                superhero: _superhero);
-
-                            Navigator.pushAndRemoveUntil<dynamic>(
-                              context,
-                              MaterialPageRoute<dynamic>(
-                                  builder: (BuildContext context) =>
-                                      BottomNavigation()),
-                              (route) => false,
-                            );
-                          }).catchError((err) {
-                            return showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  print(err.message);
-                                  return AlertDialog(
-                                    title: Text('Hata'),
-                                    content: Text(err.message),
-                                    actions: [
-                                      TextButton(
-                                          child: Text('Tamam'),
-                                          onPressed: () =>
-                                              Navigator.of(context).pop())
-                                    ],
-                                  );
-                                });
-                          });
-                        } else
-                          print('Problem!');
-                      }
-                    }
-                  },
-                ),
-                SizedBox(height: 20),
-                AlreadyHaveAnAccountCheck(
-                  login: false,
-                  press: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginScreen())),
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }
