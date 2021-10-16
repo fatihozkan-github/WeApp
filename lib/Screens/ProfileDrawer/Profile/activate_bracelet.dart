@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/qr_page.dart';
+import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -44,7 +45,6 @@ class _ActivateBraceletState extends State<ActivateBracelet> {
           ReadRf(
             controller: controller,
           ),
-          Complete()
         ],
       ),
     );
@@ -141,7 +141,10 @@ class _ReadRfState extends State<ReadRf> {
         await databaseReference.child('/3566/RFID_SIGN').set('');
         widget.controller.nextPage(
             duration: Duration(milliseconds: 200), curve: Curves.ease);
-        await databaseReference.child('/3566/SIGN_UP').set(false);
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Complete()));
+
         streamEvent.cancel();
       }
     });
@@ -149,33 +152,36 @@ class _ReadRfState extends State<ReadRf> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(height: 200, child: Image.asset("assets/bileklik.png")),
-            SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 90)
-          ],
-        ),
-        Column(
-          children: [
-            Text(
-              'HeroStation\'a okut',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Bilekliğini HeroStation\'a okut ve onay bildirimini bekle. \nİşlem başarılı olunca bildirim gelecek .',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
+    return Material(
+      color: Colors.white24,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(height: 200, child: Image.asset("assets/bileklik.png")),
+              SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 90)
+            ],
+          ),
+          Column(
+            children: [
+              Text(
+                'HeroStation\'a okut',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
-            ),
-          ],
-        ),
-      ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Bilekliğini HeroStation\'a okut ve onay bildirimini bekle. \nİşlem başarılı olunca bildirim gelecek .',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -205,11 +211,16 @@ class Complete extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                await databaseReference.child('/3566/IS_USING').set(false);
+                await databaseReference.child('/3566/SIGN_UP').set(false);
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BottomNavigation()));
               },
               child: Text(
-                'Ayarlara Dön',
+                'Ana sayfaya dön',
                 style: TextStyle(
                   fontSize: 18,
                   color: kPrimaryColor,

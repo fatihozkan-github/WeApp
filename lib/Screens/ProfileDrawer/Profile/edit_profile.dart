@@ -9,15 +9,15 @@ import 'package:WE/Resources/components/unFocuser.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
-import 'package:WE/Services/service_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart';
 import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 import 'activate_bracelet.dart';
 
@@ -320,15 +320,43 @@ class _EditProfileState extends State<EditProfile> {
                                           )
                                         : TextButton(
                                             onPressed: () async {
-                                              await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) {
-                                                    return ActivateBracelet();
-                                                  },
-                                                ),
-                                              ).then((value) {
-                                                setState(() {});
+                                              final databaseReferenceTest =
+                                                  FirebaseDatabase.instance
+                                                      .reference();
+                                              await databaseReferenceTest
+                                                  .once()
+                                                  .then(
+                                                      (DataSnapshot snapshot) {
+                                                var data = snapshot
+                                                    .value["3566"]["IS_USING"];
+                                                if (data == true) {
+                                                  setState(() async {
+                                                    await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return MacheUsing();
+                                                        },
+                                                      ),
+                                                    );
+                                                    setState(() {});
+                                                  });
+                                                } else {
+                                                  setState(() async {
+                                                    await databaseReferenceTest
+                                                        .child('/3566/IS_USING')
+                                                        .set(true);
+                                                    await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return ActivateBracelet();
+                                                        },
+                                                      ),
+                                                    );
+                                                    setState(() {});
+                                                  });
+                                                }
                                               });
                                             },
                                             child: Container(
@@ -375,26 +403,26 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   /// Olds
-  // _getBody(data, context, size) => Scaffold(
-  //       body: Padding(
-  //         padding: const EdgeInsets.all(16.0),
-  //         child: ListView(
-  //           children: [
-  //             GestureDetector(
-  //               onTap: () => uploadImage(),
-  //               child: Column(
-  //                 children: [
-  //                   Padding(
-  //                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-  //                     child: imageUrl != null
-  //                         ? Container(
-  //                             height: 220,
-  //                             width: 440,
-  //                             decoration: BoxDecoration(
-  //                                 shape: BoxShape.circle,
-  //                                 image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
-  //                           )
-  //                         : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
+// _getBody(data, context, size) => Scaffold(
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: ListView(
+//           children: [
+//             GestureDetector(
+//               onTap: () => uploadImage(),
+//               child: Column(
+//                 children: [
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(vertical: 8.0),
+//                     child: imageUrl != null
+//                         ? Container(
+//                             height: 220,
+//                             width: 440,
+//                             decoration: BoxDecoration(
+//                                 shape: BoxShape.circle,
+//                                 image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
+//                           )
+//                         : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
   //                   ),
   //                   Container(
   //                     child: Center(
@@ -450,23 +478,66 @@ class _EditProfileState extends State<EditProfile> {
   //                 },
   //                 style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
   //                 decoration: InputDecoration(
-  //                   hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-  //                   hintText: data["superhero"],
-  //                 ),
-  //               ),
-  //             ),
-  //             TextButton(
-  //                 onPressed: () {
-  //                   setState(() => Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation())));
-  //                 },
-  //                 child: Container(
-  //                   color: kPrimaryColor,
-  //                   height: size.height * 0.05,
-  //                   width: size.width * 0.9,
-  //                   child: Center(child: Text("Onayla", style: TextStyle(color: Colors.black, fontSize: 16))),
-  //                 ))
-  //           ],
-  //         ),
-  //       ),
-  //     );
+//                   hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+//                   hintText: data["superhero"],
+//                 ),
+//               ),
+//             ),
+//             TextButton(
+//                 onPressed: () {
+//                   setState(() => Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation())));
+//                 },
+//                 child: Container(
+//                   color: kPrimaryColor,
+//                   height: size.height * 0.05,
+//                   width: size.width * 0.9,
+//                   child: Center(child: Text("Onayla", style: TextStyle(color: Colors.black, fontSize: 16))),
+//                 ))
+//           ],
+//         ),
+//       ),
+//     );
+}
+
+class MacheUsing extends StatelessWidget {
+  const MacheUsing({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white24,
+      appBar: AppBar(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Lottie.asset('assets/77295-not-available.json', height: 300),
+          Center(
+            child: Column(
+              children: [
+                Text(
+                  'HeroStation şu anda dolu',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Lütfen daha sonra tekrar dene.',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BottomNavigation()));
+                    },
+                    child: Text('Geri dön'))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
