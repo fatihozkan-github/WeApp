@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
+import 'package:WE/Screens/BottomNavigation/QR/qr_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/transition_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,6 +65,12 @@ class _QRViewExampleState extends State<QRViewExample> {
         backgroundColor: kPrimaryColor,
         title: Text('QR Okutma', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+        leading: BackButton(
+          onPressed: () async {
+            await databaseReference.child('/3566/SIGN_UP').set(false);
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Column(
         children: <Widget>[

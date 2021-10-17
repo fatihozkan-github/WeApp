@@ -4,6 +4,7 @@ import 'package:WE/Screens/BottomNavigation/QR/bracelet_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
 import 'package:WE/Services/user_service.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -119,15 +120,36 @@ class QRScanPageState extends State<QRScanPage> {
                   height: 50.0,
                   margin: EdgeInsets.all(10),
                   child: RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return QRViewExample();
-                          },
-                        ),
-                      );
+                    onPressed: () async {
+                      final databaseReferenceTest =
+                          FirebaseDatabase.instance.reference();
+                      await databaseReferenceTest
+                          .once()
+                          .then((DataSnapshot snapshot) async {
+                        var data = snapshot.value["3566"]["IS_USING"];
+                        if (data == true) {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return MacheUsing();
+                              },
+                            ),
+                          );
+                        } else {
+                          await databaseReferenceTest
+                              .child('/3566/IS_USING')
+                              .set(true);
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return QRViewExample();
+                              },
+                            ),
+                          );
+                        }
+                      });
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(80.0)),
