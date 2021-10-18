@@ -19,7 +19,7 @@ class QRViewExample extends StatefulWidget {
 }
 
 class _QRViewExampleState extends State<QRViewExample> {
-  Barcode result;
+  String result = '';
   QRViewController controller;
   PermissionStatus permissionStatus;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -250,37 +250,40 @@ class _QRViewExampleState extends State<QRViewExample> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) async {
-      result = scanData;
-      print('QR CODE: ${result.code}');
+    controller.scannedDataStream.distinct().listen((scanData) async {
+      var data = scanData;
+      print('QR CODE: ${data.code}');
       // if (result.code == "6G34") {
-      if (result.code == "3566") {
-        await databaseReferenceTest.once().then((DataSnapshot snapshot) async {
-          var data = snapshot.value["3566"]["IS_USING"];
-          if (data == true) {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return MacheUsing();
-                },
-              ),
-            );
-          } else {
-            await databaseReferenceTest.child('/3566/IS_USING').set(true);
-            await controller.stopCamera();
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return TransitionPage(
-                    qrResult: result.code,
-                  );
-                },
-              ),
-            );
-          }
-        });
+      if (data.code == "3566") {
+        if (data.code != result) {
+          result = data.code;
+          await databaseReferenceTest.once().then((DataSnapshot snapshot) {
+            controller.stopCamera();
+            var data = snapshot.value["3566"]["IS_USING"];
+            if (data == true) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return MacheUsing();
+                  },
+                ),
+              );
+            } else {
+              databaseReferenceTest.child('/3566/IS_USING').set(true);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return TransitionPage(
+                      qrResult: result,
+                    );
+                  },
+                ),
+              );
+            }
+          });
+        }
       }
     });
   }
