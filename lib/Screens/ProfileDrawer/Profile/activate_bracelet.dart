@@ -189,48 +189,50 @@ class _ReadRfState extends State<ReadRf> {
 class Complete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Lottie.asset('assets/16729-congratulation-icon.json', height: 300),
-        Column(
-          children: [
-            Text(
-              'Tebrikler!',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Artık telefonun yanında olmasa da \nbilekliğini gösterilen alana okutarak atıklarını geri dönüştürebilirsin!',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                await databaseReference.child('/3566/IS_USING').set(false);
-                await databaseReference.child('/3566/SIGN_UP').set(false);
-                await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BottomNavigation()));
-              },
-              child: Text(
-                'Ana sayfaya dön',
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Lottie.asset('assets/16729-congratulation-icon.json', height: 300),
+          Column(
+            children: [
+              Text(
+                'Tebrikler!',
                 style: TextStyle(
-                  fontSize: 18,
-                  color: kPrimaryColor,
                   fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
               ),
-            )
-          ],
-        ),
-      ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Artık telefonun yanında olmasa da \nbilekliğini gösterilen alana okutarak atıklarını geri dönüştürebilirsin!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await databaseReference.child('/3566/IS_USING').set(false);
+                  await databaseReference.child('/3566/SIGN_UP').set(false);
+                  await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BottomNavigation()));
+                },
+                child: Text(
+                  'Ana sayfaya dön',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
