@@ -52,7 +52,7 @@ class _LeaderBoardTabState extends State<LeaderBoardTab> {
                     clipBehavior: Clip.antiAlias,
                     decoration: BoxDecoration(shape: BoxShape.circle),
                     child: Image(
-                      image: localBoardList[index]["avatar"] != null
+                      image: localBoardList[index]["avatar"] != null && localBoardList[index]["avatar"] != ''
                           ? NetworkImage(localBoardList[index]["avatar"].toString())
                           : AssetImage("assets/Icons/user.png"),
                       fit: BoxFit.cover,

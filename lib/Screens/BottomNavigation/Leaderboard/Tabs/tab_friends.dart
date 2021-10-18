@@ -55,7 +55,7 @@ class FriendsTab extends StatelessWidget {
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: Image(
-              image: localFriendList[index]["avatar"] != null
+              image: localFriendList[index]["avatar"] != null && localFriendList[index]["avatar"] != ''
                   ? NetworkImage(localFriendList[index]["avatar"].toString())
                   : AssetImage("assets/Icons/user.png"),
               fit: BoxFit.cover,
