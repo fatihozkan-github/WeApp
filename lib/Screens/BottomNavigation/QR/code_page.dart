@@ -1,6 +1,8 @@
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/constants.dart';
 import 'package:WE/Screens/BottomNavigation/QR/transition_page.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -27,7 +29,8 @@ class _CodePageState extends State<CodePage> {
         padding: EdgeInsets.symmetric(horizontal: 15),
         children: [
           SizedBox(height: 20),
-          Text('Kodunu aşağıdaki alana girebilirsin!', textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
+          Text('Kodunu aşağıdaki alana girebilirsin!',
+              textAlign: TextAlign.center, style: TextStyle(fontSize: 20)),
           SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: width / 6),
@@ -71,15 +74,42 @@ class _CodePageState extends State<CodePage> {
             ),
           ),
           if (showError)
-            Text('Doğru kodu girdiğinden emin ol!', style: TextStyle(color: Colors.red), textAlign: TextAlign.center),
+            Text('Doğru kodu girdiğinden emin ol!',
+                style: TextStyle(color: Colors.red),
+                textAlign: TextAlign.center),
           SizedBox(height: 20),
           RoundedButton(
             text: 'ONAYLA',
-            onPressed: () {
+            onPressed: () async {
               print(currentText);
-              if (currentText == "6G34") {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TransitionPage(qrResult: currentText)));
-              } else if (currentText != "6G34") {
+              if (currentText == "3566") {
+                final databaseReferenceTest =
+                    FirebaseDatabase.instance.reference();
+                await databaseReferenceTest
+                    .once()
+                    .then((DataSnapshot snapshot) async {
+                  var data = snapshot.value["3566"]["IS_USING"];
+                  if (data == true) {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return MacheUsing();
+                        },
+                      ),
+                    );
+                  } else {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TransitionPage(
+                          qrResult: currentText,
+                        ),
+                      ),
+                    );
+                  }
+                });
+              } else if (currentText != "3566") {
                 setState(() => showError = true);
               } else {
                 setState(() => showError = true);

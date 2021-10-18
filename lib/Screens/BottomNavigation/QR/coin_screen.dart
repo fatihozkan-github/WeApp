@@ -42,10 +42,6 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
   final currentUid = FirebaseAuth.instance.currentUser.uid;
   CollectionReference users = FirebaseFirestore.instance.collection("users");
 
-  void openBox(bool isOpen) {
-    databaseReference.child('3566').update({'IN_USE': isOpen});
-  }
-
   int doubleWeight(int number) {
     if (number != 0) {
       return number = number + number;
@@ -57,7 +53,7 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
   void initState() {
     super.initState();
     databaseReference
-        .child(widget.qrResult == null ? widget.currentText : widget.qrResult)
+        .child(widget.qrResult ?? widget.currentText)
         .once()
         .then((DataSnapshot data) {
       print(data.value["WEIGHT_ADDED"]);
@@ -85,8 +81,8 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
   }
 
   Future<String> getUserData(str) async {
-    var document = await users.doc(currentUid);
-    document.get().then((value) => print(value));
+    var document = users.doc(currentUid);
+    await document.get().then((value) => print(value));
     var collection = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collection.doc(currentUid).get();
     if (docSnapshot.exists) {
@@ -96,11 +92,12 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
     }
   }
 
-  Future<void> getReward() {
+  Future<void> getReward() async {
+    await databaseReference.child('/3566/IS_USING').set(false);
     return users
         .doc(currentUid)
         .update({
-          'recycled': measuredWeight + recycledList.first,
+          'recycled': (measuredWeight + recycledList.first).round(),
           "coins": (measuredWeight * 2 + coinsList.first).round(),
           // "exp": expList.first+ measuredWeight/100,
         })

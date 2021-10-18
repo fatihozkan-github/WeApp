@@ -21,8 +21,9 @@ class TransitionPage extends StatefulWidget {
 class _TransitionPageState extends State<TransitionPage> {
   final databaseReference = FirebaseDatabase.instance.reference();
 
-  void openBox(bool isOpen) {
-    databaseReference.child('3566').update({'IN_USE': isOpen});
+  Future openBox(bool isOpen) async {
+    await databaseReference.child('3566').update({'IN_USE': isOpen});
+    await databaseReference.child('/3566/IS_USING').set(isOpen);
   }
 
   @override

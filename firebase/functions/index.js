@@ -5,7 +5,26 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
-
+exports.closeCover = functions.https.onRequest(async (req, res) => {
+  return admin
+    .database()
+    .ref("3566/IN_USE")
+    .set(false)
+    .then(() => {
+      console.log("Cover close completed!");
+      res.send("Completed!");
+    });
+});
+exports.openCover = functions.https.onRequest(async (req, res) => {
+  return admin
+    .database()
+    .ref("3566/IN_USE")
+    .set(true)
+    .then(() => {
+      console.log("Cover open completed!");
+      res.send("Completed!");
+    });
+});
 exports.getUserIdFromRf = functions.https.onRequest(
   async (request, response) => {
     const rfId = request.query.rfId;
@@ -32,6 +51,7 @@ exports.getUserIdFromRf = functions.https.onRequest(
     }
   }
 );
+/*
 exports.pairUserWithRF = functions.database
   .ref("/3566/RFID_TEMP")
   .onUpdate((snapshot, context) => {
@@ -79,26 +99,6 @@ exports.pairUserWithRF = functions.database
     }
   });
 
-exports.closeCover = functions.https.onRequest(async (req, res) => {
-  return admin
-    .database()
-    .ref("3566/IN_USE")
-    .set(false)
-    .then(() => {
-      console.log("Cover close completed!");
-      res.send("Completed!");
-    });
-});
-exports.openCover = functions.https.onRequest(async (req, res) => {
-  return admin
-    .database()
-    .ref("3566/IN_USE")
-    .set(true)
-    .then(() => {
-      console.log("Cover open completed!");
-      res.send("Completed!");
-    });
-});
 
 exports.onWeightUpdated = functions.database
   .ref("/3566/WEIGHT_ADDED")
@@ -161,3 +161,4 @@ exports.onUidUpdated = functions.database
         .catch((e) => console.log("Bulunamadi: ", e));
     }
   });
+*/

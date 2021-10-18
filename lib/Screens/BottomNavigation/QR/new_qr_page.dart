@@ -6,6 +6,8 @@ import 'package:WE/Screens/BottomNavigation/QR/code_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/qr_page.dart';
 import 'package:WE/Screens/BottomNavigation/QR/transition_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
+import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,6 +24,7 @@ class _QRViewExampleState extends State<QRViewExample> {
   PermissionStatus permissionStatus;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   int count = 0;
+  final databaseReferenceTest = FirebaseDatabase.instance.reference();
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -247,22 +250,37 @@ class _QRViewExampleState extends State<QRViewExample> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       result = scanData;
       print('QR CODE: ${result.code}');
       // if (result.code == "6G34") {
       if (result.code == "3566") {
-        controller.stopCamera();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return TransitionPage(
-                qrResult: result.code,
-              );
-            },
-          ),
-        );
+        await databaseReferenceTest.once().then((DataSnapshot snapshot) async {
+          var data = snapshot.value["3566"]["IS_USING"];
+          if (data == true) {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return MacheUsing();
+                },
+              ),
+            );
+          } else {
+            await databaseReferenceTest.child('/3566/IS_USING').set(true);
+            await controller.stopCamera();
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return TransitionPage(
+                    qrResult: result.code,
+                  );
+                },
+              ),
+            );
+          }
+        });
       }
     });
   }

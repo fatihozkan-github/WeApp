@@ -137,9 +137,6 @@ class QRScanPageState extends State<QRScanPage> {
                             ),
                           );
                         } else {
-                          await databaseReferenceTest
-                              .child('/3566/IS_USING')
-                              .set(true);
                           await Navigator.push(
                             context,
                             MaterialPageRoute(

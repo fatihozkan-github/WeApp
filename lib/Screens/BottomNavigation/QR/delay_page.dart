@@ -30,26 +30,53 @@ class _DelayPageState extends State<DelayPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SplashScreen(
-        loadingText: Text(
-          "Hesaplamalar yapılıyor...",
-          style: TextStyle(color: Colors.white),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: SplashScreen(
+          loadingText: Text(
+            "Hesaplamalar yapılıyor...",
+            style: TextStyle(color: Colors.white),
+          ),
+          photoSize: 100,
+          seconds: 8,
+          navigateAfterSeconds: CoinScreenExample(
+            qrResult: widget.qrResult,
+            currentText: widget.currentText,
+          ),
+          image: Image.asset(
+            // TODO: gif düzenle
+            "assets/we2.png",
+            alignment: Alignment.center,
+            width: 160,
+          ),
+          backgroundColor: kSecondaryColor,
         ),
-        photoSize: 100,
-        seconds: 8,
-        navigateAfterSeconds: CoinScreenExample(
-          qrResult: widget.qrResult,
-          currentText: widget.currentText,
-        ),
-        image: Image.asset(
-          // TODO: gif düzenle
-          "assets/we2.png",
-          alignment: Alignment.center,
-          width: 160,
-        ),
-        backgroundColor: kSecondaryColor,
       ),
     );
+  }
+
+  Future<bool> _onWillPop() async {
+    return await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('İşlem Devam Ediyor'),
+            content: Text('Çıkmak istediğinden emin misin?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('Hayır'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await databaseReference.child('/3566/IS_USING').set(false);
+                  Navigator.of(context).pop(true);
+                },
+                child: Text('Evet'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }
