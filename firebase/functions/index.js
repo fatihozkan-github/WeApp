@@ -51,6 +51,42 @@ exports.getUserIdFromRf = functions.https.onRequest(
     }
   }
 );
+exports.rewardUser = functions.https.onRequest(
+  async (request, response) => {
+    const rfId = request.query.rfId;
+    const weight = request.query.weight;
+    if (rfId !== null && weight!==null) {
+      admin
+        .firestore()
+        .collection("users")
+        .where("rfId", "==", rfId)
+        .get()
+        .then((snapshot) => {
+          if (!snapshot.empty) {
+            snapshot.forEach((doc) => {
+              const user = doc.data();
+              const uid = user.uid;
+              const coins = (parseInt(user.coins) + 2 * parseInt(weight));
+              const recycled = parseInt(user.recycled) + parseInt(weight);
+              admin.firestore().collection("users").doc(uid).update({
+                coins: coins,
+                recycled:recycled 
+              });
+              admin.database().ref("3566/RFID_TEMP").set('').then(() => {
+                console.log("RFID: ", rfId," Weight: ", weight, " User: ", uid);
+                response.send('OK');
+              });
+            });
+          } else {
+            response.sendStatus(403);
+          }
+        })
+        .catch((e) => console.log("Bulunamadi: ", e));
+    } else {
+      response.sendStatus(404);
+    }
+  }
+);
 /*
 exports.pairUserWithRF = functions.database
   .ref("/3566/RFID_TEMP")
