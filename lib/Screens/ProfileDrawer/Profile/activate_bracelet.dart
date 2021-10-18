@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/constants.dart';
+import 'package:WE/Screens/BottomNavigation/QR/qr_page.dart';
+import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -22,10 +22,30 @@ class _ActivateBraceletState extends State<ActivateBracelet> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: Text("Bilekliği Etkinleştir"), backgroundColor: kPrimaryColor, centerTitle: true),
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        leading: BackButton(
+          onPressed: () async {
+            await databaseReference.child('/3566/SIGN_UP').set(false);
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Bilekliği Etkinleştir",
+          style: TextStyle(fontSize: 24),
+        ),
+      ),
       body: PageView(
+        physics: NeverScrollableScrollPhysics(),
         controller: controller,
-        children: [ReadyPage(controller: controller), ReadRf(controller: controller), Complete()],
+        children: [
+          ReadyPage(
+            controller: controller,
+          ),
+          ReadRf(
+            controller: controller,
+          ),
+        ],
       ),
     );
   }
@@ -37,24 +57,47 @@ class ReadyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Container(height: 300, child: Transform.scale(scale: 1.2, child: Lottie.asset('assets/7592-settings.json'))),
-        Text('Hazırlan', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28), textAlign: TextAlign.center),
-        SizedBox(height: 10),
-        Text(
-          'HeroStation yakınlarında ol ve bilekliğini hazırla. Hazır olduğunda devam butonuna bas.',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
+        Transform.scale(
+          scale: 1.2,
+          child: Lottie.asset(
+            'assets/7592-settings.json',
+          ),
         ),
-        SizedBox(height: 10),
-        RoundedButton(
-          text: 'DEVAM',
+        Column(
+          children: [
+            Text(
+              'Hazırlan!',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'HeroStation yakınlarında ol ve bilekliğini hazırla. Hazır olduğunda Devam tuşuna bas.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+              ),
+            )
+          ],
+        ),
+        TextButton(
           onPressed: () {
-            controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
+            controller.nextPage(
+              duration: Duration(milliseconds: 200),
+              curve: Curves.ease,
+            );
           },
-        ),
+          child: Text(
+            'Devam',
+            style: TextStyle(
+              fontSize: 18,
+              color: kPrimaryColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        )
       ],
     );
   }
@@ -62,6 +105,7 @@ class ReadyPage extends StatelessWidget {
 
 class ReadRf extends StatefulWidget {
   final PageController controller;
+
   const ReadRf({Key key, this.controller}) : super(key: key);
 
   @override
@@ -69,6 +113,14 @@ class ReadRf extends StatefulWidget {
 }
 
 class _ReadRfState extends State<ReadRf> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('hi');
+    init();
+  }
+
   Future<void> init() async {
     StreamSubscription streamEvent;
     final databaseReference = FirebaseDatabase.instance.reference();
@@ -76,45 +128,60 @@ class _ReadRfState extends State<ReadRf> {
         .collection('users')
         .where('uid', isEqualTo: '${FirebaseAuth.instance.currentUser.uid}')
         .get();
-    streamEvent = databaseReference.child('/3566/RFID_TEMP').onValue.listen((event) async {
+    streamEvent = databaseReference
+        .child('/3566/RFID_SIGN')
+        .onValue
+        .listen((event) async {
+      await databaseReference.child('/3566/SIGN_UP').set(true);
       var data = event.snapshot.value as String;
       if (data != '' || data.replaceAll(' ', '') != '') {
-        await FirebaseFirestore.instance.doc('users/${userRef.docs.first.id}').update({'rfId': '$data'});
-        await databaseReference.child('/3566/RFID_TEMP').set('');
-        await databaseReference.child('/3566/SIGN_UP').set(true);
-        widget.controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
+        await FirebaseFirestore.instance
+            .doc('users/${userRef.docs.first.id}')
+            .update({'rfId': '$data'});
+        await databaseReference.child('/3566/RFID_SIGN').set('');
+        widget.controller.nextPage(
+            duration: Duration(milliseconds: 200), curve: Curves.ease);
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Complete()));
+
         streamEvent.cancel();
       }
     });
   }
 
   @override
-  void initState() {
-    super.initState();
-    print('hi');
-    init();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      children: [
-        SizedBox(height: 30),
-        Lottie.asset('assets/34878-scanner.json', height: 300),
-        SizedBox(height: 20),
-        Text(
-          'HeroStation\'a okut',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 10),
-        Text(
-          'Bilekliğini HeroStation\'a okut ve onay bildirimini bekle.İşlem başarılı olunca bildirim gelecek.',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
-        ),
-      ],
+    return Material(
+      color: Colors.white24,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(height: 200, child: Image.asset("assets/bileklik.png")),
+              SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 90)
+            ],
+          ),
+          Column(
+            children: [
+              Text(
+                'HeroStation\'a okut',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Bilekliğini HeroStation\'a okut ve onay bildirimini bekle. \nİşlem başarılı olunca bildirim gelecek .',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -122,29 +189,46 @@ class _ReadRfState extends State<ReadRf> {
 class Complete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(height: 30),
         Lottie.asset('assets/16729-congratulation-icon.json', height: 300),
-        SizedBox(height: 20),
-        Text(
-          'Yupppii',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 20),
-        Text(
-          'Artık bileklik ile giriş yapabileceksin. Kayıt tamamlama işlemi başarılı',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
-        ),
-        SizedBox(height: 10),
-        RoundedButton(
-          text: 'Ayarlara Dön',
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        Column(
+          children: [
+            Text(
+              'Tebrikler!',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Artık telefonun yanında olmasa da \nbilekliğini gösterilen alana okutarak atıklarını geri dönüştürebilirsin!',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                await databaseReference.child('/3566/IS_USING').set(false);
+                await databaseReference.child('/3566/SIGN_UP').set(false);
+                await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BottomNavigation()));
+              },
+              child: Text(
+                'Ana sayfaya dön',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
         ),
       ],
     );

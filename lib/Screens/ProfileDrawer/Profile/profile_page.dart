@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: data["avatar"] != null
+                  child: (data["avatar"] != null && data['avatar']!='')
                       ? Container(
                           height: 120,
                           width: 120,

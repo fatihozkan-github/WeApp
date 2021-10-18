@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 final firestoreInstance = FirebaseFirestore.instance;
 final currentUid = FirebaseAuth.instance.currentUser.uid;
 
-void signUp(
+Future signUp(
     {String name,
     String password,
     String email,
@@ -22,23 +22,23 @@ void signUp(
     String avatar,
     int recycled,
     int forbadgecount,
-    String uid}) {
-  firestoreInstance.collection("users").doc(currentUid).set({
+    String uid}) async {
+  await firestoreInstance.collection("users").doc(uid).set({
     "name": name,
     "password": password,
     "email": email,
     "city": city,
     "exp": 0.1,
-    "superhero": superhero,
+    "superhero": superhero ?? 'Süper Kahraman',
     "level": 1,
     "coins": 0,
     "points": 0,
     "dailyCoins": 0,
     "dailyRecycled": 0,
-    "uid": currentUid,
+    "uid": uid,
     "recycled": 0,
     "forbadgecount": 0,
-    "avatar": null,
+    "avatar": '',
     "raffle1": false,
     "raffle2": false,
     "raffle3": false,
@@ -64,7 +64,7 @@ Future<String> fetchData(str) async {
 }
 
 // TODO: .is empty dene user0 var mı for döngüsünde user ekle yeni
-void create(
+Future create(
     {String name,
     String password,
     String email,
@@ -107,7 +107,7 @@ void create(
       "forbadgecount": 0,
       "dailyCoins": 0,
       "dailyRecycled": 0,
-      "uid": currentUid,
+      "uid": uid,
       "recycled": 0,
       "avatar": null,
       "impact": ["Nothing", "2-hour bulb energy", "2 fish", "2kWh energy"],
@@ -124,7 +124,7 @@ void create(
   }, SetOptions(merge: true));
 }
 
-void addReferralData({String referralId, String uid}) async {
+Future addReferralData({String referralId, String uid}) async {
   var documentSnapshot;
 
   documentSnapshot = await FirebaseFirestore.instance

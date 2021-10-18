@@ -43,26 +43,22 @@
 		</array>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
-		<key>NSBluetoothAlwaysUsageDescription</key>
-		<string>This app needs access to BLE permission.</string>
-		<key>NSBluetoothPeripheralUsageDescription</key>
-		<string>This app needs access to BLE permission.</string>
-		<key>NSCameraUsageDescription</key>
-		<string>This app needs access to camera for taking picture.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>This app needs access to Location permission.</string>
+		<string>Haritada konumunuzu gostermek icin konum izninize ihtiyacimiz var.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
-		<string>This app needs access to Location permission.</string>
+		<string>Haritada konumunuzu gostermek icin konum izninize ihtiyacimiz var.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>This app needs access to Location permission.</string>
+		<string>Haritada konumunuzu gostermek icin konum izninize ihtiyacimiz var.</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string>This app needs access to microphone for taking picture.</string>
+		<string>Fotoğraf çekebilmemiz için mikrofon izninize ihtiyacımız var.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs access to your photo library.</string>
+		<string>Profil fotoğrafı seçmek için fotoğraf erişimi izninize ihtiyacımız var.</string>
+		<key>NSAppleMusicUsageDescription</key>
+		<string>This app needs access to your Apple Music usage.</string>
 		<key>io.flutter.embedded_views_preview</key>
         <true/>
         <key>NSCameraUsageDescription</key>
-        <string>This app needs camera access to scan QR codes</string>
+        <string>QR kodu okumanız için kamera izninize ihtiyacımız var.</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

@@ -19,33 +19,40 @@ class UserService extends ChangeNotifier {
     print('ch1');
     final _storage = FirebaseStorage.instance;
     var image;
+    try {
     await Permission.photos.request();
+    await Permission.mediaLibrary.request();
     var permissionStatus = await Permission.photos.status;
+    var mediaLibrary = await Permission.mediaLibrary.status;
+      if (permissionStatus.isGranted && mediaLibrary.isGranted) {
+        image = await ImagePicker().pickImage(source: ImageSource.gallery);
+        print(image);
+        print('ch2');
+        print(File(image.path));
+        var file = File(image.path);
 
-    if (permissionStatus.isGranted) {
-      image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      print(image);
-      print('ch2');
-      print(File(image.path));
-      var file = File(image.path);
-
-      if (image != null) {
-        var snapshot = await _storage
-            .ref()
-            .child('profilePhotos/${basename(image.path)}')
-            .putFile(file);
-        var downloadUrl = await snapshot.ref.getDownloadURL();
-        await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
-          'avatar': downloadUrl,
-        });
-        // setState(() {
-        imageUrl = downloadUrl;
-        // });
+        if (image != null) {
+          var snapshot = await _storage
+              .ref()
+              .child('profilePhotos/${basename(image.path)}')
+              .putFile(file);
+          var downloadUrl = await snapshot.ref.getDownloadURL();
+          await brewCollection
+              .doc(FirebaseAuth.instance.currentUser.uid)
+              .update({
+            'avatar': downloadUrl,
+          });
+          // setState(() {
+          imageUrl = downloadUrl;
+          // });
+        } else {
+          print('No Path Received');
+        }
       } else {
-        print('No Path Received');
+        print('Grant Permissions and try again');
       }
-    } else {
-      print('Grant Permissions and try again');
+    } catch (e) {
+      print(e);
     }
     notifyListeners();
   }

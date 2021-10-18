@@ -19,11 +19,18 @@ class BraceletPage extends StatelessWidget {
       body: ListView(
         children: [
           SizedBox(child: Lottie.asset('assets/bracelet.json'), height: 180),
-          Container(
-              height: 250, child: Image.asset("assets/bileklik.png")),
+          Container(height: 200, child: Image.asset("assets/bileklik.png")),
           SizedBox(height: 50),
           Text(
-            'Bilekliğinizi HeroStation üzerinde gösterilen alana okutun',
+            'Telefonun Yanında Olmasa da Geri Dönüştürebilirsin\n',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          Text(
+            'Bilekliğini HeroStation üzerinde gösterilen alana okutarak plastik atıklarını atabilirsin.',
             style: TextStyle(fontSize: 18),
             textAlign: TextAlign.center,
           ),
