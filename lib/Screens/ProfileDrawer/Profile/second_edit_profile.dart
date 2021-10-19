@@ -1,3 +1,5 @@
+// ignore_for_file: omit_local_variable_types
+
 import 'package:WE/Resources/components/default_appbar.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
@@ -11,26 +13,70 @@ class SecondEditProfile extends StatefulWidget {
 }
 
 class _SecondEditProfileState extends State<SecondEditProfile> {
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-  var data;
-
+  CollectionReference users = FirebaseFirestore.instance.collection('allUsers');
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  User firebaseUser = FirebaseAuth.instance.currentUser;
+  DocumentSnapshot data;
+  List localUserList = [];
+  String _oldPassword;
   String _typedOldPassword;
   String _typedNewPassword;
   String _reTypedNewPassword;
   bool _showError = false;
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  void _changePassword(String oldPass, String newPass) async {
+    User user = FirebaseAuth.instance.currentUser;
+    String email = user.email;
+    String oldPassword = oldPass;
+    String newPassword = newPass;
 
-  getData() async {
-    data = await users.doc(firebaseUser.uid).get();
-    print(data.data());
-    print(data['password']);
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: oldPassword,
+      );
+
+      await user.updatePassword(newPassword).then((_) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text('Şifre Değiştirildi!'),
+                actions: [TextButton(child: Text('Tamam'), onPressed: () => Navigator.pop(context))],
+              );
+            });
+        print("Successfully changed password");
+      }).catchError((error) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text('Bir Sorun Oluştu!'),
+                actions: [TextButton(child: Text('Tamam'), onPressed: () => Navigator.pop(context))],
+              );
+            });
+        print("Password can't be changed" + error.toString());
+        //This might happen, when the wrong password is in, the user isn't found, or if the user hasn't logged in recently.
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        await showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text('Girdiğiniz Şifre Yanlış!'),
+                actions: [TextButton(child: Text('Tamam'), onPressed: () => Navigator.pop(context))],
+              );
+            });
+        print('Wrong password provided for that user.');
+      }
+    }
   }
 
   @override
   void initState() {
-    getData();
     super.initState();
   }
 
@@ -79,18 +125,25 @@ class _SecondEditProfileState extends State<SecondEditProfile> {
                 textAlign: TextAlign.center,
               ),
             RoundedButton(
-              text: 'KAYDET',
-              onPressed: () {
-                if (_formKey.currentState.validate() &&
-                    _typedNewPassword == _reTypedNewPassword &&
-                    _typedOldPassword == data["password"]) {
-                  /// TODO: Success message.
-                  firebaseUser.updatePassword(_typedNewPassword).catchError((error) {
-                    setState(() => _showError = true);
-                  });
+                text: 'KAYDET',
+                onPressed: () {
+                  print('ch1');
+                  _changePassword(_typedOldPassword, _typedNewPassword);
                 }
-              },
-            ),
+                // {
+                //   if (_formKey.currentState.validate() &&
+                //       _typedNewPassword == _reTypedNewPassword &&
+                //       _typedOldPassword == _oldPassword) {
+                //     /// TODO: Success message.
+                //     print('ch1');
+                //     _changePassword(_typedNewPassword);
+                //     // firebaseUser.updatePassword(_typedNewPassword).whenComplete(() => print('success!')).catchError((error) {
+                //     //   print(error);
+                //     //   setState(() => _showError = true);
+                //     // });
+                //   }
+                // },
+                ),
           ],
         ),
       ),

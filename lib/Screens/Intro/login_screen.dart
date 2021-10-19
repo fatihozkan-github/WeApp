@@ -74,15 +74,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   FocusScope.of(context).nextFocus();
                 },
                 suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
-                validator: (_typed) {
-                  if (_typed.isEmpty) {
-                    return 'Boş bırakılamaz';
-                  } else if (_typed.length < 6) {
-                    return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
-                  } else {
-                    return null;
-                  }
-                },
+                // validator: (_typed) {
+                //   if (_typed.isEmpty) {
+                //     return 'Boş bırakılamaz';
+                //   } else if (_typed.length < 6) {
+                //     return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
+                //   } else {
+                //     return null;
+                //   }
+                // },
               ),
               _showError
                   ? Text(
@@ -94,6 +94,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 /// TODO: User check
                 text: "GİRİŞ YAP",
                 onPressed: () {
+                  print(_email);
+                  print(_password);
                   if (_formKey.currentState.validate()) {
                     auth.signInWithEmailAndPassword(email: _email, password: _password).then(
                       (_) async {
@@ -106,6 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                     ).catchError((err) {
+                      print(err);
                       setState(() {
                         _showError = true;
                       });
