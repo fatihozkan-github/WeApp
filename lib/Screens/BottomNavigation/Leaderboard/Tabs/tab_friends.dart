@@ -29,7 +29,7 @@ class FriendsTab extends StatelessWidget {
               localFriendList.clear();
               List holder = data.values.toSet().toList();
               holder.forEach((element) {
-                if (element != 'test') {
+                if (element != 'deleted') {
                   localFriendList.add(element);
                 }
               });

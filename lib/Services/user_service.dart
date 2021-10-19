@@ -206,6 +206,7 @@ Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynam
   /// TODO: Check.
   /// Uygulamaya gir çık yapmadan arkadaş eklenemiyor.
   var currentUid = FirebaseAuth.instance.currentUser.uid;
+  print(currentUid);
   documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
   int check = 0;
   DocumentSnapshot docSnapshot;
@@ -235,8 +236,18 @@ Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynam
     //     }
     //   }
     // }
+  } else if (docSnapshot.data() == null) {
+    await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
+      "friend" + 1.toString(): {
+        "uid": uid,
+        "name": name,
+        "recycled": recycled,
+        "supehero": superhero,
+        "coins": coins,
+        "level": level
+      },
+    }, SetOptions(merge: true));
   }
-
   // if (check == 0) {
   //   await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
   //     "friend" + (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1).toString(): {
