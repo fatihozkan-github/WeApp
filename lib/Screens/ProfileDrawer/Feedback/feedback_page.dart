@@ -70,7 +70,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               onPressed: () {
                 setState(() {
                   if (_formKey.currentState.validate()) {
-                    launchUrl("mailto:support@we.com?subject=From $_name&body=$_message");
+                    launchUrl("mailto:we.recycle.team@gmail.com?subject=From $_name&body=$_message");
                   }
                 });
               },
@@ -179,7 +179,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
 // setState(() {
 // t1.clear();
 // t2.clear();
-// launchUrl("mailto:support@we.com?subject=From $name&body=$message");
+// launchUrl("mailto:we.recycle.team@gmail.com?subject=From $name&body=$message");
 // });
 // },
 // child: ListTile(
