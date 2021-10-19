@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Services/user_service.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/painting.dart';
 import 'package:WE/Resources/components/or_divider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nice_button/NiceButton.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:social_share/social_share.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -390,7 +392,9 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
                                               "assets/Icons/facebook64.png",
                                           press: () async {
                                             await screenshotController
-                                                .capture()
+                                                .capture(
+                                                    delay: const Duration(
+                                                        milliseconds: 10))
                                                 .then((image) async {
                                               await SocialShare.shareOptions(
                                                       " ")
@@ -404,19 +408,23 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
                                           iconSrc:
                                               "assets/Icons/instagram2.png",
                                           press: () async {
-                                            var file =
-                                                await ImagePicker().pickImage(
-                                              source: ImageSource.gallery,
-                                            );
-                                            await SocialShare
-                                                .shareInstagramStory(
-                                              file.path,
-                                              backgroundTopColor: "#ffffff",
-                                              backgroundBottomColor: "#FF6B00",
-                                              attributionURL:
-                                                  "https://deep-link-url",
-                                            ).then((data) {
-                                              print(data);
+                                            await screenshotController
+                                                .capture(
+                                                    delay: const Duration(
+                                                        milliseconds: 10))
+                                                .then((Uint8List image) async {
+                                              if (image != null) {
+                                                final directory =
+                                                    await getApplicationDocumentsDirectory();
+                                                final imagePath = await File(
+                                                        '${directory.path}/image.png')
+                                                    .create();
+                                                await imagePath
+                                                    .writeAsBytes(image);
+                                                await SocialShare
+                                                    .shareInstagramStory(
+                                                        imagePath.path);
+                                              }
                                             });
                                           },
                                         ),
