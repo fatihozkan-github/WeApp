@@ -29,7 +29,9 @@ class FriendsTab extends StatelessWidget {
               localFriendList.clear();
               List holder = data.values.toSet().toList();
               holder.forEach((element) {
-                localFriendList.add(element);
+                if (element != 'test') {
+                  localFriendList.add(element);
+                }
               });
               localFriendList.sort((a, b) => b["recycled"].compareTo(a["recycled"]));
               // for (int i = 1; i < data.length + 1; i++) {

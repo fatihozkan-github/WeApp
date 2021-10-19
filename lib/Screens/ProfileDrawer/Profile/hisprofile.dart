@@ -46,7 +46,9 @@ class _HisProfileState extends State<HisProfile> {
       // Map<String, dynamic> data = docSnapshot.data();
       friendsData = docSnapshot.data();
       friendsData.forEach((key, value) {
-        friendIDs.add(value["uid"]);
+        if (value != null && value != 'deleted') {
+          friendIDs.add(value["uid"]);
+        }
       });
       friendIDs = friendIDs.toSet().toList();
     }
@@ -162,15 +164,19 @@ class _HisProfileState extends State<HisProfile> {
                                           ),
                                           onPressed: () async {
                                             /// TODO: Arkadaş çıkar.
+                                            await getUserData();
                                             friendsData.forEach((key, value) async {
-                                              print(key);
-                                              print(value);
-                                              if (data["uid"] == value["uid"]) {
-                                                print('ID: ${value["uid"]}');
-                                                print(key);
-                                                var collection = FirebaseFirestore.instance.collection('friends');
-                                                var docSnapshot = await collection.doc(firebaseUser.uid).get();
-                                                // docSnapshot.reference.update({key: "null"});
+                                              // print(key);
+                                              // print(value);
+                                              if (value != 'deleted') {
+                                                if (data["uid"] == value["uid"]) {
+                                                  // print('ID: ${value["uid"]}');
+                                                  // print(key);
+                                                  var collection = FirebaseFirestore.instance.collection('friends');
+                                                  var docSnapshot = await collection.doc(firebaseUser.uid).get();
+                                                  await docSnapshot.reference
+                                                      .update({key: 'deleted'}).whenComplete(() => setState(() => test = false));
+                                                }
                                               }
                                             });
                                           },
