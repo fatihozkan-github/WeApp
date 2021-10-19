@@ -128,22 +128,19 @@ class _ReadRfState extends State<ReadRf> {
         .collection('users')
         .where('uid', isEqualTo: '${FirebaseAuth.instance.currentUser.uid}')
         .get();
-    streamEvent = databaseReference
-        .child('/3566/RFID_SIGN')
-        .onValue
-        .listen((event) async {
+    streamEvent = databaseReference.child('/3566/RFID_SIGN').onValue.listen((event) async {
       await databaseReference.child('/3566/SIGN_UP').set(true);
       var data = event.snapshot.value as String;
-      if (data != '' || data.replaceAll(' ', '') != '') {
-        await FirebaseFirestore.instance
-            .doc('users/${userRef.docs.first.id}')
-            .update({'rfId': '$data'});
+      print('data: $data');
+      var isUsingData = await databaseReference.child('/3566/IS_USING').get();
+      print('isUsing: ${isUsingData.value}');
+      bool isUsing = isUsingData.value;
+      if ((data != '' || data.replaceAll(' ', '') != '') && isUsing == false) {
+        await FirebaseFirestore.instance.doc('users/${userRef.docs.first.id}').update({'rfId': '$data'});
         await databaseReference.child('/3566/RFID_SIGN').set('');
-        widget.controller.nextPage(
-            duration: Duration(milliseconds: 200), curve: Curves.ease);
+        widget.controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
 
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Complete()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Complete()));
 
         streamEvent.cancel();
       }
@@ -215,10 +212,7 @@ class Complete extends StatelessWidget {
                 onPressed: () async {
                   await databaseReference.child('/3566/IS_USING').set(false);
                   await databaseReference.child('/3566/SIGN_UP').set(false);
-                  await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomNavigation()));
+                  await Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
                 },
                 child: Text(
                   'Ana sayfaya dön',

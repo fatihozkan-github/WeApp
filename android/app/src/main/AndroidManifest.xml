@@ -21,7 +21,8 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="WE"
         android:icon="@mipmap/launcher_icon"
-        android:requestLegacyExternalStorage="true">
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
 
         <provider
             android:name="androidx.core.content.FileProvider"

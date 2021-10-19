@@ -1,11 +1,14 @@
-// ignore_for_file: sort_constructors_first
+// ignore_for_file: sort_constructors_first, omit_local_variable_types, prefer_final_fields
 
-import 'package:WE/Resources/components/rounded_input_field.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:WE/Resources/components/social_icon.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
-import 'package:WE/Resources/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:social_share/social_share.dart';
 
 class PostModel extends StatefulWidget {
   final String name;
@@ -27,77 +30,110 @@ class PostModel extends StatefulWidget {
 }
 
 class _PostModelState extends State<PostModel> {
-  bool _openCommentPanel = false;
+  ScreenshotController _screenshotController = ScreenshotController();
+  // bool _openCommentPanel = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      margin: EdgeInsets.all(10.0),
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: Container(
-              width: 50.0,
-              height: 50.0,
-              decoration: BoxDecoration(shape: BoxShape.circle),
-              child: CachedNetworkImage(
-                imageUrl: widget.logo.toString(),
-                progressIndicatorBuilder: (context, url, progress) => WESpinKit(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-                fit: BoxFit.cover,
-              ),
+    return Column(
+      children: [
+        Screenshot(
+          controller: _screenshotController,
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            margin: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
             ),
-            title: Text(widget.name, style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(widget.time),
-          ),
-          CachedNetworkImage(
-            imageUrl: widget.asset.toString(),
-            progressIndicatorBuilder: (context, url, progress) => WESpinKit(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-            fit: BoxFit.fitHeight,
-            height: 350,
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
-                children: [
-                  LikeButton(
-                    likeCount: 6,
-                    likeBuilder: (isLiked) {
-                      return Icon(isLiked ? Icons.thumb_up : Icons.thumb_up_alt_outlined, size: 30, color: kPrimaryColor);
-                    },
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: CachedNetworkImage(
+                      imageUrl: widget.logo.toString(),
+                      progressIndicatorBuilder: (context, url, progress) => WESpinKit(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  SizedBox(width: 5),
-                  Text('Beğen'),
-                  // Text(isLiked ? 'Beğenildi' : 'Beğen'),
-                ],
-              ),
-              GestureDetector(
-                  onTap: () => setState(() => _openCommentPanel = true),
-                  child: Row(children: [
-                    Icon(Icons.comment_outlined, size: 30, color: kPrimaryColor),
-                    SizedBox(width: 5),
-                    Text('Yorum Yap')
-                  ])),
-              Row(children: [Icon(Icons.share_rounded, size: 30, color: kPrimaryColor), SizedBox(width: 5), Text('Paylaş')]),
-            ],
-          ),
-          if (_openCommentPanel)
-            Column(
-              children: [
-                RoundedInputField(
-                  hintText: 'Yorum Yaz',
-                  icon: null,
-                  maxLines: null,
-                  textInputAction: TextInputAction.newline,
+                  title: Text(widget.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(widget.time),
                 ),
+                CachedNetworkImage(
+                  imageUrl: widget.asset.toString(),
+                  progressIndicatorBuilder: (context, url, progress) => WESpinKit(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fit: BoxFit.fitHeight,
+                  height: 350,
+                ),
+                // Divider(),
+                // if (_openCommentPanel)
+                //   Column(
+                //     children: [
+                //       RoundedInputField(
+                //         hintText: 'Yorum Yaz',
+                //         icon: null,
+                //         maxLines: null,
+                //         textInputAction: TextInputAction.newline,
+                //       ),
+                //     ],
+                //   ),
               ],
             ),
-        ],
-      ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            /// TODO: Fix.
+            SocialIcon(
+                iconSrc: "assets/Icons/instagram2.png",
+                press: () async {
+                  await _screenshotController.capture(delay: const Duration(milliseconds: 10)).then((Uint8List image) async {
+                    if (image != null) {
+                      final directory = await getApplicationDocumentsDirectory();
+                      final imagePath = await File('${directory.path}/image.png').create();
+                      await imagePath.writeAsBytes(image);
+                      await SocialShare.shareInstagramStory(imagePath.path);
+                    }
+                  });
+                }),
+            Text('Paylaş'),
+            // GestureDetector(
+            //   onTap: () async {
+            //     await _screenshotController.capture(delay: const Duration(milliseconds: 10)).then((Uint8List image) async {
+            //       if (image != null) {
+            //         final directory = await getApplicationDocumentsDirectory();
+            //         final imagePath = await File('${directory.path}/image.png').create();
+            //         await imagePath.writeAsBytes(image);
+            //         await SocialShare.shareInstagramStory(imagePath.path);
+            //       }
+            //     });
+            //     // final directory = (await getApplicationDocumentsDirectory()).path; //from path_provide package
+            //     // String fileName = DateTime.now().microsecondsSinceEpoch.toString();
+            //     // String path = '$directory';
+            //     // print(path);
+            //     // await _screenshotController.captureAndSave(
+            //     //   path,
+            //     //   fileName: fileName,
+            //     // );
+            //     // // PickedFile file = await ImagePicker.platform.pickImage(source: ImageSource.gallery);
+            //     // await SocialShare.shareInstagramStory(path + fileName);
+            //   },
+            //   child: Text('test'),
+            // ),
+            // Row(children: [
+            //   Icon(Icons.share_rounded, size: 30, color: kPrimaryColor),
+            //   SizedBox(width: 5),
+            //   Text('Paylaş'),
+            // ]),
+          ],
+        ),
+      ],
     );
   }
 }
