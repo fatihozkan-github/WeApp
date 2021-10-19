@@ -27,12 +27,17 @@ class FriendsTab extends StatelessWidget {
             Map<String, dynamic> data = snapshot.data.data();
             if (data != null) {
               localFriendList.clear();
-              for (int i = 1; i < data.length + 1; i++) {
-                Map map = data["friend" + i.toString()];
-                localFriendList.add(map);
-                // TODO: implement points and friends tab
-                localFriendList.sort((a, b) => b["recycled"].compareTo(a["recycled"]));
-              }
+              List holder = data.values.toSet().toList();
+              holder.forEach((element) {
+                localFriendList.add(element);
+              });
+              localFriendList.sort((a, b) => b["recycled"].compareTo(a["recycled"]));
+              // for (int i = 1; i < data.length + 1; i++) {
+              //   Map map = data["friend" + i.toString()];
+              //   localFriendList.add(map);
+              //   // TODO: implement points and friends tab
+              //   localFriendList.sort((a, b) => b["recycled"].compareTo(a["recycled"]));
+              // }
             }
             return Scaffold(body: localFriendList.isNotEmpty ? _bodyWithFriends() : _bodyWithOutFriends());
           }

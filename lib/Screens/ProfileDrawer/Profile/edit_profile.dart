@@ -28,14 +28,12 @@ class EditProfile extends StatefulWidget {
 
 /// TODO
 class _EditProfileState extends State<EditProfile> {
-  String _username, _city, _address, _superhero, _company, _referral, _bracelet;
+  String _username, _city, _address, _superhero, _company, _referral, _bracelet, _avatar;
   // _email, _password,
   String imageUrl;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DocumentReference sightingRef =
-      FirebaseFirestore.instance.collection("users").doc();
-  final CollectionReference brewCollection =
-      FirebaseFirestore.instance.collection('users');
+  DocumentReference sightingRef = FirebaseFirestore.instance.collection("users").doc();
+  final CollectionReference brewCollection = FirebaseFirestore.instance.collection('users');
   var firebaseUser = FirebaseAuth.instance.currentUser;
   String currentUid = FirebaseAuth.instance.currentUser.uid;
   DocumentSnapshot snapshot;
@@ -77,6 +75,10 @@ class _EditProfileState extends State<EditProfile> {
       _currentProgress++;
       imageUrl = data['avatar'];
     }
+    if (data["rfId"] != null && data["rfId"].toString().isNotEmpty) {
+      _currentProgress++;
+      imageUrl = data['avatar'];
+    }
     setState(() {});
   }
 
@@ -86,11 +88,8 @@ class _EditProfileState extends State<EditProfile> {
     if (_username != null && _username != data["name"]) {
       print('ch1');
       setState(() {
-        if (_currentProgress < 7 && data["name"].toString().isEmpty)
-          _currentProgress++;
-        if (_currentProgress < 7 &&
-            data["name"].toString().isNotEmpty &&
-            _username.isEmpty) _currentProgress--;
+        if (_currentProgress < 7 && data["name"].toString().isEmpty) _currentProgress++;
+        if (_currentProgress < 7 && data["name"].toString().isNotEmpty && _username.isEmpty) _currentProgress--;
       });
       await brewCollection.doc(currentUid).update({
         "name": _username,
@@ -100,11 +99,8 @@ class _EditProfileState extends State<EditProfile> {
     if (_city != null && _city != data["city"]) {
       print('ch2');
       setState(() {
-        if (_currentProgress < 7 && data["city"].toString().isEmpty)
-          _currentProgress++;
-        if (_currentProgress < 7 &&
-            data["city"].toString().isNotEmpty &&
-            _city.isEmpty) _currentProgress--;
+        if (_currentProgress < 7 && data["city"].toString().isEmpty) _currentProgress++;
+        if (_currentProgress < 7 && data["city"].toString().isNotEmpty && _city.isEmpty) _currentProgress--;
       });
       await brewCollection.doc(currentUid).update({
         "city": _city,
@@ -114,11 +110,8 @@ class _EditProfileState extends State<EditProfile> {
     if (_superhero != null && _superhero != data["superhero"]) {
       print('ch3');
       setState(() {
-        if (_currentProgress < 7 && data["superhero"].toString().isEmpty)
-          _currentProgress++;
-        if (_currentProgress < 7 &&
-            data["superhero"].toString().isNotEmpty &&
-            _superhero.isEmpty) _currentProgress--;
+        if (_currentProgress < 7 && data["superhero"].toString().isEmpty) _currentProgress++;
+        if (_currentProgress < 7 && data["superhero"].toString().isNotEmpty && _superhero.isEmpty) _currentProgress--;
       });
       await brewCollection.doc(currentUid).update({
         "superhero": _superhero,
@@ -128,11 +121,8 @@ class _EditProfileState extends State<EditProfile> {
     if (_address != null && _address != data["address"]) {
       print('ch4');
       setState(() {
-        if (_currentProgress < 7 && data["address"].toString().isEmpty)
-          _currentProgress++;
-        if (_currentProgress < 7 &&
-            data["address"].toString().isNotEmpty &&
-            _address.isEmpty) _currentProgress--;
+        if (_currentProgress < 7 && data["address"].toString().isEmpty) _currentProgress++;
+        if (_currentProgress < 7 && data["address"].toString().isNotEmpty && _address.isEmpty) _currentProgress--;
       });
       await brewCollection.doc(currentUid).update({
         "address": _address,
@@ -142,14 +132,22 @@ class _EditProfileState extends State<EditProfile> {
     if (_company != null && _company != data["company"]) {
       print('ch5');
       setState(() {
-        if (_currentProgress < 7 && data["company"].toString().isEmpty)
-          _currentProgress++;
-        if (_currentProgress < 7 &&
-            data["company"].toString().isNotEmpty &&
-            _company.isEmpty) _currentProgress--;
+        if (_currentProgress < 7 && data["company"].toString().isEmpty) _currentProgress++;
+        if (_currentProgress < 7 && data["company"].toString().isNotEmpty && _company.isEmpty) _currentProgress--;
       });
       await brewCollection.doc(currentUid).update({
         "company": _company,
+      });
+    }
+
+    if (_avatar != null && _avatar != data["avatar"]) {
+      print('ch6');
+      setState(() {
+        if (_currentProgress < 7 && data["avatar"].toString().isEmpty) _currentProgress++;
+        if (_currentProgress < 7 && data["avatar"].toString().isNotEmpty && _avatar.isEmpty) _currentProgress--;
+      });
+      await brewCollection.doc(currentUid).update({
+        "avatar": _avatar,
       });
     }
     getData();
@@ -168,10 +166,7 @@ class _EditProfileState extends State<EditProfile> {
       var file = File(image.path);
 
       if (image != null) {
-        var snapshot = await _storage
-            .ref()
-            .child('profilePhotos/${basename(image.path)}')
-            .putFile(file);
+        var snapshot = await _storage.ref().child('profilePhotos/${basename(image.path)}').putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         await brewCollection.doc(FirebaseAuth.instance.currentUser.uid).update({
           'avatar': downloadUrl,
@@ -190,7 +185,6 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     var firebaseUser = FirebaseAuth.instance.currentUser;
     final width = MediaQuery.of(context).size.width;
@@ -201,10 +195,7 @@ class _EditProfileState extends State<EditProfile> {
             child: Scaffold(
               backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                  backgroundColor: kPrimaryColor,
-                  title: Text('Profilini Düzenle'),
-                  centerTitle: true),
+              appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Profilini Düzenle'), centerTitle: true),
               body: Center(
                 child: Form(
                   key: _formKey,
@@ -223,18 +214,12 @@ class _EditProfileState extends State<EditProfile> {
                                     height: 120,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            fit: BoxFit.contain,
-                                            image: NetworkImage(imageUrl))),
+                                        image: DecorationImage(fit: BoxFit.contain, image: NetworkImage(imageUrl))),
                                   )
-                                : Icon(Icons.account_circle_rounded,
-                                    size: 150, color: Colors.grey),
+                                : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
                             Text(
                               "Profil fotoğrafını değiştirmek için avatara dokun.",
-                              style: TextStyle(
-                                  fontSize: width / 40,
-                                  color: Colors.grey,
-                                  decoration: TextDecoration.none),
+                              style: TextStyle(fontSize: width / 40, color: Colors.grey, decoration: TextDecoration.none),
                             ),
                           ],
                         ),
@@ -245,8 +230,7 @@ class _EditProfileState extends State<EditProfile> {
                       RoundedInputField(
                         hintText: "Kullanıcı Adı",
                         initialValue: _username,
-                        onChanged: (value) =>
-                            setState(() => _username = value.trim()),
+                        onChanged: (value) => setState(() => _username = value.trim()),
                       ),
                       RoundedInputField(
                         hintText: "Şehir",
@@ -274,13 +258,11 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       FutureBuilder<DocumentSnapshot>(
                           future: users.doc(firebaseUser.uid).get(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                             if (snapshot.hasError) {
                               return Text("Hata oluştu :(");
                             }
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
+                            if (snapshot.connectionState == ConnectionState.done) {
                               Map<String, dynamic> data = snapshot.data.data();
                               return Material(
                                 color: Colors.white24,
@@ -296,8 +278,7 @@ class _EditProfileState extends State<EditProfile> {
                                                   child: Wrap(
                                                     children: [
                                                       Padding(
-                                                        padding:
-                                                            EdgeInsets.only(
+                                                        padding: EdgeInsets.only(
                                                           right: 8.0,
                                                         ),
                                                         child: Icon(
@@ -320,15 +301,9 @@ class _EditProfileState extends State<EditProfile> {
                                           )
                                         : TextButton(
                                             onPressed: () async {
-                                              final databaseReferenceTest =
-                                                  FirebaseDatabase.instance
-                                                      .reference();
-                                              await databaseReferenceTest
-                                                  .once()
-                                                  .then(
-                                                      (DataSnapshot snapshot) {
-                                                var data = snapshot
-                                                    .value["3566"]["IS_USING"];
+                                              final databaseReferenceTest = FirebaseDatabase.instance.reference();
+                                              await databaseReferenceTest.once().then((DataSnapshot snapshot) {
+                                                var data = snapshot.value["3566"]["IS_USING"];
                                                 if (data == true) {
                                                   setState(() async {
                                                     await Navigator.push(
@@ -343,9 +318,7 @@ class _EditProfileState extends State<EditProfile> {
                                                   });
                                                 } else {
                                                   setState(() async {
-                                                    await databaseReferenceTest
-                                                        .child('/3566/IS_USING')
-                                                        .set(true);
+                                                    await databaseReferenceTest.child('/3566/IS_USING').set(true);
                                                     await Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -527,10 +500,7 @@ class MacheUsing extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BottomNavigation()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
                     },
                     child: Text('Geri dön'))
               ],

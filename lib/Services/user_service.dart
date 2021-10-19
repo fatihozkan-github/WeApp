@@ -81,15 +81,9 @@ Future create(
     int forbadgecount,
     String uid}) async {
   var documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('allUsers')
-      .doc('C9nvPCW2TwemcjSVgm04')
-      .get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
 
-  await FirebaseFirestore.instance
-      .collection('allUsers')
-      .doc('C9nvPCW2TwemcjSVgm04')
-      .set({
+  await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').set({
     // currentUid: {
     "user" + (documentSnapshot.data().keys.length + 1).toString(): {
       "name": name,
@@ -127,33 +121,19 @@ Future create(
 Future addReferralData({String referralId, String uid}) async {
   var documentSnapshot;
 
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('referralCodes')
-      .doc('referrals')
-      .get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').get();
   var docSnapshot;
 
-  docSnapshot = await FirebaseFirestore.instance
-      .collection('referralCodes')
-      .doc('list')
-      .get();
+  docSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('list').get();
 
   if (documentSnapshot.data()[referralId] != null) {
-    await FirebaseFirestore.instance
-        .collection('referralCodes')
-        .doc('referrals')
-        .set({
+    await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').set({
       referralId: {
-        "user" +
-            (documentSnapshot.data()[referralId].keys.length + 1)
-                .toString(): uid,
+        "user" + (documentSnapshot.data()[referralId].keys.length + 1).toString(): uid,
       },
     }, SetOptions(merge: true));
   } else {
-    await FirebaseFirestore.instance
-        .collection('referralCodes')
-        .doc('referrals')
-        .set({
+    await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').set({
       referralId: {
         "user1": uid,
       },
@@ -162,8 +142,7 @@ Future addReferralData({String referralId, String uid}) async {
 
   await FirebaseFirestore.instance.collection('referralCodes').doc('list').set({
     "listOfReferrals": {
-      (docSnapshot.data()["listOfReferrals"].length).toString():
-          uid.substring(0, 6),
+      (docSnapshot.data()["listOfReferrals"].length).toString(): uid.substring(0, 6),
     },
   }, SetOptions(merge: true));
   print("****************************");
@@ -178,10 +157,7 @@ Future addReferralData({String referralId, String uid}) async {
 /// TODO: Rework. This function does not work as intended.
 void checkReferralData({String referralId, String uid}) async {
   var documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('referralCodes')
-      .doc('referrals')
-      .get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('referrals').get();
   // print('doc: ${documentSnapshot.data().keys.length}');
   // print(currentUid.substring(0, 6));
   // print(documentSnapshot.data());
@@ -224,37 +200,24 @@ void checkReferralData({String referralId, String uid}) async {
   // TODO: opsiyonel (digit code Upper case'le, burda olmak zorunda değil ama bunu da)
 }
 
-void addKanka(
-    {String uid,
-    String name,
-    dynamic recycled,
-    dynamic level,
-    dynamic coins,
-    String superhero}) async {
+Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynamic coins, String superhero}) async {
   var documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUid)
-      .get();
-  int check = 0;
-  var docSnapshot;
-  docSnapshot = await FirebaseFirestore.instance
-      .collection('friends')
-      .doc(currentUid)
-      .get();
-  if (docSnapshot.data() != null) {
-    for (var i = 1; i <= docSnapshot.data().length; i++) {
-      if (docSnapshot.data()["friend" + i.toString()].containsValue(uid)) {
-        check = check + 1;
-      }
-    }
-  }
 
-  if (check == 0) {
+  /// TODO: Check.
+  /// Uygulamaya gir çık yapmadan arkadaş eklenemiyor.
+  var currentUid = FirebaseAuth.instance.currentUser.uid;
+  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+  int check = 0;
+  DocumentSnapshot docSnapshot;
+  docSnapshot = await FirebaseFirestore.instance.collection('friends').doc(currentUid).get();
+  if (docSnapshot.data() != null) {
+    Map map = docSnapshot.data();
+    List local = map.keys.toSet().toList();
+    local.sort();
+    print(local);
+    print(local.last.toString().split('friend')[1]);
     await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
-      "friend" +
-          (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1)
-              .toString(): {
+      "friend" + (docSnapshot.data() == null ? 1 : int.parse(local.last.toString().split('friend')[1]) + 1).toString(): {
         "uid": uid,
         "name": name,
         "recycled": recycled,
@@ -263,10 +226,32 @@ void addKanka(
         "level": level
       },
     }, SetOptions(merge: true));
+
+    ///
+    // for (var i = 1; i <= docSnapshot.data().length; i++) {
+    //   if (docSnapshot.data()["friend" + i.toString()] != null) {
+    //     if (docSnapshot.data()["friend" + i.toString()].containsValue(uid)) {
+    //       check = check + 1;
+    //     }
+    //   }
+    // }
   }
+
+  // if (check == 0) {
+  //   await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
+  //     "friend" + (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1).toString(): {
+  //       "uid": uid,
+  //       "name": name,
+  //       "recycled": recycled,
+  //       "supehero": superhero,
+  //       "coins": coins,
+  //       "level": level
+  //     },
+  //   }, SetOptions(merge: true));
+  // }
 }
 
-void addFriend(
+Future addFriend(
     {String name,
     String superhero,
     int level,
@@ -278,24 +263,14 @@ void addFriend(
     bool isFriend,
     String uid}) async {
   var documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('allUsers')
-      .doc('C9nvPCW2TwemcjSVgm04')
-      .get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
   var docSnapshot;
 
-  docSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUid)
-      .get();
+  docSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
 
   await FirebaseFirestore.instance.collection('users').doc(currentUid).set({
     "friends": {
-      "friend" +
-          (docSnapshot.data()["friends"] == null
-                  ? 1
-                  : docSnapshot.data()["friends"].length + 1)
-              .toString(): {
+      "friend" + (docSnapshot.data()["friends"] == null ? 1 : docSnapshot.data()["friends"].length + 1).toString(): {
         "name": name,
         "isFriend": isFriend,
         "superhero": superhero,
@@ -315,15 +290,11 @@ void addFriend(
 /// TODO: ???
 void getIsFriendData() async {
   var docSnapshot;
-  docSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .doc("zag8tuPzwKMWqD2m4uU6conEoSB2")
-      .get();
+  docSnapshot = await FirebaseFirestore.instance.collection('users').doc("zag8tuPzwKMWqD2m4uU6conEoSB2").get();
   for (var i = 1; i <= docSnapshot.data()["friends"].length; i++) {
     if (docSnapshot.data()["friends"]["friend" + i.toString()]["isFriend"] &&
         docSnapshot.data()["friends"]["friend" + i.toString()]["name"] == "x") {
-      var isFriend =
-          docSnapshot.data()["friends"]["friend" + i.toString()]["isFriend"];
+      var isFriend = docSnapshot.data()["friends"]["friend" + i.toString()]["isFriend"];
       return isFriend;
     }
   }
@@ -331,29 +302,24 @@ void getIsFriendData() async {
 
 void update100gData(currentUser) async {
   var documentSnapshot;
-  documentSnapshot = await FirebaseFirestore.instance
+  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUser).get();
+  await FirebaseFirestore.instance
       .collection('users')
       .doc(currentUser)
-      .get();
-  await FirebaseFirestore.instance.collection('users').doc(currentUser).update(
-      {"forbadgecount": (documentSnapshot.data()["forbadgecount"] + 1)});
+      .update({"forbadgecount": (documentSnapshot.data()["forbadgecount"] + 1)});
 }
 
 void getUserDataForL(uid) async {
   var documentSnapshot;
 
-  documentSnapshot =
-      await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(uid).get();
   return documentSnapshot.data()["name"];
 }
 
 void read() async {
   var documentSnapshot;
 
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('allUsers')
-      .doc('C9nvPCW2TwemcjSVgm04')
-      .get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('allUsers').doc('C9nvPCW2TwemcjSVgm04').get();
   print(documentSnapshot.data().keys.length);
   //documentSnapshot.data().keys=="user"+documentSnapshot.data().keys.length.toString()?print("var"):print("user"+documentSnapshot.data().keys.length.toString());
   //for (var i = 0; i <= 10; i++) {
@@ -400,10 +366,7 @@ void calculateLevel(currentUser) async {
     24: 15000,
   };
   var counter = 0;
-  documentSnapshot = await FirebaseFirestore.instance
-      .collection('users')
-      .doc(currentUser)
-      .get();
+  documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUser).get();
   print(documentSnapshot["recycled"]);
   print(documentSnapshot.data()["recycled"]);
 
@@ -416,8 +379,7 @@ void calculateLevel(currentUser) async {
   }
   await FirebaseFirestore.instance.collection('users').doc(currentUser).update({
     "level": counter + 1,
-    "exp": (documentSnapshot.data()["recycled"] + (expTable[counter])) /
-        ((expTable[counter + 1]) - (expTable[counter]))
+    "exp": (documentSnapshot.data()["recycled"] + (expTable[counter])) / ((expTable[counter + 1]) - (expTable[counter]))
   });
 
   ///

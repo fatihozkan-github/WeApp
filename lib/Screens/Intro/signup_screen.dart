@@ -10,6 +10,7 @@ import 'package:WE/Services/user_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -39,10 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     /// TODO: Fix
     ///
     /// Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
-    documentSnapshot = await FirebaseFirestore.instance
-        .collection('referralCodes')
-        .doc('list')
-        .get();
+    documentSnapshot = await FirebaseFirestore.instance.collection('referralCodes').doc('list').get();
     Map<String, dynamic> data = documentSnapshot.data()['listOfReferrals'];
     codes.addAll(data.values.map((e) => e.toString()).toList());
     // codes.addAll(documentSnapshot.data()['listOfReferrals']);
@@ -73,9 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 city: _city,
                 uid: userCredential.user.uid,
                 superhero: _superhero);
-            await addReferralData(
-                referralId: _referral.substring(0, 6),
-                uid: userCredential.user.uid);
+            await addReferralData(referralId: _referral.substring(0, 6), uid: userCredential.user.uid);
             await signUp(
                 name: _username,
                 email: _email,
@@ -83,12 +79,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 city: _city,
                 uid: userCredential.user.uid,
                 superhero: _superhero);
-
             setState(() => isLoading = false);
             await Navigator.pushAndRemoveUntil<dynamic>(
               context,
               MaterialPageRoute<dynamic>(
-                builder: (BuildContext context) => BottomNavigation(),
+                builder: (BuildContext context) => LoginScreen(),
               ),
               (route) => false,
             );
@@ -156,14 +151,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Image.asset('assets/we2.png', scale: 1.4),
                       RoundedInputField(
                         hintText: 'İsim',
-                        onChanged: (value) =>
-                            setState(() => _username = value.trim()),
+                        onChanged: (value) => setState(() => _username = value.trim()),
                       ),
                       RoundedInputField(
                         hintText: 'E-posta',
                         icon: Icons.mail,
-                        onChanged: (value) =>
-                            setState(() => _email = value.trim()),
+                        onChanged: (value) => setState(() => _email = value.trim()),
                         keyboardType: TextInputType.emailAddress,
                         validator: (_typedValue) {
                           return (_typedValue.isEmpty)
@@ -176,17 +169,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       RoundedInputField(
                         hintText: 'Şifreniz',
                         icon: Icons.lock,
-                        onChanged: (value) =>
-                            setState(() => _password = value.trim()),
+                        onChanged: (value) => setState(() => _password = value.trim()),
                         obscureText: _obscureText,
                         onEditingComplete: () {
                           FocusScope.of(context).nextFocus();
                           FocusScope.of(context).nextFocus();
                         },
-                        suffixIcon: IconButton(
-                            onPressed: _toggle,
-                            icon: Icon(Icons.visibility),
-                            color: kPrimaryColor),
+                        suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
                         validator: (_typed) {
                           if (_typed.isEmpty) {
                             return 'Boş bırakılamaz';

@@ -36,14 +36,16 @@ class _HisProfileState extends State<HisProfile> {
     });
   }
 
+  Map<String, dynamic> friendsData;
   Future getUserData() async {
     var document = users.doc(firebaseUser.uid);
     await document.get();
     var collection = FirebaseFirestore.instance.collection('friends');
     var docSnapshot = await collection.doc(firebaseUser.uid).get();
     if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data();
-      data.forEach((key, value) {
+      // Map<String, dynamic> data = docSnapshot.data();
+      friendsData = docSnapshot.data();
+      friendsData.forEach((key, value) {
         friendIDs.add(value["uid"]);
       });
       friendIDs = friendIDs.toSet().toList();
@@ -152,26 +154,41 @@ class _HisProfileState extends State<HisProfile> {
                                       : Icon(Icons.person_add_alt_1_rounded, color: kPrimaryColor),
                                   SizedBox(width: 10),
                                   test
-                                      ? Text(
-                                          "ARKADAŞSINIZ",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(color: kPrimaryColor, fontSize: 15),
+                                      ? TextButton(
+                                          child: Text(
+                                            "ARKADAŞSINIZ",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(color: kPrimaryColor, fontSize: 15),
+                                          ),
+                                          onPressed: () async {
+                                            /// TODO: Arkadaş çıkar.
+                                            friendsData.forEach((key, value) async {
+                                              print(key);
+                                              print(value);
+                                              if (data["uid"] == value["uid"]) {
+                                                print('ID: ${value["uid"]}');
+                                                print(key);
+                                                var collection = FirebaseFirestore.instance.collection('friends');
+                                                var docSnapshot = await collection.doc(firebaseUser.uid).get();
+                                                // docSnapshot.reference.update({key: "null"});
+                                              }
+                                            });
+                                          },
                                         )
                                       : TextButton(
                                           onPressed: () async {
-                                            addKanka(
+                                            await addKanka(
                                               uid: widget.uid,
                                               name: data["name"],
                                               recycled: data["recycled"],
                                               level: data["level"],
                                               superhero: data["superhero"],
                                               coins: data["coins"],
-                                            );
-                                            setState(() {
-                                              test = true;
-                                              // _isLoading = true;
-                                              // bruh();
-                                            });
+                                            ).whenComplete(() => setState(() {
+                                                  test = true;
+                                                  // _isLoading = true;
+                                                  // bruh();
+                                                }));
                                           },
                                           child: Text(
                                             "ARKADAŞ EKLE",
