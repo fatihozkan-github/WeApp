@@ -73,11 +73,10 @@ class _EditProfileState extends State<EditProfile> {
     }
     if (data["avatar"] != null && data["avatar"].toString().isNotEmpty) {
       _currentProgress++;
-      imageUrl = data['avatar'];
+      _avatar = data['avatar'];
     }
     if (data["rfId"] != null && data["rfId"].toString().isNotEmpty) {
       _currentProgress++;
-      imageUrl = data['avatar'];
     }
     setState(() {});
   }
@@ -140,16 +139,16 @@ class _EditProfileState extends State<EditProfile> {
       });
     }
 
-    if (_avatar != null && _avatar != data["avatar"]) {
-      print('ch6');
-      setState(() {
-        if (_currentProgress < 7 && data["avatar"].toString().isEmpty) _currentProgress++;
-        if (_currentProgress < 7 && data["avatar"].toString().isNotEmpty && _avatar.isEmpty) _currentProgress--;
-      });
-      await brewCollection.doc(currentUid).update({
-        "avatar": _avatar,
-      });
-    }
+    // if (_avatar != null && _avatar != data["avatar"]) {
+    //   print('ch6');
+    //   setState(() {
+    //     if (_currentProgress < 7 && data["avatar"].toString().isEmpty) _currentProgress++;
+    //     if (_currentProgress < 7 && data["avatar"].toString().isNotEmpty && _avatar.isEmpty) _currentProgress--;
+    //   });
+    //   await brewCollection.doc(currentUid).update({
+    //     "avatar": _avatar,
+    //   });
+    // }
     getData();
   }
 
@@ -160,11 +159,7 @@ class _EditProfileState extends State<EditProfile> {
       final _storage = FirebaseStorage.instance;
       await Permission.photos.request();
       image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      print(image);
-      print('ch2');
-      print(File(image.path));
       var file = File(image.path);
-
       if (image != null) {
         var snapshot = await _storage.ref().child('profilePhotos/${basename(image.path)}').putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
@@ -172,7 +167,7 @@ class _EditProfileState extends State<EditProfile> {
           'avatar': downloadUrl,
         });
         setState(() {
-          imageUrl = downloadUrl;
+          _avatar = downloadUrl;
         });
       } else {
         print('No Path Received');
@@ -209,12 +204,12 @@ class _EditProfileState extends State<EditProfile> {
                         child: Column(
                           children: [
                             /// TODO: Null path error!
-                            (imageUrl != null && imageUrl != '')
+                            (_avatar != null && _avatar != '')
                                 ? Container(
                                     height: 120,
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        image: DecorationImage(fit: BoxFit.contain, image: NetworkImage(imageUrl))),
+                                        image: DecorationImage(fit: BoxFit.contain, image: NetworkImage(_avatar))),
                                   )
                                 : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
                             Text(
