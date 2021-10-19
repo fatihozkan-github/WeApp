@@ -10,9 +10,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class FriendsTab extends StatelessWidget {
+class FriendsTab extends StatefulWidget {
+  @override
+  State<FriendsTab> createState() => _FriendsTabState();
+}
+
+class _FriendsTabState extends State<FriendsTab> {
   CollectionReference users = FirebaseFirestore.instance.collection('friends');
+
   var firebaseUser = FirebaseAuth.instance.currentUser;
+
   List<dynamic> localFriendList = [];
 
   @override
@@ -55,7 +62,7 @@ class FriendsTab extends StatelessWidget {
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(builder: (c) => HisProfile(uid: localFriendList[index]["uid"], friends: localFriendList)),
-          ),
+          ).then((value) => setState(() {})),
           leading: Container(
             width: 48,
             height: 48,
