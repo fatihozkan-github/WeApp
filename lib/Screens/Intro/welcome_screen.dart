@@ -10,26 +10,49 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: ListView(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          children: <Widget>[
-            SizedBox(height: 60),
-            Center(
-              child: Text("WE'ye HOŞGELDİN!", style: TextStyle(fontWeight: FontWeight.bold, color: kPrimaryColor, fontSize: 32)),
-            ),
-            Image.asset("assets/we2.png", scale: 1.4),
-            RoundedButton(
-              text: "GİRİŞ YAP",
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
-            ),
-            SizedBox(height: 10),
-            RoundedButton(
-              text: "KAYIT OL",
-              color: kSecondaryColor,
-              textColor: Colors.white,
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
-            ),
-          ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Center(
+                child: Text("WE'ye HOŞGELDİN!",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: kPrimaryColor,
+                        fontSize: 32)),
+              ),
+              Image.asset("assets/we2.png", scale: 1.5),
+              Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    child: RoundedButton(
+                      text: "GİRİŞ YAP",
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen())),
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    child: RoundedButton(
+                      text: "KAYIT OL",
+                      color: kSecondaryColor,
+                      textColor: Colors.white,
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpScreen())),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

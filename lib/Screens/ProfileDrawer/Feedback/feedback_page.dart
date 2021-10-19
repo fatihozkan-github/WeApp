@@ -44,12 +44,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
       body: Form(
         key: _formKey,
         child: ListView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: EdgeInsets.symmetric(horizontal: 10),
           children: <Widget>[
             SizedBox(height: 30),
             Text(
               "Bize bir mesaj bırakın. En yakın zamanda geri dönüş yapacağız.",
-              style: TextStyle(fontSize: 17.5, height: 1.3, color: Colors.black),
+              style:
+                  TextStyle(fontSize: 17.5, height: 1.3, color: Colors.black),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 20),
@@ -60,7 +62,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             RoundedInputField(
               hintText: 'Mesajınız',
               icon: Icons.message,
-              maxLines: null,
+              maxLines: 3,
               textInputAction: TextInputAction.newline,
               onChanged: (value) => setState(() => _message = value),
             ),
@@ -70,15 +72,22 @@ class _FeedbackPageState extends State<FeedbackPage> {
               onPressed: () {
                 setState(() {
                   if (_formKey.currentState.validate()) {
-                    launchUrl("mailto:we.recycle.team@gmail.com?subject=From $_name&body=$_message");
+                    var params = Uri(
+                      scheme: 'mailto',
+                      path: 'we.recycle.team@gmail.com',
+                      query: 'subject=From $_name&body=$_message',
+                    );
+                    launchUrl(params.toString());
                   }
                 });
               },
             ),
             SizedBox(height: 20),
             Center(
-              child: Text("Alternatif olarak bu platformlardan da bize ulaşabilirsiniz.",
-                  textAlign: TextAlign.center, style: TextStyle(color: Colors.black, fontSize: 17)),
+              child: Text(
+                  "Alternatif olarak bu platformlardan da bize ulaşabilirsiniz.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black, fontSize: 17)),
             ),
             SizedBox(height: 20),
             Row(
@@ -86,17 +95,22 @@ class _FeedbackPageState extends State<FeedbackPage> {
               children: <Widget>[
                 GestureDetector(
                   onTap: () => launchUrl("https://github.com/alihansoykal/we"),
-                  child: Icon(FontAwesomeIcons.github, color: Colors.orange, size: 35),
+                  child: Icon(FontAwesomeIcons.github,
+                      color: Colors.orange, size: 35),
                 ),
                 SizedBox(width: 20),
                 GestureDetector(
-                  onTap: () => launchUrl("https://www.instagram.com/werecycle.official/"),
-                  child: Icon(FontAwesomeIcons.instagram, color: Color(0xfffb3958), size: 35),
+                  onTap: () => launchUrl(
+                      "https://www.instagram.com/werecycle.official/"),
+                  child: Icon(FontAwesomeIcons.instagram,
+                      color: Color(0xfffb3958), size: 35),
                 ),
                 SizedBox(width: 20),
                 GestureDetector(
-                  onTap: () => launchUrl("https://play.google.com/store/apps/details?id=com.we.werecyclemobile"),
-                  child: Icon(FontAwesomeIcons.googlePlay, color: Color(0xff1DA1F2), size: 35),
+                  onTap: () => launchUrl(
+                      "https://play.google.com/store/apps/details?id=com.we.werecyclemobile"),
+                  child: Icon(FontAwesomeIcons.googlePlay,
+                      color: Color(0xff1DA1F2), size: 35),
                 ),
               ],
             ),

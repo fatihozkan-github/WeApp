@@ -47,6 +47,7 @@ class RoundedInputField extends StatelessWidget {
         initialValue: initialValue,
         onChanged: onChanged,
         maxLines: maxLines,
+        minLines: 1,
         textInputAction: textInputAction ?? TextInputAction.next,
         keyboardType: keyboardType,
         cursorColor: kPrimaryColor,
@@ -62,7 +63,11 @@ class RoundedInputField extends StatelessWidget {
               }
             },
         decoration: InputDecoration(
-          prefixIcon: showIcon ? Padding(padding: EdgeInsets.only(right: 3), child: Icon(icon, color: kPrimaryColor)) : null,
+          prefixIcon: showIcon
+              ? Padding(
+                  padding: EdgeInsets.only(right: 3),
+                  child: Icon(icon, color: kPrimaryColor))
+              : null,
           suffixIcon: suffixIcon,
           hintText: hintText,
           focusedBorder: OutlineInputBorder(
