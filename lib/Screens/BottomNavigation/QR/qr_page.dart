@@ -36,7 +36,7 @@ class QRScanPageState extends State<QRScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("HeroStation"),
+        title: Text('HeroStation'),
         centerTitle: true,
         backgroundColor: kPrimaryColor,
       ),
@@ -50,7 +50,7 @@ class QRScanPageState extends State<QRScanPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(width: 10),
-                Expanded(flex: 4, child: Image.asset("assets/instruction.png", height: 220)),
+                Expanded(flex: 4, child: Image.asset('assets/instruction.png', height: 220)),
                 Expanded(
                   flex: 6,
                   child: Bubble(
@@ -74,7 +74,7 @@ class QRScanPageState extends State<QRScanPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Text(
-                  "Lütfen dönüştürmeye başlarken bu görevleri tamamladığından emin ol!",
+                  'Lütfen dönüştürmeye başlarken bu görevleri tamamladığından emin ol!',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18, color: kPrimaryColor, fontWeight: FontWeight.bold),
                 ),
@@ -117,26 +117,29 @@ class QRScanPageState extends State<QRScanPage> {
                     onPressed: () async {
                       final databaseReferenceTest = FirebaseDatabase.instance.reference();
                       await databaseReferenceTest.once().then((DataSnapshot snapshot) async {
-                        var data = snapshot.value["3566"]["IS_USING"];
-                        if (data == true) {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return MacheUsing();
-                              },
-                            ),
-                          );
+                        /// TODO: Test
+                        /// • was -> if (data == true)
+                        bool isUsing = snapshot.value['3566']['IS_USING'];
+                        bool inUse = snapshot.value['3566']['IN_USE'];
+                        bool signUp = snapshot.value['3566']['SIGN_UP'];
+                        print('test s');
+                        print('isUsing: $isUsing');
+                        print('inUse: $inUse');
+                        print('signUp: $signUp');
+                        print('test e');
+                        if (isUsing) {
+                          if (inUse || signUp) {
+                            await Navigator.push(context, MaterialPageRoute(builder: (context) => MacheUsing()));
+                          } else {
+                            /// If inUse and signUp parameters are both false, we assume that there is a bug about isUsing
+                            /// and we suppose that isUsing is false. Hence, we proceed to next page.
+                            await Navigator.push(context, MaterialPageRoute(builder: (context) => QRViewExample()));
+                          }
                         } else {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return QRViewExample();
-                              },
-                            ),
-                          );
+                          await Navigator.push(context, MaterialPageRoute(builder: (context) => QRViewExample()));
                         }
+                        // await Navigator.push(context, MaterialPageRoute(builder: (context) => QRViewExample()));
+                        // await Navigator.push(context, MaterialPageRoute(builder: (context) => MacheUsing()));
                       });
                     },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
@@ -154,7 +157,7 @@ class QRScanPageState extends State<QRScanPage> {
                           children: [
                             Icon(Icons.qr_code_rounded, color: Colors.white),
                             Text(
-                              "TARAT",
+                              'TARAT',
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                             ),
@@ -202,50 +205,73 @@ class QRScanPageState extends State<QRScanPage> {
                   margin: EdgeInsets.all(10),
                   child: RaisedButton(
                     onPressed: () async {
+                      /// TODO: Test
                       var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
                       print(userData.data());
-                      if (userData.data().containsKey('rfId')) {
-                        if (userData.data()['rfId'] != null) {
-                          if (userData.data()['rfId'] != '') {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return BraceletPage();
-                                },
-                              ),
-                            );
+                      final databaseReferenceTest = FirebaseDatabase.instance.reference();
+                      await databaseReferenceTest.once().then((DataSnapshot snapshot) async {
+                        bool isUsing = snapshot.value['3566']['IS_USING'];
+                        bool inUse = snapshot.value['3566']['IN_USE'];
+                        bool signUp = snapshot.value['3566']['SIGN_UP'];
+                        print('test s');
+                        print('isUsing: $isUsing');
+                        print('inUse: $inUse');
+                        print('signUp: $signUp');
+                        print('test e');
+                        if (userData.data().containsKey('rfId')) {
+                          if (userData.data()['rfId'] != null && userData.data()['rfId'] != '') {
+                            await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
                           } else {
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ActivateBracelet();
-                                },
-                              ),
-                            );
+                            if (isUsing) {
+                              if (inUse || signUp) {
+                                await Navigator.push(context, MaterialPageRoute(builder: (context) => MacheUsing()));
+                              } else {
+                                /// If inUse and signUp parameters are both false, we assume that there is a bug about isUsing
+                                /// and we suppose that isUsing is false. Hence, we proceed to next page.
+                                await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+                              }
+                            } else {
+                              await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+                            }
                           }
-                        } else {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ActivateBracelet();
-                              },
-                            ),
-                          );
                         }
-                      } else {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return ActivateBracelet();
-                            },
-                          ),
-                        );
-                      }
+                      });
                     },
+
+                    /// old
+                    // onPressed: () async {
+                    //   var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+                    //   print(userData.data());
+                    //
+                    //   /// TODO: Test
+                    //   if (userData.data().containsKey('rfId')) {
+                    //     if (userData.data()['rfId'] != null) {
+                    //       if (userData.data()['rfId'] != '') {
+                    //         await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
+                    //       } else {
+                    //         await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+                    //       }
+                    //     } else {
+                    //       await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+                    //     }
+                    //   } else {
+                    //     await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+                    //   }
+                    // },
+                    /// old
+                    // onPressed: () async {
+                    //   var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+                    //   print(userData.data());
+                    //
+                    //   /// TODO: Test
+                    //   if (userData.data().containsKey('rfId')) {
+                    //     if (userData.data()['rfId'] != null && userData.data()['rfId'] != '') {
+                    //       await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
+                    //     } else {
+                    //       await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+                    //     }
+                    //   }
+                    // },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                     padding: EdgeInsets.all(0.0),
                     child: Ink(
@@ -263,11 +289,11 @@ class QRScanPageState extends State<QRScanPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              "OKUT",
+                              'OKUT',
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            Container(width: 30, child: Image.asset("assets/Icons/bracelet.png", color: Colors.white)),
+                            Container(width: 30, child: Image.asset('assets/Icons/bracelet.png', color: Colors.white)),
                           ],
                         ),
                       ),

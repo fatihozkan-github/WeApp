@@ -19,8 +19,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final databaseReference = FirebaseDatabase.instance.reference();
 
   setFalse() async {
-    print('hi');
+    print('LifeCycle - setFalse func');
     await databaseReference.child('/3566/IS_USING').set(false);
+    await databaseReference.child('/3566/IN_USE').set(false);
   }
 
   @override

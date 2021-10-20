@@ -347,9 +347,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ),
                               );
                             }
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return WESpinKit();
                           }),
                       RoundedButton(
                         text: "KAYDET",
@@ -366,12 +364,44 @@ class _EditProfileState extends State<EditProfile> {
               ),
             ),
           )
-        : Scaffold(
-            body: WESpinKit(),
-          );
+        : Scaffold(body: WESpinKit());
   }
+}
 
-  /// Olds
+class MacheUsing extends StatelessWidget {
+  const MacheUsing({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Lottie.asset('assets/77295-not-available.json', height: 300),
+          Center(
+            child: Column(
+              children: [
+                Text('HeroStation şu anda dolu', style: TextStyle(fontWeight: FontWeight.bold)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Lütfen daha sonra tekrar dene.', textAlign: TextAlign.center),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
+                    },
+                    child: Text('Geri dön'))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Olds
 // _getBody(data, context, size) => Scaffold(
 //       body: Padding(
 //         padding: const EdgeInsets.all(16.0),
@@ -392,61 +422,61 @@ class _EditProfileState extends State<EditProfile> {
 //                                 image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(data["avatar"]))),
 //                           )
 //                         : Icon(Icons.account_circle_rounded, size: 150, color: Colors.grey),
-  //                   ),
-  //                   Container(
-  //                     child: Center(
-  //                         child:
-  //                             Text("Profil fotoğrafını değiştirmek için avatara dokun.", style: TextStyle(color: Colors.grey))),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             SizedBox(height: 10),
-  //             ListTile(
-  //                 title: Text('Kullancı adı:', style: TextStyle(color: Colors.grey, fontSize: 20)),
-  //                 subtitle: TextField(
-  //                   onSubmitted: (value1) {
-  //                     setState(() {
-  //                       _newUsername = value1.trim();
-  //                       brewCollection.doc(currentUid).update({
-  //                         "name": _newUsername,
-  //                       });
-  //                     });
-  //                   },
-  //                   style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-  //                   decoration: InputDecoration(
-  //                     hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-  //                     hintText: data["name"],
-  //                   ),
-  //                 )),
-  //             ListTile(
-  //                 title: Text('Şehir:', style: TextStyle(color: Colors.grey, fontSize: 20)),
-  //                 subtitle: TextField(
-  //                   onSubmitted: (value) {
-  //                     setState(() {
-  //                       _newCity = value.trim();
-  //                       brewCollection.doc(currentUid).update({
-  //                         "city": _newCity,
-  //                       });
-  //                     });
-  //                   },
-  //                   style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-  //                   decoration: InputDecoration(
-  //                     hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-  //                     hintText: data["city"],
-  //                   ),
-  //                 )),
-  //             ListTile(
-  //               title: Text('Favori süper kahraman', style: TextStyle(color: Colors.grey, fontSize: 20)),
-  //               subtitle: TextField(
-  //                 onSubmitted: (value) {
-  //                   setState(() {
-  //                     _newSuperhero = value.trim();
-  //                     brewCollection.doc(currentUid).update({"superhero": _newSuperhero});
-  //                   });
-  //                 },
-  //                 style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
-  //                 decoration: InputDecoration(
+//                   ),
+//                   Container(
+//                     child: Center(
+//                         child:
+//                             Text("Profil fotoğrafını değiştirmek için avatara dokun.", style: TextStyle(color: Colors.grey))),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             SizedBox(height: 10),
+//             ListTile(
+//                 title: Text('Kullancı adı:', style: TextStyle(color: Colors.grey, fontSize: 20)),
+//                 subtitle: TextField(
+//                   onSubmitted: (value1) {
+//                     setState(() {
+//                       _newUsername = value1.trim();
+//                       brewCollection.doc(currentUid).update({
+//                         "name": _newUsername,
+//                       });
+//                     });
+//                   },
+//                   style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+//                   decoration: InputDecoration(
+//                     hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+//                     hintText: data["name"],
+//                   ),
+//                 )),
+//             ListTile(
+//                 title: Text('Şehir:', style: TextStyle(color: Colors.grey, fontSize: 20)),
+//                 subtitle: TextField(
+//                   onSubmitted: (value) {
+//                     setState(() {
+//                       _newCity = value.trim();
+//                       brewCollection.doc(currentUid).update({
+//                         "city": _newCity,
+//                       });
+//                     });
+//                   },
+//                   style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+//                   decoration: InputDecoration(
+//                     hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+//                     hintText: data["city"],
+//                   ),
+//                 )),
+//             ListTile(
+//               title: Text('Favori süper kahraman', style: TextStyle(color: Colors.grey, fontSize: 20)),
+//               subtitle: TextField(
+//                 onSubmitted: (value) {
+//                   setState(() {
+//                     _newSuperhero = value.trim();
+//                     brewCollection.doc(currentUid).update({"superhero": _newSuperhero});
+//                   });
+//                 },
+//                 style: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
+//                 decoration: InputDecoration(
 //                   hintStyle: TextStyle(color: Colors.white, fontSize: 35, fontWeight: FontWeight.bold),
 //                   hintText: data["superhero"],
 //                 ),
@@ -466,44 +496,3 @@ class _EditProfileState extends State<EditProfile> {
 //         ),
 //       ),
 //     );
-}
-
-class MacheUsing extends StatelessWidget {
-  const MacheUsing({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white24,
-      appBar: AppBar(),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Lottie.asset('assets/77295-not-available.json', height: 300),
-          Center(
-            child: Column(
-              children: [
-                Text(
-                  'HeroStation şu anda dolu',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Lütfen daha sonra tekrar dene.',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
-                    },
-                    child: Text('Geri dön'))
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
