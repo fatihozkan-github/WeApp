@@ -80,7 +80,7 @@ class _HisProfileState extends State<HisProfile> {
                         SizedBox(height: 30),
                         Column(
                           children: <Widget>[
-                            data["avatar"] == null
+                            data["avatar"] == null || data["avatar"] == ''
                                 ? Icon(Icons.account_circle_rounded, size: 200, color: Colors.grey)
                                 : Container(
                                     height: 220,

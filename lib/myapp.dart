@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     print('LifeCycle - setFalse func');
     await databaseReference.child('/3566/IS_USING').set(false);
     await databaseReference.child('/3566/IN_USE').set(false);
+    await databaseReference.child('/3566/SIGN_UP').set(false);
   }
 
   @override

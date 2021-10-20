@@ -80,7 +80,13 @@ class _TransitionPageState extends State<TransitionPage> {
   Future openBox(bool isOpen) async {
     await databaseReference.child('3566').update({'IN_USE': isOpen});
     await databaseReference.child('/3566/IS_USING').set(isOpen);
-    checkAFK();
+    if (isOpen) {
+      checkAFK();
+    } else {
+      if (_initialTimer.isActive) {
+        _initialTimer.cancel();
+      }
+    }
   }
 
   @override
@@ -90,9 +96,11 @@ class _TransitionPageState extends State<TransitionPage> {
   }
 
   @override
-  void dispose() {
-    openBox(false);
-    _initialTimer.cancel();
+  Future<void> dispose() async {
+    await openBox(false);
+    if (_initialTimer.isActive) {
+      _initialTimer.cancel();
+    }
     super.dispose();
   }
 
@@ -105,7 +113,11 @@ class _TransitionPageState extends State<TransitionPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             SizedBox(height: size.height * 0.04),
-            Text(_counter.toString()),
+            Text(
+              'İşlemi tamamlamak için kalan zaman: ' + _counter.toString(),
+              style: TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
             SizedBox(height: 10),
             Align(
                 alignment: Alignment.topRight,

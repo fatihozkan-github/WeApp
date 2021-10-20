@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 final firestoreInstance = FirebaseFirestore.instance;
 final currentUid = FirebaseAuth.instance.currentUser.uid;
@@ -204,19 +205,17 @@ Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynam
   var documentSnapshot;
 
   /// TODO: Check.
-  /// Uygulamaya gir çık yapmadan arkadaş eklenemiyor.
   var currentUid = FirebaseAuth.instance.currentUser.uid;
   print(currentUid);
   documentSnapshot = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
   int check = 0;
   DocumentSnapshot docSnapshot;
   docSnapshot = await FirebaseFirestore.instance.collection('friends').doc(currentUid).get();
-  if (docSnapshot.data() != null) {
+  print(docSnapshot.data().toString());
+  if (docSnapshot.data() != null && docSnapshot.data().toString() != '{}') {
     Map map = docSnapshot.data();
     List local = map.keys.toSet().toList();
-    local.sort();
-    print(local);
-    print(local.last.toString().split('friend')[1]);
+    local.sort((a, b) => int.parse(a.toString().split('friend')[1]).compareTo(int.parse(b.toString().split('friend')[1])));
     await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
       "friend" + (docSnapshot.data() == null ? 1 : int.parse(local.last.toString().split('friend')[1]) + 1).toString(): {
         "uid": uid,
@@ -227,16 +226,7 @@ Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynam
         "level": level
       },
     }, SetOptions(merge: true));
-
-    ///
-    // for (var i = 1; i <= docSnapshot.data().length; i++) {
-    //   if (docSnapshot.data()["friend" + i.toString()] != null) {
-    //     if (docSnapshot.data()["friend" + i.toString()].containsValue(uid)) {
-    //       check = check + 1;
-    //     }
-    //   }
-    // }
-  } else if (docSnapshot.data() == null) {
+  } else if (docSnapshot.data() == null || docSnapshot.data().toString() == '{}') {
     await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
       "friend" + 1.toString(): {
         "uid": uid,
@@ -248,6 +238,17 @@ Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynam
       },
     }, SetOptions(merge: true));
   }
+
+  /// old
+  ///
+  // for (var i = 1; i <= docSnapshot.data().length; i++) {
+  //   if (docSnapshot.data()["friend" + i.toString()] != null) {
+  //     if (docSnapshot.data()["friend" + i.toString()].containsValue(uid)) {
+  //       check = check + 1;
+  //     }
+  //   }
+  // }
+
   // if (check == 0) {
   //   await FirebaseFirestore.instance.collection('friends').doc(currentUid).set({
   //     "friend" + (docSnapshot.data() == null ? 1 : docSnapshot.data().length + 1).toString(): {

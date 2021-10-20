@@ -32,6 +32,7 @@ final databaseReference = FirebaseDatabase.instance.reference();
 
 class QRScanPageState extends State<QRScanPage> {
   int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
