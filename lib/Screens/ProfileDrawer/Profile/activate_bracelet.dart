@@ -113,14 +113,8 @@ class ReadRf extends StatefulWidget {
 }
 
 class _ReadRfState extends State<ReadRf> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print('hi');
-    init();
-  }
-
+  /// is using true olmuyor false kalıyor. // yapıldı.
+  /// geriye çıkınca değer trueda kalıyor. // yapıldı.
   Future<void> init() async {
     StreamSubscription streamEvent;
     final databaseReference = FirebaseDatabase.instance.reference();
@@ -131,30 +125,36 @@ class _ReadRfState extends State<ReadRf> {
     streamEvent = databaseReference.child('/3566/RFID_SIGN').onValue.listen((event) async {
       /// TODO: Test
       await databaseReference.child('/3566/SIGN_UP').set(true);
+      await databaseReference.child('/3566/IS_USING').set(true);
       var data = event.snapshot.value as String;
       print('data: $data');
-      // var isUsingData = await databaseReference.child('/3566/IS_USING').get();
-      // var inUseData = await databaseReference.child('/3566/IN_USE').get();
-      // var signUpData = await databaseReference.child('/3566/SIGN_UP').get();
-
-      // print('isUsing: ${isUsingData.value}');
-
-      // bool isUsing = isUsingData.value;
-      // bool inUse = inUseData.value;
-      // bool signUp = signUpData.value;
-      // print('test s');
-      // print('isUsing: $isUsing');
-      // print('inUse: $inUse');
-      // print('signUp: $signUp');
-      // print('test e');
       if ((data != '' || data.replaceAll(' ', '') != '')) {
         await FirebaseFirestore.instance.doc('users/${userRef.docs.first.id}').update({'rfId': '$data'});
         await databaseReference.child('/3566/RFID_SIGN').set('');
+        await databaseReference.child('/3566/SIGN_UP').set(false);
+        await databaseReference.child('/3566/IS_USING').set(false);
         widget.controller.nextPage(duration: Duration(milliseconds: 200), curve: Curves.ease);
         Navigator.push(context, MaterialPageRoute(builder: (context) => Complete()));
         streamEvent.cancel();
       }
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('hi');
+    init();
+  }
+
+  @override
+  Future<void> dispose() async {
+    Future.delayed(Duration.zero, () async {
+      await databaseReference.child('/3566/SIGN_UP').set(false);
+      await databaseReference.child('/3566/IS_USING').set(false);
+    });
+    super.dispose();
   }
 
   @override
@@ -220,8 +220,8 @@ class Complete extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () async {
-                  await databaseReference.child('/3566/IS_USING').set(false);
-                  await databaseReference.child('/3566/SIGN_UP').set(false);
+                  // await databaseReference.child('/3566/IS_USING').set(false);
+                  // await databaseReference.child('/3566/SIGN_UP').set(false);
                   await Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
                 },
                 child: Text(
