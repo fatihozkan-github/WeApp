@@ -135,87 +135,81 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return UnFocuser(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white,
-        body: isLoading
-            ? WESpinKit()
-            : Form(
-                key: _formKey,
-                child: Center(
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    children: <Widget>[
-                      SizedBox(height: 20),
-                      Image.asset('assets/we2.png', scale: 1.4),
-                      RoundedInputField(
-                        hintText: 'İsim',
-                        onChanged: (value) => setState(() => _username = value.trim()),
-                      ),
-                      RoundedInputField(
-                        hintText: 'E-posta',
-                        icon: Icons.mail,
-                        onChanged: (value) => setState(() => _email = value.trim()),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (_typedValue) {
-                          return (_typedValue.isEmpty)
-                              ? 'Boş bırakılamaz'
-                              : isValidEmail()
-                                  ? null
-                                  : 'Lütfen geçerli bir mail adresi giriniz';
-                        },
-                      ),
-                      RoundedInputField(
-                        hintText: 'Şifreniz',
-                        icon: Icons.lock,
-                        onChanged: (value) => setState(() => _password = value.trim()),
-                        obscureText: _obscureText,
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                          FocusScope.of(context).nextFocus();
-                        },
-                        suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
-                        validator: (_typed) {
-                          if (_typed.isEmpty) {
-                            return 'Boş bırakılamaz';
-                          } else if (_typed.length < 6) {
-                            return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                      RoundedInputField(
-                        hintText: 'Referans kodu zorunludur',
-                        icon: Icons.lock,
-                        onChanged: (value) => _referral = value.trim(),
-                        textInputAction: TextInputAction.done,
-                      ),
-                      SizedBox(height: 10),
-                      RoundedButton(
-                        text: 'KAYIT OL',
-                        onPressed: () async {
-                          _formKey.currentState.validate();
-                          await signUpFunction();
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      AlreadyHaveAnAccountCheck(
-                        login: false,
-                        press: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                    ],
+    return Scaffold(
+      body: isLoading
+          ? WESpinKit()
+          : Form(
+              key: _formKey,
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  Image.asset('assets/we2.png', scale: 1.4),
+                  RoundedInputField(
+                    hintText: 'İsim',
+                    onChanged: (value) => setState(() => _username = value.trim()),
                   ),
-                ),
+                  RoundedInputField(
+                    hintText: 'E-posta',
+                    icon: Icons.mail,
+                    onChanged: (value) => setState(() => _email = value.trim()),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (_typedValue) {
+                      return (_typedValue.isEmpty)
+                          ? 'Boş bırakılamaz'
+                          : isValidEmail()
+                              ? null
+                              : 'Lütfen geçerli bir mail adresi giriniz';
+                    },
+                  ),
+                  RoundedInputField(
+                    hintText: 'Şifreniz',
+                    icon: Icons.lock,
+                    onChanged: (value) => setState(() => _password = value.trim()),
+                    obscureText: _obscureText,
+                    onEditingComplete: () {
+                      FocusScope.of(context).nextFocus();
+                      FocusScope.of(context).nextFocus();
+                    },
+                    suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
+                    validator: (_typed) {
+                      if (_typed.isEmpty) {
+                        return 'Boş bırakılamaz';
+                      } else if (_typed.length < 6) {
+                        return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  RoundedInputField(
+                    hintText: 'Referans kodu zorunludur',
+                    icon: Icons.lock,
+                    onChanged: (value) => _referral = value.trim(),
+                    textInputAction: TextInputAction.done,
+                  ),
+                  SizedBox(height: 10),
+                  RoundedButton(
+                    text: 'KAYIT OL',
+                    onPressed: () async {
+                      _formKey.currentState.validate();
+                      await signUpFunction();
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  AlreadyHaveAnAccountCheck(
+                    login: false,
+                    press: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                ],
               ),
-      ),
+            ),
     );
   }
 }

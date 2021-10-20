@@ -31,7 +31,16 @@ class PostModel extends StatefulWidget {
 
 class _PostModelState extends State<PostModel> {
   ScreenshotController _screenshotController = ScreenshotController();
+  String date = '';
   // bool _openCommentPanel = false;
+
+  @override
+  void initState() {
+    String today = DateTime.now().toString().substring(0, 10);
+    List holder = today.split('-');
+    date = holder[2] + '.' + holder[1] + '.' + holder[0];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +70,8 @@ class _PostModelState extends State<PostModel> {
                     ),
                   ),
                   title: Text(widget.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(widget.time),
+                  // subtitle: Text(widget.time),
+                  subtitle: Text(date),
                 ),
                 CachedNetworkImage(
                   imageUrl: widget.asset.toString(),
@@ -95,10 +105,14 @@ class _PostModelState extends State<PostModel> {
                 press: () async {
                   await _screenshotController.capture(delay: const Duration(milliseconds: 10)).then((Uint8List image) async {
                     if (image != null) {
+                      print(image);
                       final directory = await getApplicationDocumentsDirectory();
+                      print(directory);
                       final imagePath = await File('${directory.path}/image.png').create();
+                      print(imagePath);
                       await imagePath.writeAsBytes(image);
-                      await SocialShare.shareInstagramStory(imagePath.path);
+                      print(imagePath.path);
+                      await SocialShare.shareInstagramStory(imagePath.path).whenComplete(() => print('share'));
                     }
                   });
                 }),

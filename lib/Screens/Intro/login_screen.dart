@@ -36,104 +36,101 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            children: <Widget>[
-              Image.asset("assets/we2.png", scale: 1.4),
-              RoundedInputField(
-                hintText: "E-posta",
-                icon: Icons.mail,
-                onChanged: (value) => setState(() {
-                  _email = value.trim();
-                  _showError = false;
-                }),
-                keyboardType: TextInputType.emailAddress,
-                validator: (_typedValue) {
-                  return (_typedValue.isEmpty)
-                      ? 'Boş bırakılamaz'
-                      : isValidEmail()
-                          ? null
-                          : "Lütfen geçerli bir mail adresi giriniz";
-                },
-              ),
-              RoundedInputField(
-                hintText: "Şifreniz",
-                icon: Icons.lock,
-                onChanged: (value) => setState(() {
-                  _password = value.trim();
-                  _showError = false;
-                }),
-                obscureText: _obscureText,
-                textInputAction: TextInputAction.done,
-                onEditingComplete: () {
-                  FocusScope.of(context).nextFocus();
-                  FocusScope.of(context).nextFocus();
-                },
-                suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
-                // validator: (_typed) {
-                //   if (_typed.isEmpty) {
-                //     return 'Boş bırakılamaz';
-                //   } else if (_typed.length < 6) {
-                //     return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
-                //   } else {
-                //     return null;
-                //   }
-                // },
-              ),
-              _showError
-                  ? Text(
-                      'Girdiğiniz bilgilere sahip bir kullanıcı bulamadık. Mailinizi ve şifrenizi kontrol edip tekrar deneyiniz.',
-                      style: TextStyle(color: Colors.red),
-                    )
-                  : Container(),
-              RoundedButton(
-                /// TODO: User check
-                text: "GİRİŞ YAP",
-                onPressed: () {
-                  print(_email);
-                  print(_password);
-                  if (_formKey.currentState.validate()) {
-                    auth.signInWithEmailAndPassword(email: _email, password: _password).then(
-                      (_) async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        prefs?.setBool("isLoggedIn", true);
-                        Navigator.pushAndRemoveUntil<dynamic>(
-                          context,
-                          MaterialPageRoute<dynamic>(builder: (BuildContext context) => BottomNavigation()),
-                          (route) => false,
-                        );
-                      },
-                    ).catchError((err) {
-                      print(err);
-                      setState(() {
-                        _showError = true;
-                      });
-                      // return showDialog(
-                      //     context: context,
-                      //     builder: (BuildContext context) {
-                      //       print(err.message);
-                      //       return AlertDialog(
-                      //         title: Text("Hata"),
-                      //         content: Text(err.message),
-                      //         actions: [TextButton(child: Text("Tamam"), onPressed: () => Navigator.of(context).pop())],
-                      //       );
-                      //     });
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          children: <Widget>[
+            Image.asset("assets/we2.png", scale: 1.4),
+            RoundedInputField(
+              hintText: "E-posta",
+              icon: Icons.mail,
+              onChanged: (value) => setState(() {
+                _email = value.trim();
+                _showError = false;
+              }),
+              keyboardType: TextInputType.emailAddress,
+              validator: (_typedValue) {
+                return (_typedValue.isEmpty)
+                    ? 'Boş bırakılamaz'
+                    : isValidEmail()
+                        ? null
+                        : "Lütfen geçerli bir mail adresi giriniz";
+              },
+            ),
+            RoundedInputField(
+              hintText: "Şifreniz",
+              icon: Icons.lock,
+              onChanged: (value) => setState(() {
+                _password = value.trim();
+                _showError = false;
+              }),
+              obscureText: _obscureText,
+              textInputAction: TextInputAction.done,
+              onEditingComplete: () {
+                FocusScope.of(context).nextFocus();
+                FocusScope.of(context).nextFocus();
+              },
+              suffixIcon: IconButton(onPressed: _toggle, icon: Icon(Icons.visibility), color: kPrimaryColor),
+              // validator: (_typed) {
+              //   if (_typed.isEmpty) {
+              //     return 'Boş bırakılamaz';
+              //   } else if (_typed.length < 6) {
+              //     return 'Şifreniz en az 6 karakter uzunluğunda olmalıdır.';
+              //   } else {
+              //     return null;
+              //   }
+              // },
+            ),
+            _showError
+                ? Text(
+                    'Girdiğiniz bilgilere sahip bir kullanıcı bulamadık. Mailinizi ve şifrenizi kontrol edip tekrar deneyiniz.',
+                    style: TextStyle(color: Colors.red),
+                  )
+                : Container(),
+            RoundedButton(
+              /// TODO: User check
+              text: "GİRİŞ YAP",
+              onPressed: () {
+                print(_email);
+                print(_password);
+                if (_formKey.currentState.validate()) {
+                  auth.signInWithEmailAndPassword(email: _email, password: _password).then(
+                    (_) async {
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs?.setBool("isLoggedIn", true);
+                      Navigator.pushAndRemoveUntil<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(builder: (BuildContext context) => BottomNavigation()),
+                        (route) => false,
+                      );
+                    },
+                  ).catchError((err) {
+                    print(err);
+                    setState(() {
+                      _showError = true;
                     });
-                    // .onError((error, stackTrace) async => setState(() => _showError = true));
-                  }
-                },
-              ),
-              SizedBox(height: 20),
-              AlreadyHaveAnAccountCheck(
-                press: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
-              ),
-              SizedBox(height: 20),
-            ],
-          ),
+                    // return showDialog(
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       print(err.message);
+                    //       return AlertDialog(
+                    //         title: Text("Hata"),
+                    //         content: Text(err.message),
+                    //         actions: [TextButton(child: Text("Tamam"), onPressed: () => Navigator.of(context).pop())],
+                    //       );
+                    //     });
+                  });
+                  // .onError((error, stackTrace) async => setState(() => _showError = true));
+                }
+              },
+            ),
+            SizedBox(height: 20),
+            AlreadyHaveAnAccountCheck(
+              press: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen())),
+            ),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );
