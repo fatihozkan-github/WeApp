@@ -1,7 +1,7 @@
 import 'package:WE/Screens/BottomNavigation/bottom_navigation.dart';
 import 'package:WE/Screens/Intro/welcome_screen.dart';
 import 'package:WE/Services/login_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:WE/myapp.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +16,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   var status = prefs.getBool('isLoggedIn') ?? false;
 
-  runApp(WE(isLoggedIn: status == true ? false : true));
+  runApp(MyApp(child: WE(isLoggedIn: status == true ? false : true)));
 }
 
 class WE extends StatelessWidget {
@@ -35,12 +35,10 @@ class WE extends StatelessWidget {
         body: isLoggedIn == false
             ? BottomNavigation()
             : SplashScreen(
-                loadingText:
-                    Text("WE ekibinden", style: TextStyle(color: Colors.white)),
+                loadingText: Text("WE ekibinden", style: TextStyle(color: Colors.white)),
                 seconds: 0,
                 navigateAfterSeconds: AfterSplash(),
-                image: Image.asset("assets/we2.png",
-                    alignment: Alignment.center, width: 160),
+                image: Image.asset("assets/we2.png", alignment: Alignment.center, width: 160),
                 // backgroundColor: kSecondaryColor,
               ),
       ),

@@ -90,8 +90,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                     Container(
                       margin: EdgeInsets.all(8),
                       child: ElevatedButton(
-                          style:
-                              ElevatedButton.styleFrom(primary: kPrimaryColor),
+                          style: ElevatedButton.styleFrom(primary: kPrimaryColor),
                           onPressed: () async {
                             await controller?.toggleFlash();
                             setState(() {});
@@ -99,9 +98,7 @@ class _QRViewExampleState extends State<QRViewExample> {
                           child: FutureBuilder(
                             future: controller?.getFlashStatus(),
                             builder: (context, snapshot) {
-                              return snapshot.data.toString() != null
-                                  ? Icon(Icons.lightbulb)
-                                  : Icon(Icons.lightbulb_outline);
+                              return snapshot.data.toString() != null ? Icon(Icons.lightbulb) : Icon(Icons.lightbulb_outline);
                             },
                           )),
                     ),
@@ -141,10 +138,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+    var scanArea = (MediaQuery.of(context).size.width < 400 || MediaQuery.of(context).size.height < 400) ? 150.0 : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     print(permissionStatus);
@@ -235,11 +229,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         key: qrKey,
         onQRViewCreated: _onQRViewCreated,
         overlay: QrScannerOverlayShape(
-            borderColor: kPrimaryColor,
-            borderRadius: 10,
-            borderLength: 30,
-            borderWidth: 10,
-            cutOutSize: scanArea),
+            borderColor: kPrimaryColor, borderRadius: 10, borderLength: 30, borderWidth: 10, cutOutSize: scanArea),
         onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
       );
     }
@@ -254,7 +244,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       var data = scanData;
       print('QR CODE: ${data.code}');
       // if (result.code == "6G34") {
-      if (data.code == "3566") {
+      if (data.code == "3566" || data.code == '6G34') {
         if (data.code != result) {
           result = data.code;
           await databaseReferenceTest.once().then((DataSnapshot snapshot) {
@@ -292,9 +282,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                'QR kodu okutmak için lütfen uygulama ayarlarından Kamera Erişimine izin verin.')),
+        SnackBar(content: Text('QR kodu okutmak için lütfen uygulama ayarlarından Kamera Erişimine izin verin.')),
       );
     }
   }
