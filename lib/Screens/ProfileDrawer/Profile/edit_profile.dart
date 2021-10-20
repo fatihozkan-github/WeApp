@@ -263,7 +263,7 @@ class _EditProfileState extends State<EditProfile> {
                                 color: Colors.white24,
                                 child: Column(
                                   children: [
-                                    data['rfId'] != null
+                                    data['rfId'] != null && data['rfId'] != ''
                                         ? Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
@@ -300,8 +300,8 @@ class _EditProfileState extends State<EditProfile> {
                                               await databaseReferenceTest.once().then((DataSnapshot snapshot) {
                                                 var data = snapshot.value["3566"]["IS_USING"];
                                                 if (data == true) {
-                                                  setState(() async {
-                                                    await Navigator.push(
+                                                  setState(() {
+                                                    Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) {
@@ -312,9 +312,10 @@ class _EditProfileState extends State<EditProfile> {
                                                     setState(() {});
                                                   });
                                                 } else {
-                                                  setState(() async {
-                                                    await databaseReferenceTest.child('/3566/IS_USING').set(true);
-                                                    await Navigator.push(
+                                                  setState(() {
+                                                    /// TODO: Removed - Check
+                                                    // await databaseReferenceTest.child('/3566/IS_USING').set(true);
+                                                    Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) {

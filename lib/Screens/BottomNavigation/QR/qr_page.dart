@@ -6,6 +6,7 @@ import 'package:WE/Screens/BottomNavigation/QR/new_qr_page.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/activate_bracelet.dart';
 import 'package:WE/Screens/ProfileDrawer/Profile/edit_profile.dart';
 import 'package:WE/Services/user_service.dart';
+import 'package:WE/myapp.dart';
 import 'package:bubble/bubble.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

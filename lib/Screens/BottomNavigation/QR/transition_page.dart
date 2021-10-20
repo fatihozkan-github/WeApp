@@ -18,7 +18,7 @@ class TransitionPage extends StatefulWidget {
 
 class _TransitionPageState extends State<TransitionPage> {
   final databaseReference = FirebaseDatabase.instance.reference();
-  int _counter = 5;
+  int _counter = 20;
   Timer _initialTimer;
 
   showAlertBox() {
@@ -40,7 +40,7 @@ class _TransitionPageState extends State<TransitionPage> {
                 child: Text('Evet!'),
                 onPressed: () {
                   setState(() {
-                    _counter = 10;
+                    _counter = 20;
                     _initialTimer = Timer.periodic(Duration(seconds: 1), (timer) {
                       if (_counter > 0) {
                         setState(() {
