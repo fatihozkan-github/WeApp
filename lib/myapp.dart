@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Screens/BottomNavigation/bottom_navigation.dart';
 
@@ -17,6 +18,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   StreamSubscription _showLockScreenSubs;
   GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
   final databaseReference = FirebaseDatabase.instance.reference();
+  SharedPreferences prefs;
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+  }
 
   setFalse() async {
     print('LifeCycle - setFalse func');
@@ -27,8 +33,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    initPrefs();
     WidgetsBinding.instance.addObserver(this);
-
     _showLockScreenSubs = _showLockScreenStream.stream.listen((bool show) {
       if (mounted && show) {
         _showLockScreenDialog();
@@ -71,8 +77,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   void _showLockScreenDialog() {
-    _navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
-      return BottomNavigation();
-    }));
+    var status = prefs.getBool('isLoggedIn') ?? false;
+    if (status) {
+      _navigatorKey.currentState.pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
+        return BottomNavigation();
+      }));
+    }
   }
 }
