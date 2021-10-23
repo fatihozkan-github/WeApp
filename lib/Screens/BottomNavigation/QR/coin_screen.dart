@@ -404,30 +404,32 @@ class _CoinScreenExampleState extends State<CoinScreenExample> {
                                             });
                                           },
                                         ),
-                                        SocialIcon(
-                                          iconSrc:
-                                              "assets/Icons/instagram2.png",
-                                          press: () async {
-                                            await screenshotController
-                                                .capture(
-                                                    delay: const Duration(
-                                                        milliseconds: 10))
-                                                .then((Uint8List image) async {
-                                              if (image != null) {
-                                                final directory =
-                                                    await getApplicationDocumentsDirectory();
-                                                final imagePath = await File(
-                                                        '${directory.path}/image.png')
-                                                    .create();
-                                                await imagePath
-                                                    .writeAsBytes(image);
-                                                await SocialShare
-                                                    .shareInstagramStory(
-                                                        imagePath.path);
-                                              }
-                                            });
-                                          },
-                                        ),
+                                        if (Platform.isAndroid)
+                                          SocialIcon(
+                                            iconSrc:
+                                                "assets/Icons/instagram2.png",
+                                            press: () async {
+                                              await screenshotController
+                                                  .capture(
+                                                      delay: const Duration(
+                                                          milliseconds: 10))
+                                                  .then(
+                                                      (Uint8List image) async {
+                                                if (image != null) {
+                                                  final directory =
+                                                      await getApplicationDocumentsDirectory();
+                                                  final imagePath = await File(
+                                                          '${directory.path}/image.png')
+                                                      .create();
+                                                  await imagePath
+                                                      .writeAsBytes(image);
+                                                  await SocialShare
+                                                      .shareInstagramStory(
+                                                          imagePath.path);
+                                                }
+                                              });
+                                            },
+                                          ),
                                         SocialIcon(
                                           iconSrc: "assets/Icons/twitter.png",
                                           press: () async {

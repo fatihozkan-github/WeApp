@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_single_quotes
 
+import 'dart:io';
+
 import 'package:WE/Resources/components/social_icon.dart';
 import 'package:WE/Resources/components/we_icon_button.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
@@ -40,7 +42,8 @@ class _BadgePageState extends State<BadgePage> {
     final size = MediaQuery.of(context).size;
     return FutureBuilder<DocumentSnapshot>(
         future: users.doc(firebaseUser.uid).get(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something went wrong");
           }
@@ -58,54 +61,69 @@ class _BadgePageState extends State<BadgePage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                    insetPadding: EdgeInsets.symmetric(vertical: size.height * 0.3),
+                                    insetPadding: EdgeInsets.symmetric(
+                                        vertical: size.height * 0.3),
                                     title: Text("Şununla paylaş:"),
                                     content: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: <Widget>[
                                             SocialIcon(
-                                              iconSrc: "assets/Icons/facebook64.png",
+                                              iconSrc:
+                                                  "assets/Icons/facebook64.png",
                                               press: () async {
-                                                await screenshotController.capture().then((image) async {
+                                                await screenshotController
+                                                    .capture()
+                                                    .then((image) async {
                                                   print('IMAGE: $image');
-                                                  await SocialShare.shareOptions("We").then((data) {
+                                                  await SocialShare
+                                                          .shareOptions("We")
+                                                      .then((data) {
                                                     print(data);
                                                   });
                                                 });
                                               },
                                             ),
+                                            if (Platform.isAndroid)
+                                              SocialIcon(
+                                                iconSrc:
+                                                    "assets/Icons/instagram2.png",
+                                                press: () async {
+                                                  /// TODO: Fix ASAP
+                                                  // if(Platform.isAndroid) {
+                                                  //   File file = await ImagePicker.pickImage(
+                                                  //     source: ImageSource.gallery,
+                                                  //   );
+                                                  // } else if(Platform.isIOS) {
+                                                  //   XFile file = await ImagePicker.pickImage(
+                                                  //     source: ImageSource.gallery,
+                                                  //   );
+                                                  // }
+                                                  // await SocialShare.shareInstagramStory(
+                                                  //   file.path,
+                                                  //   backgroundTopColor: "#ffffff",
+                                                  //   backgroundBottomColor: "#FF6B00",
+                                                  //   attributionURL: "https://deep-link-url",
+                                                  // ).then((data) {
+                                                  //   print(data);
+                                                  // });
+                                                },
+                                              ),
                                             SocialIcon(
-                                              iconSrc: "assets/Icons/instagram2.png",
-                                              press: () async {
-                                                /// TODO: Fix ASAP
-                                                // if(Platform.isAndroid) {
-                                                //   File file = await ImagePicker.pickImage(
-                                                //     source: ImageSource.gallery,
-                                                //   );
-                                                // } else if(Platform.isIOS) {
-                                                //   XFile file = await ImagePicker.pickImage(
-                                                //     source: ImageSource.gallery,
-                                                //   );
-                                                // }
-                                                // await SocialShare.shareInstagramStory(
-                                                //   file.path,
-                                                //   backgroundTopColor: "#ffffff",
-                                                //   backgroundBottomColor: "#FF6B00",
-                                                //   attributionURL: "https://deep-link-url",
-                                                // ).then((data) {
-                                                //   print(data);
-                                                // });
-                                              },
-                                            ),
-                                            SocialIcon(
-                                              iconSrc: "assets/Icons/twitter.png",
+                                              iconSrc:
+                                                  "assets/Icons/twitter.png",
                                               press: () async {
                                                 await SocialShare.shareTwitter(
                                                   "We",
-                                                  hashtags: ["we", "recycle", "we-recycle-team"],
+                                                  hashtags: [
+                                                    "we",
+                                                    "recycle",
+                                                    "we-recycle-team"
+                                                  ],
                                                   url: "",
                                                   trailingText: "",
                                                 ).then((data) {
@@ -116,23 +134,34 @@ class _BadgePageState extends State<BadgePage> {
                                           ],
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: <Widget>[
                                             SocialIcon(
-                                              iconSrc: "assets/Icons/linkedin.png",
+                                              iconSrc:
+                                                  "assets/Icons/linkedin.png",
                                               press: () async {
-                                                await screenshotController.capture().then((image) async {
-                                                  await SocialShare.shareOptions("We").then((data) {
+                                                await screenshotController
+                                                    .capture()
+                                                    .then((image) async {
+                                                  await SocialShare
+                                                          .shareOptions("We")
+                                                      .then((data) {
                                                     print(data);
                                                   });
                                                 });
                                               },
                                             ),
                                             SocialIcon(
-                                              iconSrc: "assets/Icons/upload.png",
+                                              iconSrc:
+                                                  "assets/Icons/upload.png",
                                               press: () async {
-                                                await screenshotController.capture().then((image) async {
-                                                  await SocialShare.shareOptions("We").then((data) {
+                                                await screenshotController
+                                                    .capture()
+                                                    .then((image) async {
+                                                  await SocialShare
+                                                          .shareOptions("We")
+                                                      .then((data) {
                                                     print(data);
                                                   });
                                                 });
@@ -161,7 +190,11 @@ class _BadgePageState extends State<BadgePage> {
                     children: <Widget>[
                       WEIconButton(
                         title: 'DOSTLUK',
-                        icon: Image.asset(data["badges"]["badge1"] ? allBadges[0][0] : allBadges[0][1], scale: 8),
+                        icon: Image.asset(
+                            data["badges"]["badge1"]
+                                ? allBadges[0][0]
+                                : allBadges[0][1],
+                            scale: 8),
                         onPressed: () {
                           if (data["badges"]["badge1"] == false) {
                             popUp(context, badges[0], true);
@@ -170,27 +203,47 @@ class _BadgePageState extends State<BadgePage> {
                       ),
                       WEIconButton(
                         title: 'ÖNCÜ',
-                        icon: Image.asset(data["badges"]["badge2"] ? allBadges[1][0] : allBadges[1][1], scale: 8),
+                        icon: Image.asset(
+                            data["badges"]["badge2"]
+                                ? allBadges[1][0]
+                                : allBadges[1][1],
+                            scale: 8),
                         onPressed: () => popUp(context, badges[1], true),
                       ),
                       WEIconButton(
                         title: 'BİLGE',
-                        icon: Image.asset(data["badges"]["badge3"] ? allBadges[2][0] : allBadges[2][1], scale: 8),
+                        icon: Image.asset(
+                            data["badges"]["badge3"]
+                                ? allBadges[2][0]
+                                : allBadges[2][1],
+                            scale: 8),
                         onPressed: () => popUp(context, badges[2], true),
                       ),
                       WEIconButton(
                         title: 'ÇAYLAK KAHRAMAN',
-                        icon: Image.asset(data["forbadgecount"] >= 3 ? allBadges[3][0] : allBadges[3][1], scale: 8),
+                        icon: Image.asset(
+                            data["forbadgecount"] >= 3
+                                ? allBadges[3][0]
+                                : allBadges[3][1],
+                            scale: 8),
                         onPressed: () => popUp(context, badges[3], true),
                       ),
                       WEIconButton(
                         title: 'HALK KAHRAMANI',
-                        icon: Image.asset(data["recycled"] >= 800 ? allBadges[4][0] : allBadges[4][1], scale: 8),
+                        icon: Image.asset(
+                            data["recycled"] >= 800
+                                ? allBadges[4][0]
+                                : allBadges[4][1],
+                            scale: 8),
                         onPressed: () => popUp(context, badges[4], true),
                       ),
                       WEIconButton(
                           title: 'ŞAMPİYON',
-                          icon: Image.asset(data["badges"]["badge6"] ? allBadges[5][0] : allBadges[5][1], scale: 8),
+                          icon: Image.asset(
+                              data["badges"]["badge6"]
+                                  ? allBadges[5][0]
+                                  : allBadges[5][1],
+                              scale: 8),
                           onPressed: () {
                             if (data["badges"]["badge6"] == false) {
                               popUp(context, badges[5], true);
@@ -199,9 +252,14 @@ class _BadgePageState extends State<BadgePage> {
                       WEIconButton(
                         title: '',
                         icon: data["level"] < 10
-                            ? Image.asset("assets/Images/Badges/Locked/inactiveBadgeX.png", scale: 8)
+                            ? Image.asset(
+                                "assets/Images/Badges/Locked/inactiveBadgeX.png",
+                                scale: 8)
                             : SizedBox(height: size.height * 0.01),
-                        onPressed: () => popUp(context, "10. Seviyeye ulaştıktan sonra daha çok rozet görebileceksin!", true),
+                        onPressed: () => popUp(
+                            context,
+                            "10. Seviyeye ulaştıktan sonra daha çok rozet görebileceksin!",
+                            true),
                       ),
                     ],
                   ),
@@ -233,12 +291,30 @@ List<String> badgesENG = [
   "15 of your friends should be part of We with the code defined for you.",
 ];
 List<List<String>> allBadges = [
-  ["assets/Images/Badges/Unlocked/activeBadge1.png", "assets/Images/Badges/Locked/inactiveBadge1.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge2.png", "assets/Images/Badges/Locked/inactiveBadge2.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge3.png", "assets/Images/Badges/Locked/inactiveBadge3.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge4.png", "assets/Images/Badges/Locked/inactiveBadge4.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge5.png", "assets/Images/Badges/Locked/inactiveBadge5.png"],
-  ["assets/Images/Badges/Unlocked/activeBadge6.png", "assets/Images/Badges/Locked/inactiveBadge6.png"],
+  [
+    "assets/Images/Badges/Unlocked/activeBadge1.png",
+    "assets/Images/Badges/Locked/inactiveBadge1.png"
+  ],
+  [
+    "assets/Images/Badges/Unlocked/activeBadge2.png",
+    "assets/Images/Badges/Locked/inactiveBadge2.png"
+  ],
+  [
+    "assets/Images/Badges/Unlocked/activeBadge3.png",
+    "assets/Images/Badges/Locked/inactiveBadge3.png"
+  ],
+  [
+    "assets/Images/Badges/Unlocked/activeBadge4.png",
+    "assets/Images/Badges/Locked/inactiveBadge4.png"
+  ],
+  [
+    "assets/Images/Badges/Unlocked/activeBadge5.png",
+    "assets/Images/Badges/Locked/inactiveBadge5.png"
+  ],
+  [
+    "assets/Images/Badges/Unlocked/activeBadge6.png",
+    "assets/Images/Badges/Locked/inactiveBadge6.png"
+  ],
 ];
 
 // Row(
