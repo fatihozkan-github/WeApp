@@ -49,8 +49,9 @@ class _MapViewState extends State<MapView> {
     await databaseReference.once().then((DataSnapshot snapshot) {
       coordinates.add(snapshot.value["3566"]["Location"]["latitude"]);
       coordinates.add(snapshot.value["3566"]["Location"]["longtitude"]);
-      fullness = snapshot.value["3566"]["FULLNESS"];
-      batteryPercent = snapshot.value["3566"]["BATTERY_CAPACITY"];
+      fullness = (snapshot.value["3566"]["FULLNESS"] as int).round();
+      batteryPercent =
+          (snapshot.value["3566"]["BATTERY_CAPACITY"] as int).round();
     });
   }
 
@@ -69,7 +70,7 @@ class _MapViewState extends State<MapView> {
                 ? InfoWindow(
                     title: "HeroStation",
                     snippet:
-                        "% ${fullness.toString()} Dolu \n% {$batteryPercent} Şarj")
+                        "%${fullness.toString()} Dolu \n%$batteryPercent Şarj")
                 : InfoWindow(
                     title: "HeroStation",
                     snippet: "%" + fullness.toString() + " Dolu "),
@@ -80,18 +81,19 @@ class _MapViewState extends State<MapView> {
 
   Future checkAdmin() async {
     final currentUid = FirebaseAuth.instance.currentUser.uid;
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(currentUid)
-        .get()
-        .then((DocumentSnapshot<Map<String, dynamic>> value) {
-      if (value.data().containsKey('admin')) {
-        if (value.data()['admin'] == true) {
-          isAdmin = true;
+    if (currentUid != null) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUid)
+          .get()
+          .then((DocumentSnapshot<Map<String, dynamic>> value) {
+        if (value.data().containsKey('admin')) {
+          if (value.data()['admin'] == true) {
+            isAdmin = true;
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   @override
