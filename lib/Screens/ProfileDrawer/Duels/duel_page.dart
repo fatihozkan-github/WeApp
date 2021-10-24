@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class DuelsPage extends StatefulWidget {
   @override
@@ -26,6 +27,16 @@ class _DuelsPageState extends State<DuelsPage> {
   List challengerRawList = [];
   List challengerNameList = [];
   List challengerTimeList = [];
+
+  void clearLists() {
+    localList = [];
+    rawUserList = [];
+    userList = [];
+    timeList = [];
+    challengerRawList = [];
+    challengerNameList = [];
+    challengerTimeList = [];
+  }
 
   Future searchChallengeData() async {
     /// Get Challenges
@@ -97,48 +108,79 @@ class _DuelsPageState extends State<DuelsPage> {
       appBar: AppBar(title: Text('Düellolar')),
       body: _isLoading
           ? WESpinKit()
-          : Column(
-              children: [
-                OverScroll(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: userList.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 5,
-                        child: data[rawUserList[index]["uid"]]['isAccepted'] != true ? _duelWaiting(index) : _duelAccepted(index),
-                      );
-                    },
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: challengerRawList.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 5,
-                      child: ListTile(
-                        /// TODO
-                        title: Text(challengerNameList[index] + ' seni düelloya davet etti!'),
-                        trailing: IconButton(
-                          icon: Icon(Icons.check),
-                          onPressed: () {
-                            setState(() {
-                              FirebaseFirestore.instance.collection('challenges').doc(challengerRawList[index]).update({
-                                currentUid: {
-                                  'isAccepted': true,
-                                  'time1': DateFormat('kk:mm:ss \n EEE d MMM').format(DateTime.now()),
-                                }
-                              }).onError((error, stackTrace) => print(error));
-                            });
-                          },
-                        ),
+          : userList.isEmpty
+              ? ListView(
+                  children: [
+                    SizedBox(height: 30),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: kPrimaryColor),
+                        borderRadius: BorderRadius.circular(32),
                       ),
-                    );
-                  },
+                      padding: EdgeInsets.all(24.0),
+                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        "Şu anda herhangi bir düellon veya davetin bulunmuyor. Hadi sen arkadaşlarını düelloya davet ederek başla!",
+                        style: TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Lottie.asset('assets/vs.json'),
+                  ],
+                )
+              : Column(
+                  children: [
+                    OverScroll(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: userList.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            elevation: 5,
+                            child: data[rawUserList[index]["uid"]]['isAccepted'] != true
+                                ? _duelWaiting(index)
+                                : _duelAccepted(index),
+                          );
+                        },
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: challengerTimeList.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 5,
+                          child: ListTile(
+                            /// TODO
+                            title: Text(challengerNameList[index] + ' seni düelloya davet etti!'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.check),
+                              onPressed: () {
+                                setState(() {
+                                  FirebaseFirestore.instance
+                                      .collection('challenges')
+                                      .doc(challengerRawList[index])
+                                      .update({
+                                        currentUid: {
+                                          'isAccepted': true,
+                                          'time1': DateFormat('kk:mm:ss \n EEE d MMM').format(DateTime.now()),
+                                        }
+                                      })
+                                      .onError((error, stackTrace) => print(error))
+                                      .whenComplete(() {
+                                        clearLists();
+                                        getData();
+                                      });
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
       floatingActionButton: _getFAB(),
     );
   }
