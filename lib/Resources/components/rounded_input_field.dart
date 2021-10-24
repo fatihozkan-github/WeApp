@@ -14,6 +14,7 @@ class RoundedInputField extends StatelessWidget {
   final String initialValue;
   final bool showIcon;
   final int maxLines;
+  final EdgeInsets padding;
 
   /// • For a password field with a toggle button do NOT use [TextInputAction.next], instead consider the following:
   ///
@@ -37,12 +38,13 @@ class RoundedInputField extends StatelessWidget {
     this.initialValue,
     this.showIcon = true,
     this.maxLines = 1,
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
+      padding: padding ?? EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         initialValue: initialValue,
         onChanged: onChanged,
@@ -63,11 +65,7 @@ class RoundedInputField extends StatelessWidget {
               }
             },
         decoration: InputDecoration(
-          prefixIcon: showIcon
-              ? Padding(
-                  padding: EdgeInsets.only(right: 3),
-                  child: Icon(icon, color: kPrimaryColor))
-              : null,
+          prefixIcon: showIcon ? Padding(padding: EdgeInsets.only(right: 3), child: Icon(icon, color: kPrimaryColor)) : null,
           suffixIcon: suffixIcon,
           hintText: hintText,
           focusedBorder: OutlineInputBorder(

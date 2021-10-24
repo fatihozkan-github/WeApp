@@ -187,6 +187,7 @@ class _EditProfileState extends State<EditProfile> {
     // var firebaseUser = FirebaseAuth.instance.currentUser;
     return snapshot != null
         ? UnFocuser(
+            /// TODO: General fixes.
             child: Scaffold(
               backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
