@@ -222,7 +222,11 @@ class Complete extends StatelessWidget {
                 onPressed: () async {
                   // await databaseReference.child('/3566/IS_USING').set(false);
                   // await databaseReference.child('/3566/SIGN_UP').set(false);
-                  await Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigation()));
+                  await Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => BottomNavigation()),
+                    ModalRoute.withName('/'),
+                  );
                 },
                 child: Text(
                   'Ana sayfaya dön',

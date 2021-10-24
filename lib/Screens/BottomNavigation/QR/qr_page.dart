@@ -118,16 +118,14 @@ class QRScanPageState extends State<QRScanPage> {
                     onPressed: () async {
                       final databaseReferenceTest = FirebaseDatabase.instance.reference();
                       await databaseReferenceTest.once().then((DataSnapshot snapshot) async {
-                        /// TODO: Test
-                        /// • was -> if (data == true)
                         bool isUsing = snapshot.value['3566']['IS_USING'];
                         bool inUse = snapshot.value['3566']['IN_USE'];
                         bool signUp = snapshot.value['3566']['SIGN_UP'];
-                        print('test s');
-                        print('isUsing: $isUsing');
-                        print('inUse: $inUse');
-                        print('signUp: $signUp');
-                        print('test e');
+                        // print('test s');
+                        // print('isUsing: $isUsing');
+                        // print('inUse: $inUse');
+                        // print('signUp: $signUp');
+                        // print('test e');
                         if (isUsing) {
                           if (inUse || signUp) {
                             await Navigator.push(context, MaterialPageRoute(builder: (context) => MacheUsing()));
@@ -173,19 +171,18 @@ class QRScanPageState extends State<QRScanPage> {
                   margin: EdgeInsets.all(10),
                   child: RaisedButton(
                     onPressed: () async {
-                      /// TODO: Test
                       var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
-                      print(userData.data());
+                      // print(userData.data());
                       final databaseReferenceTest = FirebaseDatabase.instance.reference();
                       await databaseReferenceTest.once().then((DataSnapshot snapshot) async {
                         bool isUsing = snapshot.value['3566']['IS_USING'];
                         bool inUse = snapshot.value['3566']['IN_USE'];
                         bool signUp = snapshot.value['3566']['SIGN_UP'];
-                        print('test s');
-                        print('isUsing: $isUsing');
-                        print('inUse: $inUse');
-                        print('signUp: $signUp');
-                        print('test e');
+                        // print('test s');
+                        // print('isUsing: $isUsing');
+                        // print('inUse: $inUse');
+                        // print('signUp: $signUp');
+                        // print('test e');
                         if (userData.data().containsKey('rfId')) {
                           if (userData.data()['rfId'] != null && userData.data()['rfId'] != '') {
                             await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
