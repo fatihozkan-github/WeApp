@@ -3,6 +3,7 @@
 import 'package:WE/Resources/components/default_appbar.dart';
 import 'package:WE/Resources/components/rounded_button.dart';
 import 'package:WE/Resources/components/rounded_input_field.dart';
+import 'package:WE/Resources/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ class SecondEditProfile extends StatefulWidget {
 }
 
 class _SecondEditProfileState extends State<SecondEditProfile> {
-  CollectionReference users = FirebaseFirestore.instance.collection('allUsers');
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   User firebaseUser = FirebaseAuth.instance.currentUser;
   DocumentSnapshot data;
@@ -23,6 +23,9 @@ class _SecondEditProfileState extends State<SecondEditProfile> {
   String _typedNewPassword;
   String _reTypedNewPassword;
   bool _showError = false;
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+  bool _obscureText3 = true;
 
   void _changePassword(String oldPass, String newPass) async {
     User user = FirebaseAuth.instance.currentUser;
@@ -75,6 +78,10 @@ class _SecondEditProfileState extends State<SecondEditProfile> {
     }
   }
 
+  void _toggle1() => setState(() => _obscureText1 = !_obscureText1);
+  void _toggle2() => setState(() => _obscureText2 = !_obscureText2);
+  void _toggle3() => setState(() => _obscureText3 = !_obscureText3);
+
   @override
   void initState() {
     super.initState();
@@ -94,16 +101,22 @@ class _SecondEditProfileState extends State<SecondEditProfile> {
             RoundedInputField(
               hintText: 'Eski Şifrenizi Giriniz',
               icon: Icons.lock_open_rounded,
+              obscureText: _obscureText1,
+              suffixIcon: IconButton(onPressed: _toggle1, icon: Icon(Icons.visibility), color: kPrimaryColor),
               onChanged: (value) => setState(() => _typedOldPassword = value),
             ),
             RoundedInputField(
               hintText: 'Yeni Şifrenizi Giriniz',
               icon: Icons.lock,
+              obscureText: _obscureText2,
+              suffixIcon: IconButton(onPressed: _toggle2, icon: Icon(Icons.visibility), color: kPrimaryColor),
               onChanged: (value) => setState(() => _typedNewPassword = value),
             ),
             RoundedInputField(
               hintText: 'Yeni Şifrenizi Tekrar Giriniz',
               icon: Icons.lock,
+              obscureText: _obscureText3,
+              suffixIcon: IconButton(onPressed: _toggle3, icon: Icon(Icons.visibility), color: kPrimaryColor),
               onChanged: (value) => setState(() => _reTypedNewPassword = value),
               validator: (_typed) {
                 if ((_typedNewPassword == _reTypedNewPassword) &&
@@ -126,9 +139,22 @@ class _SecondEditProfileState extends State<SecondEditProfile> {
               ),
             RoundedButton(
                 text: 'KAYDET',
-                onPressed: () {
-                  print('ch1');
-                  _changePassword(_typedOldPassword, _typedNewPassword);
+                onPressed: () async {
+                  print(_formKey.currentState.validate());
+                  print(_typedNewPassword == _reTypedNewPassword);
+
+                  if (_formKey.currentState.validate() && _typedNewPassword == _reTypedNewPassword) {
+                    _changePassword(_typedOldPassword, _typedNewPassword);
+                  } else {
+                    await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text('Girdiğiniz Bilgileri Kontrol Ediniz'),
+                            actions: [TextButton(child: Text('Tamam'), onPressed: () => Navigator.pop(context))],
+                          );
+                        });
+                  }
                 }
                 // {
                 //   if (_formKey.currentState.validate() &&
