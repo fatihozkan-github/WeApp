@@ -168,39 +168,6 @@ class QRScanPageState extends State<QRScanPage> {
                     ),
                   ),
                 ),
-                // Container(
-                //   height: 50.0,
-                //   margin: EdgeInsets.all(10),
-                //   child: RaisedButton(
-                //     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
-                //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                //     padding: EdgeInsets.all(0.0),
-                //     child: Ink(
-                //       decoration: BoxDecoration(
-                //           gradient: LinearGradient(
-                //             colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
-                //             begin: Alignment.centerLeft,
-                //             end: Alignment.centerRight,
-                //           ),
-                //           borderRadius: BorderRadius.circular(30.0)),
-                //       child: Container(
-                //         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                //         alignment: Alignment.center,
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //           children: [
-                //             Icon(Icons.password_rounded, color: Colors.white),
-                //             Text(
-                //               "KOD GİR",
-                //               textAlign: TextAlign.center,
-                //               style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Container(
                   height: 50.0,
                   margin: EdgeInsets.all(10),
@@ -235,44 +202,11 @@ class QRScanPageState extends State<QRScanPage> {
                               await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
                             }
                           }
+                        } else {
+                          await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
                         }
                       });
                     },
-
-                    /// old
-                    // onPressed: () async {
-                    //   var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
-                    //   print(userData.data());
-                    //
-                    //   /// TODO: Test
-                    //   if (userData.data().containsKey('rfId')) {
-                    //     if (userData.data()['rfId'] != null) {
-                    //       if (userData.data()['rfId'] != '') {
-                    //         await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
-                    //       } else {
-                    //         await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
-                    //       }
-                    //     } else {
-                    //       await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
-                    //     }
-                    //   } else {
-                    //     await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
-                    //   }
-                    // },
-                    /// old
-                    // onPressed: () async {
-                    //   var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
-                    //   print(userData.data());
-                    //
-                    //   /// TODO: Test
-                    //   if (userData.data().containsKey('rfId')) {
-                    //     if (userData.data()['rfId'] != null && userData.data()['rfId'] != '') {
-                    //       await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
-                    //     } else {
-                    //       await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
-                    //     }
-                    //   }
-                    // },
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                     padding: EdgeInsets.all(0.0),
                     child: Ink(
@@ -349,6 +283,74 @@ class QRScanPageState extends State<QRScanPage> {
       .toList();
 }
 
+/// old
+// onPressed: () async {
+//   var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+//   print(userData.data());
+//
+//   /// TODO: Test
+//   if (userData.data().containsKey('rfId')) {
+//     if (userData.data()['rfId'] != null) {
+//       if (userData.data()['rfId'] != '') {
+//         await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
+//       } else {
+//         await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+//       }
+//     } else {
+//       await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+//     }
+//   } else {
+//     await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+//   }
+// },
+/// old
+// onPressed: () async {
+//   var userData = await FirebaseFirestore.instance.collection('users').doc(currentUid).get();
+//   print(userData.data());
+//
+//   /// TODO: Test
+//   if (userData.data().containsKey('rfId')) {
+//     if (userData.data()['rfId'] != null && userData.data()['rfId'] != '') {
+//       await Navigator.push(context, MaterialPageRoute(builder: (context) => BraceletPage()));
+//     } else {
+//       await Navigator.push(context, MaterialPageRoute(builder: (context) => ActivateBracelet()));
+//     }
+//   }
+// },
+///
+// Container(
+//   height: 50.0,
+//   margin: EdgeInsets.all(10),
+//   child: RaisedButton(
+//     onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => CodePage())),
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+//     padding: EdgeInsets.all(0.0),
+//     child: Ink(
+//       decoration: BoxDecoration(
+//           gradient: LinearGradient(
+//             colors: [Color(0xFFff4d00), Color(0xFFff9a00)],
+//             begin: Alignment.centerLeft,
+//             end: Alignment.centerRight,
+//           ),
+//           borderRadius: BorderRadius.circular(30.0)),
+//       child: Container(
+//         constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+//         alignment: Alignment.center,
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//           children: [
+//             Icon(Icons.password_rounded, color: Colors.white),
+//             Text(
+//               "KOD GİR",
+//               textAlign: TextAlign.center,
+//               style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+//             ),
+//           ],
+//         ),
+//       ),
+//     ),
+//   ),
+// ),
 ///
 // static String result;
 ///

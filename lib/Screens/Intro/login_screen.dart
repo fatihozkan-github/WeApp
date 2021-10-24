@@ -88,6 +88,71 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(color: Colors.red),
                   )
                 : Container(),
+            Container(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                child: Text('Şifremi Unuttum', style: TextStyle(color: kPrimaryColor)),
+                onPressed: () {
+                  String _popUpEmail = '';
+                  bool _showPopUpError = false;
+                  bool _showPopUpMail = false;
+                  return showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        bool isValidEmail() {
+                          return RegExp(
+                                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                              .hasMatch(_popUpEmail);
+                        }
+
+                        print(_showPopUpError);
+                        return StatefulBuilder(
+                          builder: (context, setState1) => AlertDialog(
+                            title: Text("Mailinizi Giriniz"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                RoundedInputField(
+                                  hintText: "E-posta",
+                                  icon: Icons.mail,
+                                  onChanged: (value) => setState1(() {
+                                    _popUpEmail = value.trim();
+                                    _showPopUpError = false;
+                                  }),
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (_typedValue) {
+                                    return (_typedValue.isEmpty)
+                                        ? 'Boş bırakılamaz'
+                                        : isValidEmail()
+                                            ? null
+                                            : "Lütfen geçerli bir mail adresi giriniz";
+                                  },
+                                ),
+                                if (_showPopUpError) Text('Girdiğiniz Maili Kontrol Ediniz.'),
+                                if (_showPopUpMail && !_showPopUpError) Text('Mail Gönderildi!'),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text("Kapat", style: TextStyle(color: kPrimaryColor)),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                              TextButton(
+                                child: Text("Tamam", style: TextStyle(color: kPrimaryColor)),
+                                onPressed: () async {
+                                  await auth
+                                      .sendPasswordResetEmail(email: _popUpEmail)
+                                      .whenComplete(() => setState1(() => _showPopUpMail = true))
+                                      .onError((error, stackTrace) async => setState1(() => _showPopUpError = true));
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      });
+                },
+              ),
+            ),
             RoundedButton(
               /// TODO: User check
               text: "GİRİŞ YAP",
@@ -110,6 +175,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {
                       _showError = true;
                     });
+                    // @override
+                    // Future<void> resetPassword(String email) async {
+                    //   await _firebaseAuth.sendPasswordResetEmail(email: email);
+                    // }
                     // return showDialog(
                     //     context: context,
                     //     builder: (BuildContext context) {
