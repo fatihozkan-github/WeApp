@@ -7,8 +7,11 @@ import 'package:WE/Resources/components/social_icon.dart';
 import 'package:WE/Resources/components/we_spin_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:http/http.dart' as http;
+import 'package:share/share.dart';
 import 'package:social_share/social_share.dart';
 
 class PostModel extends StatefulWidget {
@@ -31,9 +34,31 @@ class PostModel extends StatefulWidget {
 }
 
 class _PostModelState extends State<PostModel> {
-  ScreenshotController _screenshotController = ScreenshotController();
+  ScreenshotController _screenshotController  = ScreenshotController();
+
   String date = '';
   // bool _openCommentPanel = false;
+
+
+
+    Future shareAndTakeSS()async{
+
+      Uint8List bytes =  (await NetworkAssetBundle(Uri.parse(widget.asset)).load(widget.asset))
+          .buffer
+          .asUint8List();
+
+      final imageFile=  bytes;
+      print(imageFile);
+      print(imageFile.toString());
+      final directory = await getApplicationDocumentsDirectory();
+      final pathOfImage = await File('${directory.path}/post.jpg').create();
+      await pathOfImage.writeAsBytes(imageFile.buffer.asUint8List());
+      await Share.shareFiles([pathOfImage.path],sharePositionOrigin:Rect.zero );
+
+    }
+
+
+
 
   @override
   void initState() {
@@ -104,6 +129,10 @@ class _PostModelState extends State<PostModel> {
             SocialIcon(
                 iconSrc: "assets/Icons/instagram2.png",
                 press: () async {
+
+                await shareAndTakeSS();
+
+                  /*
                   if (Platform.isAndroid) {
                     await _screenshotController
                         .capture(delay: const Duration(milliseconds: 10))
@@ -123,6 +152,8 @@ class _PostModelState extends State<PostModel> {
                       }
                     });
                   }
+
+                   */
                 }),
             Text('Paylaş'),
             // GestureDetector(
