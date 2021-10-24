@@ -201,7 +201,8 @@ void checkReferralData({String referralId, String uid}) async {
   // TODO: opsiyonel (digit code Upper case'le, burda olmak zorunda değil ama bunu da)
 }
 
-Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynamic coins, String superhero}) async {
+Future addKanka(
+    {String uid, String name, dynamic recycled, dynamic level, dynamic coins, String superhero, String avatar}) async {
   var documentSnapshot;
 
   /// TODO: Check.
@@ -220,6 +221,7 @@ Future addKanka({String uid, String name, dynamic recycled, dynamic level, dynam
       "friend" + (docSnapshot.data() == null ? 1 : int.parse(local.last.toString().split('friend')[1]) + 1).toString(): {
         "uid": uid,
         "name": name,
+        "avatar": avatar,
         "recycled": recycled,
         "supehero": superhero,
         "coins": coins,

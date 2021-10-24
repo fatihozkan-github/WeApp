@@ -185,6 +185,7 @@ class _HisProfileState extends State<HisProfile> {
                                           onPressed: () async {
                                             await addKanka(
                                               uid: widget.uid,
+                                              avatar: data["avatar"],
                                               name: data["name"],
                                               recycled: data["recycled"],
                                               level: data["level"],
@@ -220,7 +221,7 @@ class _HisProfileState extends State<HisProfile> {
                                       icon: Image.asset("assets/Icons/swords.png"),
                                       onPressed: () {
                                         //checkChallenges(widget.username);
-                                        createChallenge(widget.uid, data["name"]);
+                                        createChallenge(firebaseUser.uid, widget.uid);
                                         popUp(context, data["name"] + " düelloya davet edildi. Bol şans!", true);
 
                                         //_number();

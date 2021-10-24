@@ -128,7 +128,7 @@ class ProfileDrawerState extends State<ProfileDrawer> {
                 children: [
                   GestureDetector(
                     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage())),
-                    child: data["avatar"] != null || data["avatar"] != ''
+                    child: data["avatar"] != null && data["avatar"] != ''
                         ? Container(
                             height: 110,
                             width: 110,
