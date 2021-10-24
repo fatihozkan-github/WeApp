@@ -39,6 +39,9 @@ class _DuelsPageState extends State<DuelsPage> {
   }
 
   Future searchChallengeData() async {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    DocumentSnapshot currentUser = await users.doc(currentUid).get();
+
     /// Get Challenges
     QuerySnapshot snapshot = await challenges.get();
 
@@ -52,12 +55,22 @@ class _DuelsPageState extends State<DuelsPage> {
           if (element['isAccepted'] == false) {
             challengerTimeList.add(element['time1']);
           }
+
+          /// if true, then add to getChallengeData's lists
+          /// TODO: add names
+          // else if (element['isAccepted'] == true) {
+          //   timeList.add(element['time1']);
+          //   userList.add(currentUser["name"]);
+          //   print(map.keys);
+          //   localList.add(map.keys.toList().last);
+          //   print(localList);
+          // }
         });
       }
     });
 
     /// Get challenger data
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    // CollectionReference users = FirebaseFirestore.instance.collection('users');
     for (int i = 0; i < challengerRawList.length; i++) {
       DocumentSnapshot rawData = await users.doc(challengerRawList[i]).get();
       data = rawData.data();
@@ -138,9 +151,10 @@ class _DuelsPageState extends State<DuelsPage> {
                         itemBuilder: (context, index) {
                           return Card(
                             elevation: 5,
-                            child: data[rawUserList[index]["uid"]]['isAccepted'] != true
-                                ? _duelWaiting(index)
-                                : _duelAccepted(index),
+                            child: data[localList[index]]['isAccepted'] != true ? _duelWaiting(index) : _duelAccepted(index),
+                            // child: data[rawUserList[index]["uid"]]['isAccepted'] != true
+                            //     ? _duelWaiting(index)
+                            //     : _duelAccepted(index),
                           );
                         },
                       ),

@@ -189,9 +189,9 @@ class _EditProfileState extends State<EditProfile> {
         ? UnFocuser(
             /// TODO: General fixes.
             child: Scaffold(
-              backgroundColor: Colors.white,
-              resizeToAvoidBottomInset: false,
-              appBar: AppBar(backgroundColor: kPrimaryColor, title: Text('Profilini Düzenle'), centerTitle: true),
+              // backgroundColor: Colors.white,
+              // resizeToAvoidBottomInset: false,
+              appBar: AppBar(title: Text('Profilini Düzenle')),
               body: Center(
                 child: Form(
                   key: _formKey,
