@@ -26,17 +26,6 @@ class _QRViewExampleState extends State<QRViewExample> {
   int count = 0;
   final databaseReferenceTest = FirebaseDatabase.instance.reference();
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      controller.pauseCamera();
-    }
-    controller.resumeCamera();
-  }
-
   Future checkPermissions({bool init}) async {
     await Permission.camera.request();
     permissionStatus = await Permission.camera.status;
@@ -60,6 +49,23 @@ class _QRViewExampleState extends State<QRViewExample> {
     checkPermissions(init: true);
     super.initState();
   }
+
+  // In order to get hot reload to work we need to pause the camera if the platform
+  // is android, or resume the camera if the platform is iOS.
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller.pauseCamera();
+    }
+    controller.resumeCamera();
+  }
+
+  // @override
+  // void dispose() {
+  //   controller?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -285,11 +291,5 @@ class _QRViewExampleState extends State<QRViewExample> {
         SnackBar(content: Text('QR kodu okutmak için lütfen uygulama ayarlarından Kamera Erişimine izin verin.')),
       );
     }
-  }
-
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
   }
 }

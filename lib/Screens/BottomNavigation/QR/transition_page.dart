@@ -19,19 +19,19 @@ class TransitionPage extends StatefulWidget {
 class _TransitionPageState extends State<TransitionPage> {
   final databaseReference = FirebaseDatabase.instance.reference();
   int _counter = 30;
+  int _innerCounter = 5;
   Timer _initialTimer;
+  Timer _dialogTimer;
 
   showAlertBox() {
     return showDialog(
         context: context,
         builder: (context1) {
-          Timer(Duration(seconds: 5), () {
+          _dialogTimer = Timer(Duration(seconds: _innerCounter), () {
             openBox(false);
             _initialTimer.cancel();
             Navigator.pop(context1);
-            Navigator.of(context)
-              ..pop()
-              ..pop();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => BottomNavigation()));
           });
           return AlertDialog(
             title: Text('Her şey yolunda mı?'),
@@ -41,21 +41,22 @@ class _TransitionPageState extends State<TransitionPage> {
                 onPressed: () {
                   setState(() {
                     _counter = 30;
-                    _initialTimer =
-                        Timer.periodic(Duration(seconds: 1), (timer) {
-                      if (_counter > 0) {
-                        setState(() {
-                          _counter--;
-                          print(_counter);
-                        });
-                      } else if (_counter <= 0) {
-                        timer.cancel();
-                        _initialTimer.cancel();
-                        return showAlertBox();
-                      }
-                    });
+                    _innerCounter = 10;
+                    _dialogTimer.cancel();
                   });
-                  Navigator.pop(context);
+                  _initialTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+                    if (_counter > 0) {
+                      setState(() {
+                        _counter--;
+                        print(_counter);
+                      });
+                    } else if (_counter <= 0) {
+                      timer.cancel();
+                      _initialTimer.cancel();
+                      return showAlertBox();
+                    }
+                  });
+                  Navigator.pop(context1);
                 },
               ),
             ],
@@ -82,7 +83,7 @@ class _TransitionPageState extends State<TransitionPage> {
     await databaseReference.child('3566').update({'IN_USE': isOpen});
     //Dispose'da yani baska bir sayfaya gecerken isUsing false oluyor.
     // isUsing sadece odul sayfasinda false olmali.
-    // Bu nedenle dispose oluyorsa isUsing'i degistirmiyoruz. 
+    // Bu nedenle dispose oluyorsa isUsing'i degistirmiyoruz.
     if (dispose != null) {
       if (!dispose) await databaseReference.child('/3566/IS_USING').set(isOpen);
     } else {
@@ -106,11 +107,10 @@ class _TransitionPageState extends State<TransitionPage> {
 
   @override
   Future<void> dispose() async {
-    await openBox(false, dispose: true);
     if (_initialTimer.isActive) {
       _initialTimer.cancel();
     }
-    super.dispose();
+    await openBox(false, dispose: true).whenComplete(() => super.dispose());
   }
 
   @override
@@ -138,8 +138,7 @@ class _TransitionPageState extends State<TransitionPage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                BottomNavigation(),
+                            builder: (BuildContext context) => BottomNavigation(),
                           ),
                           (route) => false,
                         );
@@ -153,9 +152,7 @@ class _TransitionPageState extends State<TransitionPage> {
             //SizedBox(height: size.height * 0.02),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                  border: Border.all(color: kPrimaryColor),
-                  borderRadius: BorderRadius.circular(20)),
+              decoration: BoxDecoration(border: Border.all(color: kPrimaryColor), borderRadius: BorderRadius.circular(20)),
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Text(

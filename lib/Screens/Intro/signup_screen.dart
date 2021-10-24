@@ -94,10 +94,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             return showDialog(
               context: context,
               builder: (BuildContext context) {
-                print(err.message);
+                print(err.toString());
                 return AlertDialog(
                   title: Text('Hata'),
-                  content: Text(err.message),
+                  content: Text(err.toString()),
                   actions: [
                     TextButton(
                       child: Text('Tamam'),
